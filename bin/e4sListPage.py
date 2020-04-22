@@ -140,6 +140,13 @@ docBlock='''<b>***DOCNAME***</b>
 <hr>
 <br>
 '''
+
+script_path = os.path.dirname(os.path.abspath( __file__))
+browserHeaders={'User-Agent' : "Magic Browser"}
+rawSegment='/raw/'
+blobSegment='/blob/'
+e4sDotYaml='/e4s.yaml'
+
 def getSpackInfo(name):
     whichSpack = shutil.which('spack')
     if whichSpack is None:
@@ -151,13 +158,56 @@ def getSpackInfo(name):
 def getURLHead(url, numChars=200):
     #masteryaml_url="https://raw.githubusercontent.com/UO-OACISS/e4s/master/docker-recipes/ubi7/x86_64/e4s/spack.yaml"
     #print("Reading URL: "+url)
-    browserHeaders={'User-Agent' : "Magic Browser"}
+    #browserHeaders={'User-Agent' : "Magic Browser"}
     req=urllib.request.Request(url,None,browserHeaders)
     with urlopen(req) as f:
         head=html.escape(f.read(numChars).decode("utf-8"))
         return head
     #    yamlMap=yaml.safe_load(url)
     #speclist = yamlMap.get('spack').get('specs')
+
+def getRepoName(url):
+    #print(url)
+    lastblobdex=url.rfind('/blob/')
+    #print("Name ends at: "+lastblobdex)
+    firstnamedex=url.rfind('/',0,lastblobdex)
+    #print("Name starts at: "+firstnamedex)
+    return url[firstnamedex+1:lastblobdex]
+
+def getRepoDocs(url,name):
+    gotRemote=False
+    #TODO: This should work for github blob urls but may not work for others
+    li = url.rsplit(blobSegment, 1)
+    raw_url=rawSegment.join(li)
+    #print("Raw URL: "+raw_url)
+    raw_e4s=raw_url+e4sDotYaml
+    #print("Raw E4S"+raw_e4s)
+    req=urllib.request.Request(raw_e4s,None,browserHeaders)
+    try: 
+        response=urlopen(req)
+    except urllib.error.URLError as e:
+        print("Remote metadata for "+name+": "+e.reason)
+    else:
+        e4sMD = yaml.safe_load(response)
+        return e4sMD
+
+    if gotRemote is False:
+        localFile=script_path+'/../data/'+name+'/e4s.yaml'
+        if os.path.isfile(localFile) is True:
+            with open(script_path+'/../data/'+name+'/e4s.yaml') as e4sMDFile:
+                e4sMD = yaml.safe_load(e4sMDFile)
+                return e4sMD
+    print("No metadata found for "+name)
+    return None;
+            
+       
+
+def processE4SURL(url):
+    repoName=getRepoName(url)
+    e4sMD=getRepoDocs(url,repoName)
+    if e4sMD is not None and 'repo_url' not in e4sMD:
+        e4sMD[0]['repo_url']=url
+    return e4sMD #{'e4s_product':repoName,'docs':docs}
 
 output_prefix=""
 if(len(sys.argv)>1):
@@ -167,18 +217,22 @@ if(len(sys.argv)>1):
 		print("First argument must be a valid output directory")
 		sys.exit(-1)
 
-script_path = os.path.dirname(os.path.abspath( __file__))
+
 with open(script_path+'/../data/e4s_products.yaml') as e4slist:
     e4sProducts = yaml.safe_load(e4slist)
 
 with open(output_prefix+'E4S-Products.html', "a") as listPage:
     print(introListBlock.replace("***TIMESTAMP***",timestamp), file=listPage)
 
-    for product in e4sProducts:
-        if "heading" in product:
-            print(introHeadingBlock.replace("***HEADING***",product['heading']), file=listPage)
+    for urls in e4sProducts:
+#        if "heading" in product:
+#            print(introHeadingBlock.replace("***HEADING***",product['heading']), file=listPage)
+#            continue
+        processedURL=processE4SURL(urls['repo_url'])
+        if processedURL is None:
             continue
-
+        product = processedURL[0]
+        print ('Generating HTML for: '+product['e4s_product'])
         with open(output_prefix+product['e4s_product'].lower()+".html", "a") as ppage:
 
             capName=product['e4s_product'].upper()
@@ -194,7 +248,7 @@ with open(output_prefix+'E4S-Products.html', "a") as listPage:
                 print(spackInfo)
 
             appendRaw=""
-            rawFileURL = product['repo_url']
+            rawFileURL = urls['repo_url']
             if 'raw_url' in product:
                 rawFileURL = product['raw_url']
 

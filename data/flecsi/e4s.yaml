@@ -1,0 +1,4 @@
+- e4s_product: flecsi
+  type: Framework
+  docs: [README.md, RELEASE.md, LICENSE]
+  repo_url: https://github.com/laristra/flecsi/blob/master
