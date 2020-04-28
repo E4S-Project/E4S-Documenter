@@ -181,15 +181,19 @@ def getRepoDocs(url,name):
     raw_url=rawSegment.join(li)
     #print("Raw URL: "+raw_url)
     raw_e4s=raw_url+e4sDotYaml
-    #print("Raw E4S"+raw_e4s)
+    #print("Raw E4S "+raw_e4s)
     req=urllib.request.Request(raw_e4s,None,browserHeaders)
     try: 
         response=urlopen(req)
     except urllib.error.URLError as e:
-        print("Remote metadata for "+name+": "+e.reason)
+        print("Remote metadata for "+name+": "+e.reason+". "+raw_e4s)
     else:
-        e4sMD = yaml.safe_load(response)
-        return e4sMD
+        try:
+            e4sMD = yaml.safe_load(response)
+        except:
+            print("Remote metadata for "+name+": Invalid e4s.yaml. "+raw_e4s)
+        else:
+            return e4sMD
 
     if gotRemote is False:
         localFile=script_path+'/../data/'+name+'/e4s.yaml'

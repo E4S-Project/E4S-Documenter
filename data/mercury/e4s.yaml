@@ -1,0 +1,3 @@
+- e4s_product: mercury
+  type: TOOL
+  docs:  [README.md, CHANGELOG, COPYING]

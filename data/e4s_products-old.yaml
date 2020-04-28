@@ -38,6 +38,7 @@
   repo_url: https://bitbucket.org/icl/slate/src/default
   docs: [README.md, LICENSE]
 - e4s_product: strumpack
+  type: Math Library
   repo_url: https://github.com/pghysels/STRUMPACK/blob/master
   docs: [README.md, CHANGELOG, LICENSE]
 - e4s_product: sundials
@@ -68,10 +69,12 @@
   repo_url: https://github.com/ornladios/ADIOS2/blob/master
   docs: [ReadMe.md, LICENSE]
 - e4s_product: hdf5
+  type: I/O Library
   repo_url: https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse
   raw_append: ?&raw
   docs: [README.txt, COPYING]
 - e4s_product: parallel-netcdf
+  type: I/O Library
   repo_url: https://github.com/Parallel-NetCDF/PnetCDF/blob/master
   docs: [README.md, RELEASE_NOTES, COPYRIGHT]
 - e4s_product: unifyfs
@@ -89,31 +92,39 @@
   docs: [README.md, ChangeLog, LICENSE.TXT]
 - heading: Compression Tools
 - e4s_product: sz
+  type: Compression
   repo_url: https://github.com/disheng222/SZ/blob/master
   docs: [README.md, copyright-and-BSD-license.txt]
 - e4s_product: zfp
+  type: Compression
   repo_url: https://github.com/LLNL/zfp/blob/develop
   docs: [README.md, VERSIONS.md, LICENSE]
 - heading: Performance Tools
 - e4s_product: caliper
+  type: Performance
   repo_url: https://github.com/LLNL/Caliper/blob/master
   docs: [README.md, LICENSE]
 - e4s_product: darshan
   repo_url: https://xgitlab.cels.anl.gov/darshan/darshan/blob/master
   docs: [README.md, ChangeLog, COPYRIGHT]
+  type: Performance
 - e4s_product: dyninst
   repo_url: https://github.com/dyninst/dyninst/blob/master
   docs: [README.md, CHANGELOG.md, LICENSE.md]
+  type: Performance
 - e4s_product: hpctoolkit
   repo_url: https://github.com/HPCToolkit/hpctoolkit/blob/master
   docs: [README, README.ReleaseNotes, README.License]
+  type: Performance
 - e4s_product: papi
   repo_url: https://bitbucket.org/icl/papi/src/master
   raw_replace: [/src/, /raw/]
   docs: [README.md, RELEASENOTES.txt, LICENSE.txt]
+  type: Performance
 - e4s_product: tau
   repo_url: https://github.com/UO-OACISS/tau2/blob/master
   docs: [README, Changes, LICENSE]
+  type: Performance
 - heading: PMR
 - e4s_product: aml
   type: PMR

@@ -1,0 +1,3 @@
+- e4s_product: parallel-netcdf
+  type: I/O Library
+  docs:  [README.md, RELEASE_NOTES, COPYRIGHT]

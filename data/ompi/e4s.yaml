@@ -1,0 +1,3 @@
+- e4s_product: openmpi
+  type: PMR
+  docs:  [README, NEWS, LICENSE]

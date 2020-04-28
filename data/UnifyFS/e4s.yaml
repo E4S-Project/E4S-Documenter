@@ -1,0 +1,3 @@
+- e4s_product: unifyfs
+  type: TOOL
+  docs:  [README.md, LICENSE]

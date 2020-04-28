@@ -1,0 +1,3 @@
+- e4s_product: petsc
+  type: Framework
+  docs:  [README.md, LICENSE]

@@ -1,0 +1,3 @@
+- e4s_product: hpctoolkit
+  type: Performance
+  docs:  [README, README.ReleaseNotes, README.License]

@@ -1,0 +1,3 @@
+- e4s_product: faodel
+  type: TOOL
+  docs:  [README.md, NEWS.md, LICENSE.md]

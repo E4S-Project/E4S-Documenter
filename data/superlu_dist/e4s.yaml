@@ -1,0 +1,3 @@
+- e4s_product: superlu
+  type: Math Library
+  docs:  [README.md, License.txt]

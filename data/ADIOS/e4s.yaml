@@ -1,0 +1,3 @@
+- e4s_product: adios
+  type: I/O Library
+  docs:  [README.md, NEWS, COPYING]
