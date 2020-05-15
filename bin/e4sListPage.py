@@ -180,10 +180,13 @@ def getURLHead(url, numChars=200):
 def getRepoName(url):
     #print(url)
     lastblobdex=url.rfind('/blob/')
+    if lastblobdex == -1:
+        lastblobdex=url.rfind('/src/')
     #print("Name ends at: "+lastblobdex)
     firstnamedex=url.rfind('/',0,lastblobdex)
     #print("Name starts at: "+firstnamedex)
-    return url[firstnamedex+1:lastblobdex]
+    name = url[firstnamedex+1:lastblobdex]
+    return name
 
 def getRepoDocs(url,name):
     gotRemote=False
@@ -240,6 +243,8 @@ with open(output_prefix+'E4S-Products.html', "a") as listPage:
     print(introListBlock.replace("***TIMESTAMP***",timestamp), file=listPage)
 
     for urls in e4sProducts:
+#        if "github.com" in urls['repo_url']:
+#            continue
 #        if "heading" in product:
 #            print(introHeadingBlock.replace("***HEADING***",product['heading']), file=listPage)
 #            continue
@@ -266,16 +271,18 @@ with open(output_prefix+'E4S-Products.html', "a") as listPage:
             rawFileURL = urls['repo_url']
             if 'raw_url' in product:
                 rawFileURL = product['raw_url']
-
+			
             if 'raw_append' in product:
                 appendRaw=product['raw_append']
                 #rawFileURL = product['repo_url']
             else:
                 fromRaw="/blob/"
                 toRaw="/raw/"
-                if 'raw_replace' in product:
-                    fromRaw=product['raw_replace'][0]
-                    toRaw=product['raw_replace'][1]
+#                if 'raw_replace' in product:
+#                    fromRaw=product['raw_replace'][0]
+#                    toRaw=product['raw_replace'][1]
+                if "bitbucket.org" in rawFileURL:
+                    fromRaw="/src/"
                 rawFileURL = rawFileURL.replace(fromRaw,toRaw)
             print(rawFileURL)
             for doc in product['docs']:
