@@ -161,7 +161,18 @@ def getURLHead(url, numChars=200):
     #browserHeaders={'User-Agent' : "Magic Browser"}
     req=urllib.request.Request(url,None,browserHeaders)
     with urlopen(req) as f:
-        head=html.escape(f.read(numChars).decode("utf-8"))
+        #Read 2x the target number of characters to look for a good breakpoint in the overflow
+        head=html.escape(f.read(numChars*2).decode("utf-8"))
+        breakpoint=head.find('\n',numChars)
+        if breakpoint < numChars:
+            breakpoint=head.find(". ",numChars)
+        if breakpoint < numChars:
+            breakpoint=head.find(' ',numChars);
+        if breakpoint < numChars:
+            breakpoint=numChars
+        #print("Breakpoint: ",breakpoint)            
+        head = head[:breakpoint]
+        #print("Resulting Head: "+head)
         return head
     #    yamlMap=yaml.safe_load(url)
     #speclist = yamlMap.get('spack').get('specs')
