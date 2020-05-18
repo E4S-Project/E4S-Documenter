@@ -146,6 +146,7 @@ browserHeaders={'User-Agent' : "Magic Browser"}
 rawSegment='/raw/'
 blobSegment='/blob/'
 e4sDotYaml='/e4s.yaml'
+bitbucketRaw='?&raw'
 
 def getSpackInfo(name):
     whichSpack = shutil.which('spack')
@@ -182,9 +183,14 @@ def getRepoName(url):
     lastblobdex=url.rfind('/blob/')
     if lastblobdex == -1:
         lastblobdex=url.rfind('/src/')
-    #print("Name ends at: "+lastblobdex)
+    if lastblobdex == -1:
+        lastblobdex=url.rfind('/browse')  #Used in some bitbucket urls
+    if lastblobdex == -1:
+        print("ERROR PARSING REPO NAME FROM URL: "+url)
+        return None
+#    print("Name ends at: "+str(lastblobdex))
     firstnamedex=url.rfind('/',0,lastblobdex)
-    #print("Name starts at: "+firstnamedex)
+#    print("Name starts at: "+str(firstnamedex))
     name = url[firstnamedex+1:lastblobdex]
     return name
 
@@ -222,6 +228,8 @@ def getRepoDocs(url,name):
 
 def processE4SURL(url):
     repoName=getRepoName(url)
+    if repoName is None:
+        return None
     e4sMD=getRepoDocs(url,repoName)
     if e4sMD is not None and 'repo_url' not in e4sMD:
         e4sMD[0]['repo_url']=url
@@ -272,8 +280,8 @@ with open(output_prefix+'E4S-Products.html', "a") as listPage:
             if 'raw_url' in product:
                 rawFileURL = product['raw_url']
 			
-            if 'raw_append' in product:
-                appendRaw=product['raw_append']
+            if 'bitbucket.' in rawFileURL and '/browse' in rawFileURL:
+                appendRaw=bitbucketRaw
                 #rawFileURL = product['repo_url']
             else:
                 fromRaw="/blob/"
