@@ -146,6 +146,7 @@ browserHeaders={'User-Agent' : "Magic Browser"}
 rawSegment='/raw/'
 blobSegment='/blob/'
 e4sDotYaml='/e4s.yaml'
+dotE4s='/.e4s/'
 bitbucketRaw='?&raw'
 
 def getSpackInfo(name):
@@ -194,46 +195,61 @@ def getRepoName(url):
     name = url[firstnamedex+1:lastblobdex]
     return name
 
+def readRemoteYaml(yaml_url,name):
+    req=urllib.request.Request(yaml_url,None,browserHeaders)
+    try:
+        response=urlopen(req)
+    except urllib.error.URLError as e:
+        print("Remote metadata for "+name+": "+e.reason+". "+yaml_url)
+        return None
+    else:
+        try:
+            yamlMD = yaml.safe_load(response)
+        except:
+            print("Remote metadata for "+name+": Invalid yaml url. "+yaml_url)
+            return None
+        else:
+            return yamlMD
+
+
 def getRepoDocs(url,name):
-    gotRemote=False
+    yamlMD=None
     #TODO: This should work for github blob urls but may not work for others
     li = url.rsplit(blobSegment, 1)
     raw_url=rawSegment.join(li)
+    
+    #Check the hidden .e4s directory for e4s.yaml first
+    raw_yaml_url=raw_url+dotE4s+e4sDotYaml
+    yamlMD=readRemoteYaml(raw_yaml_url,name)
+    if yamlMD is not None:
+        return yamlMD
+    
     #print("Raw URL: "+raw_url)
-    raw_e4s=raw_url+e4sDotYaml
+    raw_yaml_url=raw_url+e4sDotYaml
     #print("Raw E4S "+raw_e4s)
-    req=urllib.request.Request(raw_e4s,None,browserHeaders)
-    try: 
-        response=urlopen(req)
-    except urllib.error.URLError as e:
-        print("Remote metadata for "+name+": "+e.reason+". "+raw_e4s)
+    yamlMD=readRemoteYaml(raw_yaml_url,name)
+    
+    if yamlMD is not None:
+        return yamlMD
     else:
-        try:
-            e4sMD = yaml.safe_load(response)
-        except:
-            print("Remote metadata for "+name+": Invalid e4s.yaml. "+raw_e4s)
-        else:
-            return e4sMD
-
-    if gotRemote is False:
-        localFile=script_path+'/../data/'+name+'/e4s.yaml'
+        localFile=script_path+'/../data/'+name+e4sDotYaml
         if os.path.isfile(localFile) is True:
-            with open(script_path+'/../data/'+name+'/e4s.yaml') as e4sMDFile:
-                e4sMD = yaml.safe_load(e4sMDFile)
-                return e4sMD
+            with open(script_path+'/../data/'+name+e4sDotYaml) as MDFile:
+                yamlMD = yaml.safe_load(MDFile)
+                return yamlMD
     print("No metadata found for "+name)
     return None;
             
        
 
-def processE4SURL(url):
+def processURL(url):
     repoName=getRepoName(url)
     if repoName is None:
         return None
-    e4sMD=getRepoDocs(url,repoName)
-    if e4sMD is not None and 'repo_url' not in e4sMD:
-        e4sMD[0]['repo_url']=url
-    return e4sMD #{'e4s_product':repoName,'docs':docs}
+    yamlMD=getRepoDocs(url,repoName)
+    if yamlMD is not None and 'repo_url' not in yamlMD:
+        yamlMD[0]['repo_url']=url
+    return yamlMD #{'e4s_product':repoName,'docs':docs}
 
 output_prefix=""
 if(len(sys.argv)>1):
@@ -244,19 +260,19 @@ if(len(sys.argv)>1):
 		sys.exit(-1)
 
 
-with open(script_path+'/../data/e4s_products.yaml') as e4slist:
-    e4sProducts = yaml.safe_load(e4slist)
+with open(script_path+'/../data/e4s_products.yaml') as MDlist:
+    products = yaml.safe_load(MDlist)
 
 with open(output_prefix+'E4S-Products.html', "a") as listPage:
     print(introListBlock.replace("***TIMESTAMP***",timestamp), file=listPage)
 
-    for urls in e4sProducts:
+    for urls in products:
 #        if "github.com" in urls['repo_url']:
 #            continue
 #        if "heading" in product:
 #            print(introHeadingBlock.replace("***HEADING***",product['heading']), file=listPage)
 #            continue
-        processedURL=processE4SURL(urls['repo_url'])
+        processedURL=processURL(urls['repo_url'])
         if processedURL is None:
             continue
         product = processedURL[0]
