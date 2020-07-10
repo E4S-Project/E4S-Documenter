@@ -1,12 +1,13 @@
+-  version: 0.1.0
 -  repo_url: https://github.com/E4S-Project/E4S-documentation-demo/blob/master
 -  repo_url: https://github.com/laristra/flecsi/blob/master
 -  repo_url: https://github.com/hypre-space/hypre/blob/master
 -  repo_url: https://github.com/kokkos/kokkos-kernels/blob/master
 -  repo_url: https://github.com/Libensemble/libensemble/blob/master
--  repo_url: https://bitbucket.org/icl/magma/src/default/
+-  repo_url: https://bitbucket.org/icl/magma/src/master
 -  repo_url: https://github.com/mfem/mfem/blob/master
 -  repo_url: https://gitlab.com/petsc/petsc/blob/master
--  repo_url: https://bitbucket.org/icl/slate/src/default
+-  repo_url: https://bitbucket.org/icl/slate/src/master
 -  repo_url: https://github.com/pghysels/STRUMPACK/blob/master
 -  repo_url: https://github.com/LLNL/sundials/blob/master
 -  repo_url: https://github.com/xiaoyeli/superlu_dist/blob/master
@@ -28,7 +29,7 @@
 -  repo_url: https://bitbucket.org/icl/papi/src/master
 -  repo_url: https://github.com/UO-OACISS/tau2/blob/master
 -  repo_url: https://xgitlab.cels.anl.gov/argo/aml/blob/master
--  repo_url: https://github.com/pmodels/bolt/blob/master
+-  repo_url: https://github.com/pmodels/bolt/blob/main
 -  repo_url: https://github.com/GlobalArrays/ga/blob/master
 -  repo_url: https://github.com/kokkos/kokkos/blob/master
 -  repo_url: https://github.com/open-mpi/ompi/blob/master

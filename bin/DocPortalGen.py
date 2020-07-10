@@ -17,15 +17,37 @@ from distutils.version import LooseVersion
 timestamp='{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
 
 introListBlock='''<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-	<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script><![endif]-->
-	<title>E4S Products</title>
-	<meta name="keywords" content="" />
-	<meta name="description" content="" />
+<html lang="en">
 
-<style>
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>E4S - DocPortal</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400|Roboto:300,400,500">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="assets/css/animate.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/style_perso.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+        <style>
 .product_button {
   background-color: #555;
   color: white;
@@ -42,27 +64,66 @@ introListBlock='''<!DOCTYPE html>
   background-color: #222;
 }
 
+
+.cocontent {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+  text-align: left;
+}
+
 </style>
-</head>
-
-<body style="background-color:#777">
 
 
-<div class="wrapper">
+    </head>
 
-	<header class="header">
-		<div class="load-html" id="header" data-source="header.html"></div>
-	</header><!-- .header-->
+    <body>
 
-	<div class="middle">
+    	<!-- Top content -->
+        <div class="top-content">
 
-		<div class="container">
-			<main class="content">
+        	<!-- Top menu -->
+			<nav class="navbar navbar-inverse" role="navigation">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="index.html">E4S</a>
+					</div>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse" id="top-navbar-1">
+						<ul class="nav navbar-nav">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="events.html">Events</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+              <li><a href="faq.html">FAQ</a></li>
+              <li><a class="btn btn-link-3" href="download.html">Download</a></li>
+					</ul>
+					</div>
+				</div>
+			</nav>
+        </div>
+
+        <!-- Features -->
+        <div class="features-container section-container">
+	        <div class="container">
+
+	            <div class="row">
+	                <div class="col-sm-12 features section-description wow fadeIn">
+
+                    <div class="row">
+                        <div class="col-sm-12 section-description">
 				<H2>E4S Products</h2>
 
-***TIMESTAMP***<br>
+
 <hr>
-<table id="productTable">
+<table style="table-layout: fixed; width: 100%;" id="productTable">
 <tr>
 <th onclick="sortTable(0)">Name</th>
 </tr>
@@ -70,6 +131,7 @@ introListBlock='''<!DOCTYPE html>
 
 introCloseBlock='''			
 </table>
+Last Generated: ***TIMESTAMP***<br>
 <script>
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
@@ -129,24 +191,74 @@ function sortTable(n) {
 </script>
 
 
-</main><!-- .content -->
-		</div><!-- .container-->
+                        </div>
+                    </div>
 
-	</div><!-- .middle-->
+	                </div>
+	            </div>
 
-</div><!-- .wrapper -->
-</body>
-</html>'''
+	        </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+	        <div class="container">
+	        	<div class="row">
+	        		<div class="col-sm-12 footer-copyright">
+                    	Created for <a href="https://e4s-project.github.io">The Extreme-scale Scientific Software Stack (E4S) Project</a> by <a href="https://maherou.github.io/">Michael A. Heroux</a>
+                    </div>
+                    <div class="col-sm-12 footer-copyright">
+                        <a href="credit.html">Attribution</a> - Derived from a design by Quentin Petit
+                    </div>
+                </div>
+	        </div>
+        </footer>
+
+
+        <!-- Javascript -->
+        <script src="assets/js/jquery-1.11.1.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.backstretch.min.js"></script>
+        <script src="assets/js/wow.min.js"></script>
+        <script src="assets/js/retina-1.1.0.min.js"></script>
+        <script src="assets/js/scripts.js"></script>
+
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+
+
+    <script>
+        var coll = document.getElementsByClassName("product_button");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+
+    </body>
+
+</html>
+'''
 
 introHeadingBlock='''<h3>***HEADING***</h3>
 '''
 
 introLinkBlock='''<!-- This is a single product entry. To add more copy and edit from here... -->
 <tr><td>
-<button class="product_button"><b><a href="***LOWNAME***.html">***CAPNAME***</a></b>
+<button class="product_button"><b>***CAPNAME***</b>
 </button>
-</td></tr>
-<!-- ...to here (product entry end) -->'''
+<div class="cocontent">
+'''
 
 
 introBlock='''<!DOCTYPE html>
@@ -184,8 +296,9 @@ spackBlock='''<table>
 		</table>
 <hr>'''
 endBlock='''
-  </body>
-</html>	'''
+</div>
+</td></tr>
+<!-- ...to here (product entry end) -->'''
 
 docBlock='''<b>***DOCNAME***</b>
 	<br>
@@ -205,7 +318,13 @@ blobSegment='/blob/'
 e4sDotYaml='/e4s.yaml'
 dotE4s='/.e4s/'
 bitbucketRaw='?&raw'
-currentVersion='0.0.1'
+currentVersion='0.1.0'
+
+printv=False
+
+def printV(toPrint):
+    if printv is True:
+        print(toPrint)
 
 def getSpackInfo(name):
     whichSpack = shutil.which('spack')
@@ -267,13 +386,13 @@ def readRemoteYaml(yaml_url,name):
     try:
         response=urlopen(req)
     except urllib.error.URLError as e:
-        print("Remote metadata for "+name+": "+e.reason+". "+yaml_url)
+        printV("Remote metadata for "+name+": "+e.reason+". "+yaml_url)
         return None
     else:
         try:
             yamlMD = yaml.safe_load(response)
         except:
-            print("Remote metadata for "+name+": Invalid yaml url. "+yaml_url)
+            printV("Remote metadata for "+name+": Invalid yaml url. "+yaml_url)
             return None
         else:
             return yamlMD
@@ -291,7 +410,7 @@ def getRepoDocs(url,name,sub=False):
     raw_yaml_url=raw_url+dotE4s+e4sDotYaml
     yamlMD=readRemoteYaml(raw_yaml_url,name)
     if yamlMD is not None:
-        print("Found .e4s directory for "+name+" at "+raw_yaml_url)
+        printV("Found .e4s directory for "+name+" at "+raw_yaml_url)
         return yamlMD
     
     #print("Raw URL: "+raw_url)
@@ -300,14 +419,14 @@ def getRepoDocs(url,name,sub=False):
     yamlMD=readRemoteYaml(raw_yaml_url,name)
     
     if yamlMD is not None:
-        print("Found top-level e4s.yaml for "+name)
+        printV("Found top-level e4s.yaml for "+name)
         return yamlMD
     else:
         localFile=script_path+'/../data/'+name+e4sDotYaml
         if os.path.isfile(localFile) is True:
             with open(script_path+'/../data/'+name+e4sDotYaml) as MDFile:
                 yamlMD = yaml.safe_load(MDFile)
-                print("Found local e4s.yaml for "+name)
+                printV("Found local e4s.yaml for "+name)
                 return yamlMD
     print("No metadata found for "+name)
     return None;
@@ -327,52 +446,52 @@ def processURL(url,sub=False):
                     print("Warning: using metadata version ("+repoVersion+") newer than supported version ("+currentVersion+").")
     return yamlMD #{'e4s_product':repoName,'docs':docs}
 
-def printProduct(product, sub=False):
-    with open(output_prefix+product['e4s_product'].lower()+".html", "a") as ppage:
-        capName=product['e4s_product'].upper()
-        lowName=capName.lower()
+def printProduct(product, ppage, sub=False):
+    #with open(output_prefix+product['e4s_product'].lower()+".html", "a") as ppage:
+    capName=product['e4s_product'].upper()
+    lowName=capName.lower()
 
-        print(introLinkBlock.replace("***CAPNAME***",capName).replace("***LOWNAME***", lowName), file=listPage)
+    print(introLinkBlock.replace("***CAPNAME***",capName).replace("***LOWNAME***", lowName), file=listPage)
 
-        introFix=introBlock.replace("***CAPNAME***",capName).replace("***TIMESTAMP***",timestamp)
-        print(introFix, file=ppage)
+    #introFix=introBlock.replace("***CAPNAME***",capName).replace("***TIMESTAMP***",timestamp)
+    #print(introFix, file=ppage)
 
-        spackInfo = getSpackInfo(lowName)
-        if spackInfo is not None:
-            print(spackInfo)
+    spackInfo = getSpackInfo(lowName)
+    if spackInfo is not None:
+        print(spackInfo)
 
-        appendRaw=""
-        rawFileURL = product['repo_url']
-        #print("RFW "+rawFileURL)
+    appendRaw=""
+    rawFileURL = product['repo_url']
+    #print("RFW "+rawFileURL)
+    
+    if sub is False:
+        if 'raw_url' in product:
+            rawFileURL = product['raw_url']
         
-        if sub is False:
-            if 'raw_url' in product:
-                rawFileURL = product['raw_url']
-            
-            if 'bitbucket.' in rawFileURL and '/browse' in rawFileURL:
-                appendRaw=bitbucketRaw
-                #rawFileURL = product['repo_url']
-            else:
-                fromRaw="/blob/"
-                toRaw="/raw/"
-    #                if 'raw_replace' in product:
-    #                    fromRaw=product['raw_replace'][0]
-    #                    toRaw=product['raw_replace'][1]
-                if "bitbucket.org" in rawFileURL:
-                    fromRaw="/src/"
-                rawFileURL = rawFileURL.replace(fromRaw,toRaw)
-        #print(rawFileURL)
-        for doc in product['docs']:
-            docURL=rawFileURL+"/"+doc+appendRaw
-            #print(docURL)
-            docHead=getURLHead(docURL)
-            if docHead is None:
-                continue
-            docFix = docBlock.replace("***DOCNAME***",doc).replace("***DOCTEXT***",docHead).replace("***DOCURL***",product['repo_url']+"/"+doc)
-            print(docFix, file=ppage)
-        #.replace('***DESCRIPTION***',"N/A").replace("***SITEADDRESS***","N/A").replace("***SPACKVERSION***","N/A")
+        if 'bitbucket.' in rawFileURL and '/browse' in rawFileURL:
+            appendRaw=bitbucketRaw
+            #rawFileURL = product['repo_url']
+        else:
+            fromRaw="/blob/"
+            toRaw="/raw/"
+#                if 'raw_replace' in product:
+#                    fromRaw=product['raw_replace'][0]
+#                    toRaw=product['raw_replace'][1]
+            if "bitbucket.org" in rawFileURL:
+                fromRaw="/src/"
+            rawFileURL = rawFileURL.replace(fromRaw,toRaw)
+    #print(rawFileURL)
+    for doc in product['docs']:
+        docURL=rawFileURL+"/"+doc+appendRaw
+        #print(docURL)
+        docHead=getURLHead(docURL)
+        if docHead is None:
+            continue
+        docFix = docBlock.replace("***DOCNAME***",doc).replace("***DOCTEXT***",docHead).replace("***DOCURL***",product['repo_url']+"/"+doc)
+        print(docFix, file=ppage)
+    #.replace('***DESCRIPTION***',"N/A").replace("***SITEADDRESS***","N/A").replace("***SPACKVERSION***","N/A")
 
-        print(endBlock, file=ppage)
+    print(endBlock, file=ppage)
 
 output_prefix=""
 if(len(sys.argv)>1):
@@ -382,11 +501,19 @@ if(len(sys.argv)>1):
 		print("First argument must be a valid output directory")
 		sys.exit(-1)
 
+productList=script_path+'/../data/e4s_products.yaml'
+if(len(sys.argv)>2):
+	if(os.path.isfile(sys.argv[2])):
+		productList=sys.argv[2]
+	else:
+		print("Second argument, if specified, must be a valid yaml product list")
+		sys.exit(-1)
 
-with open(script_path+'/../data/e4s_products.yaml') as MDlist:
+with open(productList) as MDlist:
     products = yaml.safe_load(MDlist)
 
-with open(output_prefix+'E4S-Products.html', "a") as listPage:
+listPageName="DocPortal"
+with open(output_prefix+listPageName+'.html', "a") as listPage:
     print(introListBlock.replace("***TIMESTAMP***",timestamp), file=listPage)
 
     for urls in products:
@@ -407,7 +534,7 @@ with open(output_prefix+'E4S-Products.html', "a") as listPage:
         product = processedURL[0]
         print ('Generating HTML for: '+product['e4s_product'])
         
-        printProduct(product)
+        printProduct(product, listPage)
         if 'subrepo_urls' in product:
             for suburl in product['subrepo_urls']:
                 print("Generating HTML for SUBURL: "+suburl)
@@ -416,7 +543,7 @@ with open(output_prefix+'E4S-Products.html', "a") as listPage:
                     continue
                 product = processedURL[0]
                 #print(product)
-                printProduct(product,True)
+                printProduct(product, listPage,True)
         
     print(introCloseBlock.replace("***TIMESTAMP***",timestamp), file=listPage)
 
