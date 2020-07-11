@@ -482,12 +482,20 @@ def printProduct(product, ppage, sub=False):
             rawFileURL = rawFileURL.replace(fromRaw,toRaw)
     #print(rawFileURL)
     for doc in product['docs']:
-        docURL=rawFileURL+"/"+doc+appendRaw
+        docLoc=""
+        chars=200;
+        if isinstance(doc,str):
+            docLoc=doc
+        else:
+            docLoc=doc["doc"]
+            if "chars" in doc:
+                chars=doc["chars"]
+        docURL=rawFileURL+"/"+docLoc+appendRaw
         #print(docURL)
-        docHead=getURLHead(docURL)
+        docHead=getURLHead(docURL,chars)
         if docHead is None:
             continue
-        docFix = docBlock.replace("***DOCNAME***",doc).replace("***DOCTEXT***",docHead).replace("***DOCURL***",product['repo_url']+"/"+doc)
+        docFix = docBlock.replace("***DOCNAME***",docLoc).replace("***DOCTEXT***",docHead).replace("***DOCURL***",product['repo_url']+"/"+docLoc)
         print(docFix, file=ppage)
     #.replace('***DESCRIPTION***',"N/A").replace("***SITEADDRESS***","N/A").replace("***SPACKVERSION***","N/A")
 
