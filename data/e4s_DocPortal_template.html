@@ -1,0 +1,281 @@
+<!--===introListBlock===-->
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>E4S - DocPortal</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400|Roboto:300,400,500">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="assets/css/animate.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/style_perso.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+        <style>
+.product_button {
+  background-color: #555;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .product_button:hover {
+  background-color: #222;
+}
+
+
+.cocontent {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+  text-align: left;
+}
+
+</style>
+
+
+    </head>
+
+    <body>
+
+    	<!-- Top content -->
+        <div class="top-content">
+
+        	<!-- Top menu -->
+			<nav class="navbar navbar-inverse" role="navigation">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="index.html">E4S</a>
+					</div>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse" id="top-navbar-1">
+						<ul class="nav navbar-nav">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="events.html">Events</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="DocPortal.html">DocPortal</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+              <li><a href="faq.html">FAQ</a></li>
+              <li><a class="btn btn-link-3" href="download.html">Download</a></li>
+					</ul>
+					</div>
+				</div>
+			</nav>
+        </div>
+
+        <!-- Features -->
+        <div class="features-container section-container">
+	        <div class="container">
+
+	            <div class="row">
+	                <div class="col-sm-12 features section-description wow fadeIn">
+
+                    <div class="row">
+                        <div class="col-sm-12 section-description">
+				<H2>E4S Products</h2>
+
+
+<hr>
+<table style="table-layout: fixed; width: 100%;" id="productTable">
+<tr>
+<th onclick="sortTable(0)">Name</th>
+</tr>
+
+<!--===introLinkBlock===-->
+<!-- This is a single product entry. To add more copy and edit from here... -->
+<tr><td>
+<button class="product_button"><b>***CAPNAME***</b>
+</button>
+<div class="cocontent">
+
+<!--===spackBlock===-->
+<table>
+			<tr>
+				<td>Description:</td>
+				<td>
+                    ***DESCRIPTION***
+		        <td>
+			</tr>
+			<tr>
+				<td>Website:</td>
+				<td><a href="***SITEADDRESS***">***SITEADDRESS***</a><td>
+			</tr>
+			<tr>
+				<td>Version:</td>
+				<td>***SPACKVERSION***<td>
+			</tr>
+			<tr>
+				<td>Spack Hash:</td>
+				<td>***SPACKHASH***<td>
+			</tr>
+		</table>
+<hr>
+
+
+
+<!--===docBlock===-->	
+<b>***DOCNAME***</b>
+	<br>
+<pre>
+***DOCTEXT***
+</pre>
+
+<a href="***DOCURL***">More...</a>
+<hr>
+<br>
+
+<!--===endBlock===-->	
+</div>
+</td></tr>
+<!-- ...to here (product entry end) -->
+
+<!--===introCloseBlock===-->		
+</table>
+Last Generated: ***TIMESTAMP***<br>
+<script>
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("productTable");
+  switching = true;
+  // Set the sorting direction to ascending:
+  dir = "asc";
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // Start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /* Loop through all table rows (except the
+    first, which contains table headers): */
+    for (i = 1; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+      shouldSwitch = false;
+      /* Get the two elements you want to compare,
+      one from current row and one from the next: */
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      
+      /* Check if the two rows should switch place,
+      based on the direction, asc or desc: */
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark that a switch has been done: */
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      // Each time a switch is done, increase this count by 1:
+      switchcount ++;
+    } else {
+      /* If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again. */
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script>
+
+
+                        </div>
+                    </div>
+
+	                </div>
+	            </div>
+
+	        </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+	        <div class="container">
+	        	<div class="row">
+	        		<div class="col-sm-12 footer-copyright">
+                    	Created for <a href="https://e4s-project.github.io">The Extreme-scale Scientific Software Stack (E4S) Project</a> by <a href="https://maherou.github.io/">Michael A. Heroux</a>
+                    </div>
+                    <div class="col-sm-12 footer-copyright">
+                        <a href="credit.html">Attribution</a> - Derived from a design by Quentin Petit
+                    </div>
+                </div>
+	        </div>
+        </footer>
+
+
+        <!-- Javascript -->
+        <script src="assets/js/jquery-1.11.1.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.backstretch.min.js"></script>
+        <script src="assets/js/wow.min.js"></script>
+        <script src="assets/js/retina-1.1.0.min.js"></script>
+        <script src="assets/js/scripts.js"></script>
+
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+
+
+    <script>
+        var coll = document.getElementsByClassName("product_button");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+
+    </body>
+
+</html>

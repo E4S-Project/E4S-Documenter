@@ -12,7 +12,7 @@ The list of repos is provided by a standard .yaml file. It includes one entry fo
 ##Repo Metadata Files
 Individual metadata files are constructed as a yaml dictionary. The default file name is e4s.yaml. The file will be searched for in the URL provided by the repo list first in a hidden .e4s directory and then at the top level of the repo. If it is not found in the remote repo it will be searched for in the local cache.
 
-The required elements are e4s_product, for the product name and docs for a list of the documents in the repo to be summarized. 
+The required elements are e4s_product, for the product name and docs for a list of the documents in the repo to be summarized. The document list can include either strings indicating just the document name/location or dictionaries with entries like: `{doc: README.md, chars: 500, type: readme}` where doc is the document file, chars is the number of characters from the document to be read and type is the type of document (e.g. readme, license, changelog). 
 
 Other valid entries include website, for a link to a primary web resource other than the repository and subrepo_urls which gives a list of urls for other repositories to have their metadata summarized and listed as children of the current repository.
 
