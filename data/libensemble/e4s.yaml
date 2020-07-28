@@ -1,3 +1,4 @@
 - e4s_product: libensemble
   type: Math Library
+  spack_name: py-libensemble
   docs:  [README.rst, CHANGELOG.rst, LICENSE]

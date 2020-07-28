@@ -1,0 +1,4 @@
+- e4s_product: papi
+  docs: [README.md, RELEASENOTES.txt, LICENSE.txt]
+  type: Performance
+

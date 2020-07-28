@@ -33,13 +33,25 @@ def printV(toPrint):
     if printv is True:
         print(toPrint)
 
+spackInfoTags=['Description','Homepage']
 def getSpackInfo(name):
+    infoMap={}
     whichSpack = shutil.which('spack')
     if whichSpack is None:
         return None
     infoBlob = subprocess.run(['spack', 'info', name], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    infoBlob
-    return infoBlob
+    if infoBlob is None:
+        return None
+    infoList=infoBlob.split("\n\n")
+    for item in infoList:
+        for tag in spackInfoTags:
+            if item.strip().startswith(tag):
+                infoEntry=item.strip().split(':',1)
+                value=infoEntry[1].strip(' \n')
+                if tag == 'Homepage':
+                    value="<a href="+value+">"+value+"</a>"
+                infoMap[infoEntry[0].strip(' \n')]=value
+    return infoMap
 
 def getURLHead(url, numChars=200):
     #masteryaml_url="https://raw.githubusercontent.com/UO-OACISS/e4s/master/docker-recipes/ubi7/x86_64/e4s/spack.yaml"
@@ -147,7 +159,7 @@ def processURL(url,sub=False):
     yamlMD=getRepoDocs(url,repoName,sub)
     if yamlMD is not None and 'repo_url' not in yamlMD:
         yamlMD[0]['repo_url']=url
-    if 'version' in yamlMD[0]:
+    if yamlMD is not None and 'version' in yamlMD[0]:
                 repoVersion=yamlMD[0]['version']
                 if LooseVersion(repoVersion) > LooseVersion(currentVersion):
                     print("Warning: using metadata version ("+repoVersion+") newer than supported version ("+currentVersion+").")
@@ -163,14 +175,22 @@ def printProduct(product, ppage, sub=False):
     #introFix=.replace("***CAPNAME***",capName).replace("***TIMESTAMP***",timestamp)
     #print(introFix, file=ppage)
 
-    spackInfo = getSpackInfo(lowName)
+    spackName=lowName
+    if 'spack_name' in product:
+        spackName=product['spack_name']
+    spackInfo = getSpackInfo(spackName)
     if spackInfo is not None:
-        print(spackInfo)
+        if len(spackInfo)>0:
+            print("<hr><h3>Spack Info Extract</h3><br>",file=listPage)
+        for key,value in spackInfo.items():
+            print("<B>"+key+":</B> \n"+value+"<br>\n",file=listPage)
+    #if spackInfo is not None:
+    #    print(spackInfo)
 
     appendRaw=""
     rawFileURL = product['repo_url']
     #print("RFW "+rawFileURL)
-    
+    print("<hr><h3>Document Summaries</h3><br>",file=listPage)
     if sub is False:
         if 'raw_url' in product:
             rawFileURL = product['raw_url']

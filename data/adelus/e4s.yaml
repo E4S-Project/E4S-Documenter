@@ -1,0 +1,3 @@
+- e4s_product: trilinos-adelus
+  type: Framework
+  docs:  [README.md, LICENSE, Copyright.txt]

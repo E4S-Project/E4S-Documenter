@@ -1,0 +1,3 @@
+- e4s_product: trilinos-amesos
+  type: Framework
+  docs:  [README-Amesos, README-MUMPS, ChangeLog-Amesos]

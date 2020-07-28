@@ -1,3 +1,4 @@
 - e4s_product: quo
+  spack_name: libquo
   type: PMR
   docs:  [README.md, LICENSE]

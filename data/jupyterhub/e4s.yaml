@@ -1,3 +1,4 @@
 - e4s_product: jupyterhub
+  spack_name: py-jupyterhub
   type: TOOL
   docs:  [README.md, COPYING.md]
