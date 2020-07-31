@@ -1,0 +1,4 @@
+- e4s_product: DataTransferKit
+  version: 0.1.0
+  docs: [CONTRIBUTING.md,LICENSE,README.md]
+  spack_name: datatransferkit

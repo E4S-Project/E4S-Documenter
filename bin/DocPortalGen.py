@@ -34,10 +34,18 @@ def printV(toPrint):
         print(toPrint)
 
 spackInfoTags=['Description','Homepage']
+global noSpack
+noSpack=False
 def getSpackInfo(name):
+    global noSpack
     infoMap={}
-    whichSpack = shutil.which('spack')
-    if whichSpack is None:
+    if not noSpack:
+        whichSpack = shutil.which('spack')
+        if whichSpack is None:
+            print("Spack not found in path. No Spack info data will be included")
+            noSpack=True
+            return None
+    else:
         return None
     infoBlob = subprocess.run(['spack', 'info', name], stdout=subprocess.PIPE).stdout.decode('utf-8')
     if infoBlob is None:
@@ -53,7 +61,7 @@ def getSpackInfo(name):
                 infoMap[infoEntry[0].strip(' \n')]=value
     return infoMap
 
-def getURLHead(url, numChars=200):
+def getURLHead(url, numChars=400):
     #masteryaml_url="https://raw.githubusercontent.com/UO-OACISS/e4s/master/docker-recipes/ubi7/x86_64/e4s/spack.yaml"
     #print("Reading URL: "+url)
     #browserHeaders={'User-Agent' : "Magic Browser"}
@@ -98,6 +106,11 @@ def getRepoName(url, sub=False):
     firstnamedex=url.rfind('/',0,lastblobdex)
 #    print("Name starts at: "+str(firstnamedex))
     name = url[firstnamedex+1:lastblobdex]
+    #Some repos (gitlab) include an extra /-/ segment
+    if name is "-":
+        lastblobdex=url.rfind('/-/')
+        firstnamedex=url.rfind('/',0,lastblobdex)
+        name = url[firstnamedex+1:lastblobdex]
     return name
 
 def readRemoteYaml(yaml_url,name):
@@ -180,8 +193,8 @@ def printProduct(product, ppage, sub=False):
         spackName=product['spack_name']
     spackInfo = getSpackInfo(spackName)
     if spackInfo is not None:
-        if len(spackInfo)>0:
-            print("<hr><h3>Spack Info Extract</h3><br>",file=listPage)
+        #if len(spackInfo)>0:
+        #    print("<hr><h3>Spack Info Extract</h3><br>",file=listPage)
         for key,value in spackInfo.items():
             print("<B>"+key+":</B> \n"+value+"<br>\n",file=listPage)
     #if spackInfo is not None:
@@ -210,7 +223,7 @@ def printProduct(product, ppage, sub=False):
     #print(rawFileURL)
     for doc in product['docs']:
         docLoc=""
-        chars=200;
+        chars=400;
         if isinstance(doc,str):
             docLoc=doc
         else:

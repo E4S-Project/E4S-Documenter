@@ -47,4 +47,8 @@
 -  repo_url: https://github.com/geopm/geopm/blob/dev
 -  repo_url: https://github.com/hpc/mpifileutils/blob/master
 -  repo_url: https://github.com/PRUNERS/ReMPI/blob/master
+-  repo_url: https://github.com/visit-dav/visit/blob/develop 
+-  repo_url: https://github.com/ORNL-CEES/DataTransferKit/blob/master
+-  repo_url: https://gitlab.kitware.com/paraview/paraview/-/blob/master
+-  repo_url: https://gitlab.kitware.com/vtk/vtk-m/-/blob/master
 

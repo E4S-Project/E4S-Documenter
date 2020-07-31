@@ -1,0 +1,3 @@
+- e4s_product: paraview
+  version: 0.1.0
+  docs: [CONTRIBUTING.md,Copyright.txt,License_v1.2.txt,README.md,version.txt]
