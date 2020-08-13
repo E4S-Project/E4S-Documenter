@@ -14,6 +14,7 @@ import os
 import shutil
 import re
 from distutils.version import LooseVersion
+import markdown
 
 timestamp='{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
 
@@ -235,6 +236,8 @@ def printProduct(product, ppage, sub=False):
         docHead=getURLHead(docURL,chars)
         if docHead is None:
             continue
+        if docURL.lower().endswith(".md"):
+            docHead=markdown.markdown(docHead)
         docFix = htmlBlocks['docBlock'].replace("***DOCNAME***",docLoc).replace("***DOCTEXT***",docHead).replace("***DOCURL***",product['repo_url']+"/"+docLoc)
         print(docFix, file=ppage)
     #.replace('***DESCRIPTION***',"N/A").replace("***SITEADDRESS***","N/A").replace("***SPACKVERSION***","N/A")
