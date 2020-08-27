@@ -1,3 +1,5 @@
 - e4s_product: tasmanian
-  type: Math Library
   docs:  [README.md, CHANGELOG.md, LICENSE]
+  Area: "Math libraries"
+  Description: "A collection of libraries for high dimensional integration and interpolation and parameter calibration."
+  MemberProduct: False

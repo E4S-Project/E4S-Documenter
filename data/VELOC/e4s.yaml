@@ -1,3 +1,5 @@
 - e4s_product: veloc
-  type: TOOL
   docs:  [README.md, LICENSE]
+  Area: "Data & Viz"
+  Description: "Scalable checkpoint-restart library."
+  MemberProduct: False

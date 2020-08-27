@@ -1,3 +1,5 @@
 - e4s_product: aml
-  type: PMR
+  Area: PMR
+  MemberProduct: False
+  Description: "Hierarchical memory management library from Argo."
   docs:  [README.markdown, LICENSE]

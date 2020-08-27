@@ -1,3 +1,5 @@
 - e4s_product: hdf5
-  type: I/O Library
   docs:  [README.txt, COPYING]
+  Area: "Data & Viz"
+  Description: "A parallel I/O library."
+  MemberProduct: False

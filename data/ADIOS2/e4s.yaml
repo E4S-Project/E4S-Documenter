@@ -1,3 +1,5 @@
 - e4s_product: adios2
-  type: I/O Library
+  Area: "Data & Viz"
+  MemberProduct: False
+  Description: "I/O and data management library for storage I/O, in-memory code coupling and online data analysis and visualization workflows."
   docs:  [ReadMe.md, LICENSE]

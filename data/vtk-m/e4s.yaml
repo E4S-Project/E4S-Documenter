@@ -1,3 +1,6 @@
 - e4s_product: vtk-m
   version: 0.1.0
   docs: [LICENSE.txt,README.md,version.txt,CONTRIBUTING.md]
+  Area: "Data & Viz"
+  Description: "Parallel on-node visualization toolkit."
+  MemberProduct: False

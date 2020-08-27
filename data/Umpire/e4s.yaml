@@ -1,3 +1,5 @@
 - e4s_product: umpire
-  type: PMR
   docs:  [README.md, CHANGELOG.md, LICENSE]
+  Area: "PMR"
+  Description: "A resource management library that allows the discovery, provision, and management of memory on machines with multiple memory devices."
+  MemberProduct: False

@@ -1,3 +1,5 @@
 - e4s_product: hpctoolkit
-  type: Performance
   docs:  [README, README.ReleaseNotes, README.License]
+  Area: "Development tools"
+  Description: "Performance analysis tools."
+  MemberProduct: False

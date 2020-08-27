@@ -1,3 +1,5 @@
 - e4s_product: scr
-  type: TOOL
   docs:  [README.md, ChangeLog, LICENSE.TXT]
+  Area: "Data & Viz"
+  Description: "Scalable Checkpoint-Restart system."
+  MemberProduct: False

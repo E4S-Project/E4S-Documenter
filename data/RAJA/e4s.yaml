@@ -1,3 +1,5 @@
 - e4s_product: raja
-  type: PMR
   docs:  [README.md, RELEASE_NOTES.md, LICENSE]
+  Area: "PMR"
+  Description: "Portable parallel programming library."
+  MemberProduct: False

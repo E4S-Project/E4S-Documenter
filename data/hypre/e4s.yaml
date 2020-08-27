@@ -1,3 +1,5 @@
 - e4s_product: hypre
-  type: Math Library
   docs:  [README.md, CHANGELOG, LICENSE-APACHE, LICENSE-MIT]
+  Area: "Math libraries"
+  Description: "Scalable sparse iterative preconditioners and solvers."
+  MemberProduct: False

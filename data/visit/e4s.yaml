@@ -1,3 +1,6 @@
 - e4s_product: visit
   version: 0.1.0
   docs: [CONTRIBUTING.md, LICENSE, NOTICE, README.md]
+  Area: "Data & Viz"
+  Description: "Interactive, scalable, visualization, animation and analysis tool."
+  MemberProduct: False

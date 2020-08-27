@@ -1,3 +1,5 @@
 - e4s_product: dyninst
-  type: Performance
+  Area: Development tools
   docs:  [README.md, CHANGELOG.md, LICENSE.md]
+  Description: "Binary analysis and instrumentation framework."
+  MemberProduct: False

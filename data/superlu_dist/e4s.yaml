@@ -1,3 +1,5 @@
 - e4s_product: superlu
-  type: Math Library
   docs:  [README.md, License.txt]
+  Area: "Math libraries"
+  Description: "Parallel sparse direct solver package."
+  MemberProduct: False

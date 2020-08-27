@@ -2,3 +2,6 @@
   version: 0.1.0
   docs: [CONTRIBUTING.md,LICENSE,README.md]
   spack_name: datatransferkit
+  Area: "Math libraries"
+  MemberProduct: False
+  Description: "In-memory code coupling library."

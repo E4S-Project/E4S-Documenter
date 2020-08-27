@@ -1,4 +1,6 @@
 - e4s_product: darshan
-  type: Performance
+  Area: "Data & Viz"
   spack_name: darshan-runtime
+  MemberProduct: False
+  Description: "I/O characterization tool."
   docs:  [README.md, ChangeLog, COPYRIGHT]

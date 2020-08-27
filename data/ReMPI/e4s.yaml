@@ -1,3 +1,7 @@
 - e4s_product: rempi
-  type: TOOL
+  MemberProduct: False
+  Description: "A lightweight record-and-replay tool for MPI+OpenMP applications"
   docs:  [README.md, LICENSE.TXT]
+  Area: "Tools"
+  Description: "A lightweight record-and-replay tool for MPI+OpenMP applications"
+  MemberProduct: False

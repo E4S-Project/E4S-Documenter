@@ -1,3 +1,5 @@
 - e4s_product: magma
-  type: Math Library
   docs:  [README, ReleaseNotes, COPYRIGHT]
+  Area: "Math libraries"
+  Description: "LAPACK for heterogeneous/hybrid architectures."
+  MemberProduct: False

@@ -1,3 +1,5 @@
 - e4s_product: parallel-netcdf
-  type: I/O Library
   docs:  [README.md, RELEASE_NOTES, COPYRIGHT]
+  Area: "Data & Viz"
+  Description: "Parallel I/O library."
+  MemberProduct: False

@@ -1,3 +1,5 @@
 - e4s_product: qthreads
-  type: PMR
   docs:  [README.md, NEWS, COPYING]
+  Area: "PMR"
+  Description: "Lightweight user threading library, part of OpenMPI software suite"
+  MemberProduct: False

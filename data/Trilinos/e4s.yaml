@@ -1,4 +1,6 @@
 - e4s_product: trilinos
-  type: Framework
   docs:  [README.md, LICENSE]
   subrepo_urls: ["https://github.com/trilinos/Trilinos/raw/master/packages/adelus","https://github.com/trilinos/Trilinos/raw/master/packages/amesos"]
+  Area: "Math libraries"
+  Description: "A collection of libraries for building, managing and solving large sparse linear, nonlinear, transient and optimization problems."
+  MemberProduct: False

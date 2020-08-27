@@ -1,3 +1,5 @@
 - e4s_product: zfp
-  type: Compression
   docs:  [README.md, VERSIONS.md, LICENSE]
+  Area: "Data & Viz"
+  Description: "In-memory data compression library."
+  MemberProduct: False

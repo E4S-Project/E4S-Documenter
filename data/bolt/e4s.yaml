@@ -1,3 +1,5 @@
 - e4s_product: bolt
-  type: PMR
   docs:  [README.md, CHANGES.txt, LICENSE.txt]
+  Area: "Development Tools"
+  Description: "OpenMP over lightweight threads."
+  MemberProduct: False

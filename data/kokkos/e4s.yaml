@@ -1,3 +1,5 @@
 - e4s_product: kokkos
-  type: PMR
   docs:  [README.md, CHANGELOG.md, LICENSE]
+  Area: "PMR"
+  Description: "Portable parallel programming library and supporting tools."
+  MemberProduct: False

@@ -13,7 +13,7 @@
 -  repo_url: https://github.com/xiaoyeli/superlu_dist/blob/master
 -  repo_url: https://github.com/ORNL/TASMANIAN/blob/master
 -  repo_url: https://github.com/trilinos/Trilinos/blob/master
--  repo_url: https://github.com/ornladios/ADIOS/blob/master
+  #-  repo_url: https://github.com/ornladios/ADIOS/blob/master
 -  repo_url: https://github.com/ornladios/ADIOS2/blob/master
 -  repo_url: https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse
 -  repo_url: https://github.com/Parallel-NetCDF/PnetCDF/blob/master
@@ -30,7 +30,7 @@
 -  repo_url: https://github.com/UO-OACISS/tau2/blob/master
 -  repo_url: https://xgitlab.cels.anl.gov/argo/aml/blob/master
 -  repo_url: https://github.com/pmodels/bolt/blob/main
--  repo_url: https://github.com/GlobalArrays/ga/blob/master
+  #-  repo_url: https://github.com/GlobalArrays/ga/blob/master
 -  repo_url: https://github.com/kokkos/kokkos/blob/master
 -  repo_url: https://github.com/open-mpi/ompi/blob/master
 -  repo_url: https://code.ornl.gov/eck/papyrus/blob/master

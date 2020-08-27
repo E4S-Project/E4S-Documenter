@@ -1,3 +1,5 @@
 - e4s_product: geopm
-  type: TOOL
   docs:  [README, ChangeLog, COPYING]
+  Area: "PMR"
+  Description: "Power management software."
+  MemberProduct: False
