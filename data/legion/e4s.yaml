@@ -1,0 +1,6 @@
+- e4s_product: legion
+  version: 0.1.0
+  docs: [README.md,CHANGES.txt,LICENSE.txt]
+  area: PMR
+  Description: "A task-based parallel programming and runtime environment."
+  MemberProduct: False

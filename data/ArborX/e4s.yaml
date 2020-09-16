@@ -1,0 +1,7 @@
+- e4s_product: ArborX
+  version: 0.1.0
+  docs: [README.md,LICENSE,CONTRIBUTING.md]
+  spack_name: arborx
+  area: Math libraries
+  Description: "Performance-portable geometric search library"
+  MemberProduct: False

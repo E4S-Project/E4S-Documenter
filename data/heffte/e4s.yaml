@@ -1,0 +1,6 @@
+- e4s_product: heffte
+  version: 0.1.0
+  docs: [README.md,LICENSE]
+  area: Math libraries
+  Description: "Parallel FFTs built on vendor and community sequential FFTs."
+  MemberProduct: False

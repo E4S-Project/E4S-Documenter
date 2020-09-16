@@ -15,6 +15,7 @@ import shutil
 import re
 from distutils.version import LooseVersion
 import markdown
+import base64
 
 timestamp='{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
 
@@ -72,6 +73,15 @@ def getURLHead(url, numChars=400):
         f = urlopen(req)
         #Read 2x the target number of characters to look for a good breakpoint in the overflow
         head=html.escape(f.read(numChars*2).decode("utf-8"))
+        #Markdown comments don't count toward the character limit.
+        if url.lower().endswith(".md"):
+            comdex=head.rfind('\n[comment]:')
+            if comdex > -1:
+                noncomdex=head.find('\n',comdex+3)
+                head=head[noncomdex:]
+                head=head+html.escape(f.read(numChars*2-len(head)).decode("utf-8"))
+                #print(head)
+                #print(len(head))
         breakpoint=head.find('\n',numChars)
         if breakpoint < numChars:
             breakpoint=head.find(". ",numChars)
@@ -179,32 +189,46 @@ def processURL(url,sub=False):
                     print("Warning: using metadata version ("+repoVersion+") newer than supported version ("+currentVersion+").")
     return yamlMD #{'e4s_product':repoName,'docs':docs}
 
-def printProduct(product, ppage, sub=False):
+yamlEntryOpen='''{
+    "name": "***CAPNAME***",
+    "area": "***AREA***",
+    "member": "***MEMBER***",
+    "description": "***DESCRIPTION***",'''
+
+
+def printProduct(product, ppage, sub=False, printYaml=False):
     #with open(output_prefix+product['e4s_product'].lower()+".html", "a") as ppage:
     capName=product['e4s_product'].upper()
     lowName=capName.lower()
+    area="N/A"
+    member="?"
+    description=""
+    if 'Area' in product:
+        area=product['Area']
+    if 'MemberProduct' in product:
+        member=product['MemberProduct']
+    if 'Description' in product:
+        description=product['Description']
+    firstBlock=htmlBlocks['introLinkBlock']
+    if printYaml is True:
+        firstBlock=yamlEntryOpen
+    print(firstBlock.replace("***CAPNAME***",capName).replace("***LOWNAME***", lowName).replace("***AREA***",area).replace("***MEMBER***",str(member)).replace("***DESCRIPTION***",description), file=listPage)
 
-    print(htmlBlocks['introLinkBlock'].replace("***CAPNAME***",capName).replace("***LOWNAME***", lowName), file=listPage)
-
-    #introFix=.replace("***CAPNAME***",capName).replace("***TIMESTAMP***",timestamp)
-    #print(introFix, file=ppage)
-
+    htmlAgregator="";
     spackName=lowName
     if 'spack_name' in product:
         spackName=product['spack_name']
     spackInfo = getSpackInfo(spackName)
     if spackInfo is not None:
-        #if len(spackInfo)>0:
-        #    print("<hr><h3>Spack Info Extract</h3><br>",file=listPage)
         for key,value in spackInfo.items():
-            print("<B>"+key+":</B> \n"+value+"<br>\n",file=listPage)
-    #if spackInfo is not None:
-    #    print(spackInfo)
+            htmlAgregator+="<B>"+key+":</B> \n"+value+"<br>\n"
+            #print("<B>"+key+":</B> \n"+value+"<br>\n",file=listPage)
 
     appendRaw=""
     rawFileURL = product['repo_url']
     #print("RFW "+rawFileURL)
-    print("<hr><h3>Document Summaries</h3><br>",file=listPage)
+    htmlAgregator+="<hr><h3>Document Summaries</h3><br>"
+    #print("<hr><h3>Document Summaries</h3><br>",file=listPage)
     if sub is False:
         if 'raw_url' in product:
             rawFileURL = product['raw_url']
@@ -239,10 +263,18 @@ def printProduct(product, ppage, sub=False):
         if docURL.lower().endswith(".md"):
             docHead=markdown.markdown(docHead)
         docFix = htmlBlocks['docBlock'].replace("***DOCNAME***",docLoc).replace("***DOCTEXT***",docHead).replace("***DOCURL***",product['repo_url']+"/"+docLoc)
-        print(docFix, file=ppage)
+        htmlAgregator+=docFix
+        #print(docFix, file=ppage)
     #.replace('***DESCRIPTION***',"N/A").replace("***SITEADDRESS***","N/A").replace("***SPACKVERSION***","N/A")
 
-    print(htmlBlocks['endBlock'], file=ppage)
+    if printYaml is True:
+        encodedBytes = base64.b64encode(htmlAgregator.encode("utf-8"))
+        encodedStr = str(encodedBytes, "utf-8")
+        print('''"html_blob": "'''+encodedStr+'''"}''', file=ppage)
+        #print(yamlEntryClose, file=ppage)
+    else:
+        print(htmlAgregator, file=ppage)
+        print(htmlBlocks['endBlock'], file=ppage)
 
 def parse_html_blocks(templateLoc):
     with open(templateLoc,"r") as templateFile:
@@ -266,13 +298,23 @@ if(len(sys.argv)>2):
 		print("Second argument, if specified, must be a valid yaml product list")
 		sys.exit(-1)
 		
-htmlTemplate=script_path+'/../data/e4s_DocPortal_template.html'
+htmlTemplate=script_path+'/../templates/e4s_DocPortal_template.html'
+templateFlag='--template'
+printYaml=False
 if(len(sys.argv)>3):
-	if(os.path.isfile(sys.argv[3])):
-		htmlTemplate=sys.argv[3]
-	else:
-		print("Third argument, if specified, must be a valid html output template")
-		sys.exit(-1)
+    if templateFlag in sys.argv:
+        templateDex=sys.argv.index(templateFlag)
+        templateLoc=sys.argv[templateDex+1]
+        if(os.path.isfile(templateLoc)):
+            htmlTemplate=templateLoc
+        else:
+            print("Third argument, if specified, must be a valid html output template")
+            sys.exit(-1)
+    
+    if '--yaml' in sys.argv:
+        printYaml=True
+    if '--html' in sys.argv:
+        printYaml=False
 
 htmlBlocks=parse_html_blocks(htmlTemplate)
 #print(htmlBlocks)
@@ -280,16 +322,22 @@ htmlBlocks=parse_html_blocks(htmlTemplate)
 with open(productList) as MDlist:
     products = yaml.safe_load(MDlist)
 
-listPageName="DocPortal"
-with open(output_prefix+listPageName+'.html', "a") as listPage:
-    print(htmlBlocks['introListBlock'].replace("***TIMESTAMP***",timestamp), file=listPage)
+listFileName="DocPortal"
+listFileSuffix='.html'
+yamlStart='''{
+  "data": ['''
+yamlEnd='''  ]
+}'''
+if printYaml is True:
+    listFileSuffix='.yml'
+with open(output_prefix+listFileName+listFileSuffix, "a") as listPage:
+    if printYaml is True:
+        print(yamlStart, file=listPage)
+    else:
+        print(htmlBlocks['introListBlock'].replace("***TIMESTAMP***",timestamp), file=listPage)
 
+    firstIt = True
     for urls in products:
-#        if "github.com" in urls['repo_url']:
-#            continue
-#        if "heading" in product:
-#            print(introHeadingBlock.replace("***HEADING***",product['heading']), file=listPage)
-#            continue
         if 'repo_url' not in urls:
             if 'version' in urls:
                 repoVersion=urls['version']
@@ -301,19 +349,25 @@ with open(output_prefix+listPageName+'.html', "a") as listPage:
             continue
         product = processedURL[0]
         print ('Generating HTML for: '+product['e4s_product'])
-        
-        printProduct(product, listPage)
+        if printYaml:
+            if firstIt is True:
+                firstIt=False
+            else:
+                print(''',''', file=listPage)
+        printProduct(product, listPage, printYaml=printYaml)
         if 'subrepo_urls' in product:
             for suburl in product['subrepo_urls']:
                 print("Generating HTML for SUBURL: "+suburl)
                 processedURL=processURL(suburl,True)
                 if processedURL is None:
                     continue
+                if printYaml:
+                    print(''',''', file=listPage)
                 product = processedURL[0]
                 #print(product)
-                printProduct(product, listPage,True)
-        
-    print(htmlBlocks['introCloseBlock'].replace("***TIMESTAMP***",timestamp), file=listPage)
-
-
-#print('\n'.join(speclist))
+                printProduct(product, listPage,True, printYaml=printYaml)
+    if printYaml is True:
+        print('''  ]
+}''', file=listPage)
+    else:
+        print(htmlBlocks['introCloseBlock'].replace("***TIMESTAMP***",timestamp), file=listPage)

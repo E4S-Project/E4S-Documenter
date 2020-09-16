@@ -1,0 +1,7 @@
+- e4s_product: FLiT
+  version: 0.1.0
+  docs: [README.md,LICENSE]
+  spack_name: flit
+  area: Tools
+  Description: "Quickly detect discrepancies in floating point computation across hardware, compilers, libraries and software"
+  MemberProduct: False

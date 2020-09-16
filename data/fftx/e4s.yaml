@@ -1,0 +1,6 @@
+- e4s_product: fftx
+  version: 0.1.0
+  docs: [README.md,License.txt,Copyright.txt]
+  area: Math libraries
+  Description: "Parallel FFTs and open source version of Spiral FFTs."
+  MemberProduct: False

@@ -1,0 +1,7 @@
+- e4s_product: CHAI
+  version: 0.1.0
+  docs: [README.md,COPYRIGHT,LICENSE,NOTICE,CONTRIBUTING.md]
+  spack_name: chai
+  area: PMR
+  Description: "A library that handles automatic data migration to different memory spaces behind an array-style interface."
+  MemberProduct: False

@@ -1,0 +1,6 @@
+- e4s_product: cinema
+  version: 0.1.0
+  docs: [README.md,copyright.md,license.md,version.md]
+  area: Data & Viz
+  Description: "Data analysis and visualization tool suite."
+  MemberProduct: False

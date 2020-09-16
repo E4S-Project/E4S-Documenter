@@ -1,0 +1,7 @@
+- e4s_product: STAT
+  version: 0.1.0
+  docs: [README.md,LICENSE,ChangeLog]
+  spack_name: stat
+  area: Tools
+  Description: "Stack Trace Analysis Tool - lightweight debugging at extreme scale"
+  MemberProduct: False

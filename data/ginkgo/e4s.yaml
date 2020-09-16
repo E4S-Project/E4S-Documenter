@@ -1,0 +1,6 @@
+- e4s_product: ginkgo
+  version: 0.1.0
+  docs: [README.md,CHANGELOG.md,LICENSE]
+  area: Math libraries
+  Description: "A parallel sparse linear algebra library for manycore and accelerator processors."
+  MemberProduct: False

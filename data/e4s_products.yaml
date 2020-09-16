@@ -1,54 +1,126 @@
 -  version: 0.1.0
-  #-  repo_url: https://github.com/E4S-Project/E4S-documentation-demo/blob/master
+-  repo_url: https://github.com/ornladios/ADIOS2/blob/master
+#AID
+-  repo_url: https://github.com/LLNL/STAT/blob/develop
+-  repo_url: https://github.com/PRUNERS/archer/blob/master
+-  repo_url: https://github.com/PRUNERS/FLiT/blob/devel
+-  repo_url: https://github.com/PRUNERS/ReMPI/blob/master
+-  repo_url: https://github.com/LLNL/FPChecker/blob/master
+#/AID
+-  repo_url: https://xgitlab.cels.anl.gov/argo/aml/blob/master
+#ALPINE
+-  repo_url: https://github.com/Alpine-DAV/ascent/blob/develop
+-  repo_url: https://gitlab.kitware.com/paraview/paraview/-/blob/master
+#-catalyst Part of ParaView?
+-  repo_url: https://github.com/visit-dav/visit/blob/develop
+#-in-situ Part of ParaView?
+#/ALPINE
+-  https://github.com/Alpine-DAV/ascent/blob/develop
+-  repo_url: https://github.com/lanl/BEE/blob/master
+#-blas (slate/magma). https://github.com/Reference-LAPACK/lapack/blob/master reference implementation?
+#C/C++
+-  repo_url: https://github.com/LLNL/Caliper/blob/master
+-  repo_url: https://github.com/LLNL/CHAI/blob/develop
+-  repo_url: https://github.com/cinemascience/cinema/blob/master
+#-cuda
+-  repo_url: https://xgitlab.cels.anl.gov/darshan/darshan/blob/master
+-  repo_url: https://github.com/ORNL-CEES/DataTransferKit/blob/master
+-  repo_url: https://github.com/dyninst/dyninst/blob/master
+#e4s
+#FFT
+-  repo_url: https://bitbucket.org/icl/heffte/src/master
+-  repo_url: https://github.com/spiralgen/fftx/blob/master
+#/FFT
 -  repo_url: https://github.com/laristra/flecsi/blob/master
+-  repo_url: https://github.com/flux-framework/flux-core/blob/master
+#-fortran
+#-flang: Top level product is repo sub-directory. This case needs support added. https://github.com/llvm/llvm-project/blob/master/flang
+-  repo_url: https://github.com/trilinos/ForTrilinos/blob/master
+-  repo_url: https://bitbucket.org/berkeleylab/gasnet/src/stable
+-  repo_url: https://github.com/ginkgo-project/ginkgo/blob/develop
+-  repo_url: https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse
+-  repo_url: https://github.com/HPCToolkit/hpctoolkit/blob/master
 -  repo_url: https://github.com/hypre-space/hypre/blob/master
+-  repo_url: https://github.com/kokkos/kokkos/blob/master
 -  repo_url: https://github.com/kokkos/kokkos-kernels/blob/master
--  repo_url: https://github.com/Libensemble/libensemble/blob/master
+#LAPACK
 -  repo_url: https://bitbucket.org/icl/magma/src/master
+#/LAPACK
+-  repo_url: https://github.com/StanfordLegion/legion/blob/stable
+-  repo_url: https://github.com/Libensemble/libensemble/blob/master
+#LLVM
+#-kitsune
+#-surf
+#/LLVM
+#-marfs
 -  repo_url: https://github.com/mfem/mfem/blob/master
+#MPI
+#MPICH
+-  repo_url: https://github.com/open-mpi/ompi/blob/master
+-  repo_url: https://github.com/Qthreads/qthreads/blob/master
+#/MPI
+#MPI-IO
+#-ROMIO
+#/MPI-IO
+#-nrm
+#OPENACC
+#-clacc
+#/OPENACC
+#OPENMP
+-  repo_url: https://github.com/pmodels/bolt/blob/main
+#-sollve
+#/OPENMP
+-  repo_url: https://bitbucket.org/icl/papi/src/master
+-  repo_url: https://code.ornl.gov/eck/papyrus/blob/master
+#-parsec
 -  repo_url: https://gitlab.com/petsc/petsc/blob/master
+-  repo_url: https://github.com/Parallel-NetCDF/PnetCDF/blob/master
+#POWERSTACK
+#-variorum
+#msr-safe
+#libmsr
+-  repo_url: https://github.com/geopm/geopm/blob/dev
+#geopm-slurm
+#power-slurm
+#flux-sched
+#/POWERSTACK
+-  repo_url: https://github.com/LLNL/RAJA/blob/develop
+#-scalapack
+-  repo_url: https://github.com/LLNL/scr/blob/master
+#-sicm
 -  repo_url: https://bitbucket.org/icl/slate/src/master
+#-spack
+#-spot
 -  repo_url: https://github.com/pghysels/STRUMPACK/blob/master
 -  repo_url: https://github.com/LLNL/sundials/blob/master
 -  repo_url: https://github.com/xiaoyeli/superlu_dist/blob/master
--  repo_url: https://github.com/ORNL/TASMANIAN/blob/master
--  repo_url: https://github.com/trilinos/Trilinos/blob/master
-  #-  repo_url: https://github.com/ornladios/ADIOS/blob/master
--  repo_url: https://github.com/ornladios/ADIOS2/blob/master
--  repo_url: https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse
--  repo_url: https://github.com/Parallel-NetCDF/PnetCDF/blob/master
--  repo_url: https://github.com/LLNL/UnifyFS/blob/dev
--  repo_url: https://github.com/ECP-VeloC/VELOC/blob/master
--  repo_url: https://github.com/LLNL/scr/blob/master
+#-swig
+#-sycl
 -  repo_url: https://github.com/disheng222/SZ/blob/master
--  repo_url: https://github.com/LLNL/zfp/blob/develop
--  repo_url: https://github.com/LLNL/Caliper/blob/master
--  repo_url: https://xgitlab.cels.anl.gov/darshan/darshan/blob/master
--  repo_url: https://github.com/dyninst/dyninst/blob/master
--  repo_url: https://github.com/HPCToolkit/hpctoolkit/blob/master
--  repo_url: https://bitbucket.org/icl/papi/src/master
+-  repo_url: https://github.com/ORNL/TASMANIAN/blob/master
 -  repo_url: https://github.com/UO-OACISS/tau2/blob/master
--  repo_url: https://xgitlab.cels.anl.gov/argo/aml/blob/master
--  repo_url: https://github.com/pmodels/bolt/blob/main
-  #-  repo_url: https://github.com/GlobalArrays/ga/blob/master
--  repo_url: https://github.com/kokkos/kokkos/blob/master
--  repo_url: https://github.com/open-mpi/ompi/blob/master
--  repo_url: https://code.ornl.gov/eck/papyrus/blob/master
--  repo_url: https://github.com/Qthreads/qthreads/blob/master
--  repo_url: https://github.com/lanl/libquo/blob/master
--  repo_url: https://github.com/LLNL/RAJA/blob/develop
+-  repo_url: https://github.com/trilinos/Trilinos/blob/master
+#-umap
 -  repo_url: https://github.com/LLNL/Umpire/blob/develop
+-  repo_url: https://github.com/LLNL/UnifyFS/blob/dev
 -  repo_url: https://bitbucket.org/berkeleylab/upcxx/src/master
--  repo_url: https://github.com/LLNL/GOTCHA/blob/develop
--  repo_url: https://github.com/faodel/faodel/blob/master
--  repo_url: https://github.com/mercury-hpc/mercury/blob/master
--  repo_url: https://xgitlab.cels.anl.gov/pbalapra/ytopt/blob/master
--  repo_url: https://github.com/jupyterhub/jupyterhub/blob/master
--  repo_url: https://github.com/geopm/geopm/blob/dev
--  repo_url: https://github.com/hpc/mpifileutils/blob/master
--  repo_url: https://github.com/PRUNERS/ReMPI/blob/master
--  repo_url: https://github.com/visit-dav/visit/blob/develop 
--  repo_url: https://github.com/ORNL-CEES/DataTransferKit/blob/master
--  repo_url: https://gitlab.kitware.com/paraview/paraview/-/blob/master
+#-vendorstack
+-  repo_url: https://github.com/ECP-VeloC/VELOC/blob/master
 -  repo_url: https://gitlab.kitware.com/vtk/vtk-m/-/blob/master
-
+#XSDK
+#/XSDK
+-  repo_url: https://github.com/LLNL/zfp/blob/develop
+###
+#UNKNOWN
+#-  repo_url: https://github.com/lanl/libquo/blob/master
+#-  repo_url: https://github.com/LLNL/GOTCHA/blob/develop
+#-  repo_url: https://github.com/faodel/faodel/blob/master
+#-  repo_url: https://github.com/mercury-hpc/mercury/blob/master
+#-  repo_url: https://xgitlab.cels.anl.gov/pbalapra/ytopt/blob/master
+#-  repo_url: https://github.com/jupyterhub/jupyterhub/blob/master
+#-  repo_url: https://github.com/hpc/mpifileutils/blob/master
+#DEPRICATED
+#-  repo_url: https://github.com/GlobalArrays/ga/blob/master
+#-  repo_url: https://github.com/ornladios/ADIOS/blob/master
+#DEMO.
+#-  repo_url: https://github.com/E4S-Project/E4S-documentation-demo/blob/master

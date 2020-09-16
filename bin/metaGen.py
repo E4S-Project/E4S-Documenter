@@ -43,10 +43,16 @@ if whichSpack is not None:
 else:
     print("Spack executable not found. Not checking package name.")
     spackName=input("Input the spack package name (or enter for none (defaults to repo name)): ")
+
 docList=input("Input comma separated document list: ").strip()
 #website=input("Input website URL (or enter for none): ")
 subRepos=input("Input coma separated sub-repo url list (or enter for none): ").strip()
-
+area=input("Input Technical Area (or enter for none/unknown): ").strip()
+memberB=False
+member=input("Full Member Product? Input any string for true, enter for false: ").strip()
+if member:
+    memberB=True
+description=input("Input brief product description: ").strip()
 os.mkdir(repoName)
 outputFile=repoName+"/e4s.yaml"
 
@@ -60,7 +66,11 @@ with open(outputFile, "a") as mdYaml:
     #    print("  website: "+website, file=mdYaml)
     if subRepos:
         print("  subrepo_urls: ["+subRepos+"]", file=mdYaml)
-
+    if area:
+        print("  area: "+area, file=mdYaml)
+    if description:
+        print("  Description: \""+description+"\"", file=mdYaml)
+    print("  MemberProduct: "+str(memberB), file=mdYaml)
 print("Wrote: "+outputFile)
 print("Add this to your repo list:")
 print("-  repo_url: "+repoURL.strip().rsplit('/',1)[0])

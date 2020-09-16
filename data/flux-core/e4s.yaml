@@ -1,0 +1,6 @@
+- e4s_product: flux-core
+  version: 0.1.0
+  docs: [README.md,ChangeLog,LICENSE,NOTICE.LLNS]
+  area: Development tools
+  Description: "Configurable resource management tools and libraries for HPC platforms"
+  MemberProduct: False
