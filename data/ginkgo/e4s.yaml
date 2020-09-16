@@ -3,4 +3,4 @@
   docs: [README.md,CHANGELOG.md,LICENSE]
   area: Math libraries
   Description: "A parallel sparse linear algebra library for manycore and accelerator processors."
-  MemberProduct: False
+  MemberProduct: True 

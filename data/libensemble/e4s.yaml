@@ -3,4 +3,4 @@
   docs:  [README.rst, CHANGELOG.rst, LICENSE]
   Area: "Math libraries"
   Description: "A library to support ensemble-based solution algorithms."
-  MemberProduct: False
+  MemberProduct: True 

@@ -192,27 +192,28 @@ def processURL(url,sub=False):
 yamlEntryOpen='''{
     "name": "***CAPNAME***",
     "area": "***AREA***",
-    "member": "***MEMBER***",
     "description": "***DESCRIPTION***",'''
 
 
 def printProduct(product, ppage, sub=False, printYaml=False):
     #with open(output_prefix+product['e4s_product'].lower()+".html", "a") as ppage:
     capName=product['e4s_product'].upper()
+    member=""
+    if 'MemberProduct' in product and product['MemberProduct'] is True:
+        capName=capName+"*"
     lowName=capName.lower()
     area="N/A"
-    member="?"
     description=""
     if 'Area' in product:
         area=product['Area']
-    if 'MemberProduct' in product:
-        member=product['MemberProduct']
+    elif 'area' in product:
+        area=product['area']
     if 'Description' in product:
         description=product['Description']
     firstBlock=htmlBlocks['introLinkBlock']
     if printYaml is True:
         firstBlock=yamlEntryOpen
-    print(firstBlock.replace("***CAPNAME***",capName).replace("***LOWNAME***", lowName).replace("***AREA***",area).replace("***MEMBER***",str(member)).replace("***DESCRIPTION***",description), file=listPage)
+    print(firstBlock.replace("***CAPNAME***",capName).replace("***LOWNAME***", lowName).replace("***AREA***",area).replace("***DESCRIPTION***",description), file=listPage)
 
     htmlAgregator="";
     spackName=lowName

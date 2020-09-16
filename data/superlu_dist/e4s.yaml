@@ -2,4 +2,4 @@
   docs:  [README.md, License.txt]
   Area: "Math libraries"
   Description: "Parallel sparse direct solver package."
-  MemberProduct: False
+  MemberProduct: True 

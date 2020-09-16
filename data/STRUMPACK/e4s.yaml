@@ -2,4 +2,4 @@
   docs:  [README.md, CHANGELOG, LICENSE]
   Area: "Math libraries"
   Description: "Next generation parallel sparse direct solver package."
-  MemberProduct: False
+  MemberProduct: True

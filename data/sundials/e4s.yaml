@@ -2,4 +2,4 @@
   docs:  [README.md, NOTICE, LICENSE]
   Area: "Math libraries"
   Description: "Parallel time integrators and solvers for ODES, DAEs, and nonlinear systems."
-  MemberProduct: False
+  MemberProduct: True

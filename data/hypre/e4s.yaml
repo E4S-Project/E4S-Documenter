@@ -2,4 +2,4 @@
   docs:  [README.md, CHANGELOG, LICENSE-APACHE, LICENSE-MIT]
   Area: "Math libraries"
   Description: "Scalable sparse iterative preconditioners and solvers."
-  MemberProduct: False
+  MemberProduct: True 
