@@ -1,0 +1,6 @@
+- e4s_product: mpich
+  version: 0.1.0
+  docs: [README.vin,CHANGES,RELEASE_NOTES,COPYRIGHT]
+  area: PMR
+  Description: "Open source MPI implementation for research. Used as the foundation for most vendor MPI libraries"
+  MemberProduct: False

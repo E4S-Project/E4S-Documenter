@@ -1,0 +1,7 @@
+- e4s_product: sollve_vv
+  version: 0.1.0
+  docs: [README.md,LICENSE]
+  spack_name: sollve
+  area: Development Tools
+  Description: "Effort to provide testing capabilities for new OpenMP features."
+  MemberProduct: False

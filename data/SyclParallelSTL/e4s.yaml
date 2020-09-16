@@ -1,0 +1,6 @@
+- e4s_product: SyclParallelSTL
+  version: 0.1.0
+  docs: [README.md,LICENSE.txt,TODO.md]
+  area: PMR
+  Description: "Intel-sponsored parallel programming environment for accelerator devices."
+  MemberProduct: False

@@ -1,0 +1,6 @@
+- e4s_product: hnrm
+  version: 0.1.0
+  docs: [README.md,LICENSE]
+  area: PMR
+  Description: "Argo Node Resource Manager."
+  MemberProduct: False

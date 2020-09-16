@@ -1,0 +1,6 @@
+- e4s_product: SICM
+  version: 0.1.0
+  docs: [README.md,LICENSE,TODO.txt]
+  area: PMR
+  Description: "Hierarchical memory interface management software."
+  MemberProduct: False

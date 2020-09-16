@@ -52,59 +52,59 @@
 #-kitsune
 #-surf
 #/LLVM
-#-marfs
+-  repo_url: https://github.com/mar-file-system/marfs/blob/master
 -  repo_url: https://github.com/mfem/mfem/blob/master
 #MPI
-#MPICH
+-  repo_url: https://github.com/pmodels/mpich/blob/main
 -  repo_url: https://github.com/open-mpi/ompi/blob/master
 -  repo_url: https://github.com/Qthreads/qthreads/blob/master
 #/MPI
 #MPI-IO
-#-ROMIO
+#-ROMIO #Part of MPICH
 #/MPI-IO
-#-nrm
+-  repo_url: https://xgitlab.cels.anl.gov/argo/hnrm/-/blob/master
 #OPENACC
-#-clacc
+#-clacc #Repo unknown
 #/OPENACC
 #OPENMP
 -  repo_url: https://github.com/pmodels/bolt/blob/main
-#-sollve
+-  repo_url: https://github.com/SOLLVE/sollve_vv/blob/master
 #/OPENMP
 -  repo_url: https://bitbucket.org/icl/papi/src/master
 -  repo_url: https://code.ornl.gov/eck/papyrus/blob/master
-#-parsec
+-  repo_url: https://bitbucket.org/icldistcomp/parsec/src/master
 -  repo_url: https://gitlab.com/petsc/petsc/blob/master
 -  repo_url: https://github.com/Parallel-NetCDF/PnetCDF/blob/master
 #POWERSTACK
-#-variorum
-#msr-safe
-#libmsr
+-  repo_url: https://github.com/LLNL/variorum/blob/dev
+-  repo_url: https://github.com/LLNL/msr-safe/blob/main
+-  repo_url: https://github.com/LLNL/libmsr/blob/master
 -  repo_url: https://github.com/geopm/geopm/blob/dev
-#geopm-slurm
-#power-slurm
-#flux-sched
+-  repo_url: https://github.com/geopm/geopm-slurm/blob/master
+-  repo_url: https://github.com/tpatki/power-slurm/blob/master
+#flux-sched: See flux-framework
 #/POWERSTACK
 -  repo_url: https://github.com/LLNL/RAJA/blob/develop
-#-scalapack
+-  repo_url: https://github.com/Reference-ScaLAPACK/scalapack/blob/master
 -  repo_url: https://github.com/LLNL/scr/blob/master
-#-sicm
+-  repo_url: https://github.com/lanl/SICM/blob/master
 -  repo_url: https://bitbucket.org/icl/slate/src/master
-#-spack
-#-spot
+-  repo_url: https://github.com/spack/spack/blob/develop
+#-spot: Repo unknown
 -  repo_url: https://github.com/pghysels/STRUMPACK/blob/master
 -  repo_url: https://github.com/LLNL/sundials/blob/master
 -  repo_url: https://github.com/xiaoyeli/superlu_dist/blob/master
-#-swig
-#-sycl
+-  repo_url: https://github.com/swig/swig/blob/master
+-  repo_url: https://github.com/KhronosGroup/SyclParallelSTL/blob/master
 -  repo_url: https://github.com/disheng222/SZ/blob/master
 -  repo_url: https://github.com/ORNL/TASMANIAN/blob/master
 -  repo_url: https://github.com/UO-OACISS/tau2/blob/master
 -  repo_url: https://github.com/trilinos/Trilinos/blob/master
-#-umap
+-  repo_url: https://github.com/LLNL/umap/blob/develop
 -  repo_url: https://github.com/LLNL/Umpire/blob/develop
 -  repo_url: https://github.com/LLNL/UnifyFS/blob/dev
 -  repo_url: https://bitbucket.org/berkeleylab/upcxx/src/master
-#-vendorstack
+#-vendorstack: No Repo
 -  repo_url: https://github.com/ECP-VeloC/VELOC/blob/master
 -  repo_url: https://gitlab.kitware.com/vtk/vtk-m/-/blob/master
 #XSDK
@@ -112,6 +112,7 @@
 -  repo_url: https://github.com/LLNL/zfp/blob/develop
 ###
 #UNKNOWN
+#(Known/Targeted Product list taken from: https://confluence.exascaleproject.org/display/1ST/ECP+ST+Product+Dictionary)
 #-  repo_url: https://github.com/lanl/libquo/blob/master
 #-  repo_url: https://github.com/LLNL/GOTCHA/blob/develop
 #-  repo_url: https://github.com/faodel/faodel/blob/master
@@ -119,7 +120,7 @@
 #-  repo_url: https://xgitlab.cels.anl.gov/pbalapra/ytopt/blob/master
 #-  repo_url: https://github.com/jupyterhub/jupyterhub/blob/master
 #-  repo_url: https://github.com/hpc/mpifileutils/blob/master
-#DEPRICATED
+#REMOVED
 #-  repo_url: https://github.com/GlobalArrays/ga/blob/master
 #-  repo_url: https://github.com/ornladios/ADIOS/blob/master
 #DEMO.

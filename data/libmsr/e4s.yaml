@@ -1,0 +1,6 @@
+- e4s_product: libmsr
+  version: 0.1.0
+  docs: [README,NOTICE,LICENSE,VERSION,TODO]
+  area: PMR
+  Description: "Power management software."
+  MemberProduct: False

@@ -1,0 +1,6 @@
+- e4s_product: geopm-slurm
+  version: 0.1.0
+  docs: [README.md,COPYING,VERSION]
+  area: PMR
+  Description: "Power management software."
+  MemberProduct: False

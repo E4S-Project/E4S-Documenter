@@ -1,0 +1,6 @@
+- e4s_product: marfs
+  version: 0.1.0
+  docs: [README.md,LICENSE.txt]
+  area: Data & Viz
+  Description: "Parallel file system."
+  MemberProduct: False

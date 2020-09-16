@@ -1,0 +1,6 @@
+- e4s_product: parsec
+  version: 0.1.0
+  docs: [README,License.txt,NEWS]
+  area: PMR
+  Description: "Distributed task-based runtime system and programming environment"
+  MemberProduct: False

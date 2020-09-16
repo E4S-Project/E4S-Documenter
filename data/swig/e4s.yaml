@@ -1,0 +1,7 @@
+- e4s_product: swig
+  version: 0.1.0
+  docs: [README, RELEASENOTES, COPYRIGHT,ANNOUNCE,CHANGES,CHANGES.current,LICENSE,LICENSE-GPL,LICENSE-UNIVERSITIES,TODO]
+  spack_name: swig
+  area: Math libraries
+  Description: "Simple wrapper interface generator to support interlanguage library use."
+  MemberProduct: False

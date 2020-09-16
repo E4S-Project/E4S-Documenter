@@ -1,0 +1,6 @@
+- e4s_product: variorum
+  version: 0.1.0
+  docs: [README,ChangeLog,LICENSE,NOTICE,TODO]
+  area: PMR
+  Description: "Power management software."
+  MemberProduct: False

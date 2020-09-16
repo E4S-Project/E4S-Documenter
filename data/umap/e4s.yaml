@@ -1,0 +1,7 @@
+- e4s_product: umap
+  version: 0.1.0
+  docs: [README.md,RELEASE,COPYRIGHT,LICENSE,NOTICE]
+  spack_name: umap
+  area: PMR
+  Description: "A user space memory management tool."
+  MemberProduct: False

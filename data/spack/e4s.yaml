@@ -1,0 +1,6 @@
+- e4s_product: spack
+  version: 0.1.0
+  docs: [README.md,NOTICE,LICENSE-MIT,LICENSE-APACHE,COPYRIGHT,CHANGELOG.md]
+  area: Software Ecosystem
+  Description: "Software product meta-build tool and manager."
+  MemberProduct: False
