@@ -88,16 +88,15 @@ tr.shown td.details-control {
 
 
 <hr>
-
-
-
+<div align=left> 
+*: Member Product
+</div>
 <table id="example" class="display" style="width:100%">
         <thead>
             <tr>
                 <th></th>
                 <th>Name</th>
                 <th>Area</th>
-                <th>Member Product</th>
                 <th>Description</th>
             </tr>
         </thead>
@@ -106,7 +105,6 @@ tr.shown td.details-control {
                 <th></th>
                 <th>Name</th>
                 <th>Area</th>
-                <th>Member Product</th>
                 <th>Description</th>
             </tr>
         </tfoot>
@@ -173,7 +171,7 @@ $(document).ready(function() {
             },
             { "data": "name" },
             { "data": "area" },
-            { "data": "member" },
+            //{ "data": "member" },
             { "data": "description" }
         ],
         "order": [[1, 'asc']]
