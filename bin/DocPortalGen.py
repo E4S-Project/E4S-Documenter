@@ -198,10 +198,10 @@ yamlEntryOpen='''{
 def printProduct(product, ppage, sub=False, printYaml=False):
     #with open(output_prefix+product['e4s_product'].lower()+".html", "a") as ppage:
     capName=product['e4s_product'].upper()
+    lowName=capName.lower()
     member=""
     if 'MemberProduct' in product and product['MemberProduct'] is True:
         capName=capName+"*"
-    lowName=capName.lower()
     area="N/A"
     description=""
     if 'Area' in product:
