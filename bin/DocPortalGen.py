@@ -118,7 +118,7 @@ def getRepoName(url, sub=False):
 #    print("Name starts at: "+str(firstnamedex))
     name = url[firstnamedex+1:lastblobdex]
     #Some repos (gitlab) include an extra /-/ segment
-    if name is "-":
+    if name == "-":
         lastblobdex=url.rfind('/-/')
         firstnamedex=url.rfind('/',0,lastblobdex)
         name = url[firstnamedex+1:lastblobdex]
