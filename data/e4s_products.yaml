@@ -10,7 +10,7 @@
 -  repo_url: https://xgitlab.cels.anl.gov/argo/aml/blob/master
 #ALPINE
 -  repo_url: https://github.com/Alpine-DAV/ascent/blob/develop
--  repo_url: https://gitlab.kitware.com/paraview/paraview/-/blob/master
+-  repo_url: https://gitlab.kitware.com/paraview/paraview/blob/master
 #-catalyst Part of ParaView?
 -  repo_url: https://github.com/visit-dav/visit/blob/develop
 #-in-situ Part of ParaView?
@@ -30,7 +30,7 @@
 #e4s
 #FFT
 -  repo_url: https://bitbucket.org/icl/heffte/src/master
--  repo_url: https://github.com/spiralgen/fftx/blob/master
+#-  repo_url: https://github.com/spiralgen/fftx/blob/master #Repo gone/changed?
 #/FFT
 -  repo_url: https://github.com/laristra/flecsi/blob/master
 -  repo_url: https://github.com/flux-framework/flux-core/blob/master
@@ -63,7 +63,7 @@
 #MPI-IO
 #-ROMIO #Part of MPICH
 #/MPI-IO
--  repo_url: https://xgitlab.cels.anl.gov/argo/hnrm/-/blob/master
+-  repo_url: https://xgitlab.cels.anl.gov/argo/hnrm/blob/master
 #OPENACC
 #-clacc #Repo unknown
 #/OPENACC
@@ -107,7 +107,7 @@
 -  repo_url: https://bitbucket.org/berkeleylab/upcxx/src/master
 #-vendorstack: No Repo
 -  repo_url: https://github.com/ECP-VeloC/VELOC/blob/master
--  repo_url: https://gitlab.kitware.com/vtk/vtk-m/-/blob/master
+-  repo_url: https://gitlab.kitware.com/vtk/vtk-m/blob/master
 #XSDK
 #/XSDK
 -  repo_url: https://github.com/LLNL/zfp/blob/develop

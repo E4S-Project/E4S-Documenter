@@ -16,8 +16,12 @@ import re
 from distutils.version import LooseVersion
 import markdown
 import base64
+import json
+import requests
+import time
+from datetime import datetime
 
-timestamp='{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+timestamp='{:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
 
 script_path = os.path.dirname(os.path.abspath( __file__))
 browserHeaders={'User-Agent' : "Magic Browser"}
@@ -62,6 +66,104 @@ def getSpackInfo(name):
                     value="<a href="+value+">"+value+"</a>"
                 infoMap[infoEntry[0].strip(' \n')]=value
     return infoMap
+xGitDict={}
+def getXGitlabID(url):
+    global xGitDict
+    url_split=url.split('/')
+    base_url=url_split[0]+"//"+url_split[2]+"/"+url_split[3]+"/"+url_split[4]
+    #Cache the id so we don't have to download the page for every file
+    if base_url in xGitDict:
+        return xGitDict[base_url]
+    gid="Unknown"
+    pidStr="Project ID: "
+    response = requests.get(base_url)
+    html = response.content.decode("utf-8")
+
+    if not pidStr in html:
+        xGitDict[base_url]=gid
+        return gid
+    piddex=html.index(pidStr)+len(pidStr)
+    enddex=html.index("\n",piddex)
+    gid=html[piddex:enddex]
+    xGitDict[base_url]=gid
+    return gid
+
+def parseRepoDate(dateStr):
+    #The last characters after the second differ, but for all known repos the date and time portion are the same and fixed length
+    return datetime.strptime(dateStr[:19],"%Y-%m-%dT%H:%M:%S")
+
+def getLastCommitDate(url):
+    #Avoid api access rate limit errors. (There's probably a more efficient place to put this)
+    
+    if "github.com" in url:
+        url_split=url.split('/')
+        #we need the first two tokens (repo and project) from the URL
+        api_url="https://api.github.com/repos/"+url_split[3]+"/"+url_split[4]+"/commits?path="
+        file_path=""
+        for x in url_split[7:]:
+            file_path=file_path+"/"+x
+        api_url=api_url+file_path+"&page=1&per_page=1"
+        try:
+            json_url = requests.get(api_url,headers=browserHeaders,auth=('wspear','d26d7796ed0f4d55546715eaf2ad41fbb528d823')) #urlopen(api_url)
+            data = json.loads(json_url.content)
+            #time.sleep(60)
+            dateStr=data[0]["commit"]["committer"]["date"]
+            #print("github date: "+dateStr)
+            return parseRepoDate(dateStr)
+            #return dateStr
+        except urllib.error.HTTPError as e:
+            print("Github API Fault: "+api_url)
+            print(e.msg)
+            print(e.hdrs)
+            print(e.fp)
+            #sys.exit(-1)
+        print ("TIME DATA COLLECTION FAULT")
+        return "Unknown"
+    elif "bitbucket." in url:
+        url_split=url.split('/')
+        #we need the first two tokens (repo and project) from the URL
+        api_url="https://api.bitbucket.org/2.0/repositories/"+url_split[3]+"/"+url_split[4]+"/commits?path="
+        file_path=""
+        for x in url_split[7:]:
+            file_path=file_path+"/"+x
+        api_url=api_url+file_path+"&page=1&per_page=1"
+        print(url)
+        print(api_url)
+        try:
+            json_url = urlopen(api_url)
+            data = json.loads(json_url.read())
+            dateStr=data["values"][0]["date"]
+            return parseRepoDate(dateStr)
+        except urllib.error.HTTPError as e:
+            print("API Commit Date Failure: "+api_url)
+            return "Unknown"
+        #print("bb date: "+dateStr)
+        #return dateStr
+    else:
+        #We assume any other URL is xgitlab
+        url_split=url.split('/')
+        #we need the first two tokens (repo and project) from the URL
+        gitlabid=getXGitlabID(url)
+        if gitlabid == "Unknown":
+            return "Unknown"
+        api_url="https://"+url_split[2]+"/api/v4/projects/"+gitlabid+"/repository/commits?path="
+        
+        file_path=""
+        first=True
+        for x in url_split[7:]:
+            if first is True:
+                first=False
+            else:
+                file_path=file_path+"/"
+            file_path=file_path+x
+        api_url=api_url+file_path+"&page=1&per_page=1"
+        #print(api_url)
+        json_url = urlopen(api_url)
+        data = json.loads(json_url.read())
+        #print(data[0]["committed_date"])
+        dateStr=data[0]["committed_date"]
+        #print("gitlab date: "+dateStr)
+        return parseRepoDate(dateStr)
 
 def getURLHead(url, numChars=400):
     #masteryaml_url="https://raw.githubusercontent.com/UO-OACISS/e4s/master/docker-recipes/ubi7/x86_64/e4s/spack.yaml"
@@ -247,6 +349,7 @@ def printProduct(product, ppage, sub=False, printYaml=False):
                 fromRaw="/src/"
             rawFileURL = rawFileURL.replace(fromRaw,toRaw)
     #print(rawFileURL)
+    latestDocDate="Unknown"
     for doc in product['docs']:
         docLoc=""
         chars=400;
@@ -259,11 +362,16 @@ def printProduct(product, ppage, sub=False, printYaml=False):
         docURL=rawFileURL+"/"+docLoc+appendRaw
         #print(docURL)
         docHead=getURLHead(docURL,chars)
+        
         if docHead is None:
             continue
+        docDate=getLastCommitDate(docURL)
+        if not isinstance(docDate,str):
+            if isinstance(latestDocDate,str) or docDate > latestDocDate:
+                latestDocDate=docDate
         if docURL.lower().endswith(".md"):
             docHead=markdown.markdown(docHead)
-        docFix = htmlBlocks['docBlock'].replace("***DOCNAME***",docLoc).replace("***DOCTEXT***",docHead).replace("***DOCURL***",product['repo_url']+"/"+docLoc)
+        docFix = htmlBlocks['docBlock'].replace("***DOCNAME***",docLoc).replace("***DOCTEXT***",docHead).replace("***DOCURL***",product['repo_url']+"/"+docLoc).replace("***TIMESTAMP***",str(docDate))
         htmlAgregator+=docFix
         #print(docFix, file=ppage)
     #.replace('***DESCRIPTION***',"N/A").replace("***SITEADDRESS***","N/A").replace("***SPACKVERSION***","N/A")
@@ -271,7 +379,8 @@ def printProduct(product, ppage, sub=False, printYaml=False):
     if printYaml is True:
         encodedBytes = base64.b64encode(htmlAgregator.encode("utf-8"))
         encodedStr = str(encodedBytes, "utf-8")
-        print('''"html_blob": "'''+encodedStr+'''"}''', file=ppage)
+        print('''"html_blob": "'''+encodedStr+'''",''', file=ppage)
+        print('''"last_updated": "'''+str(latestDocDate)+'''"}''', file=ppage)
         #print(yamlEntryClose, file=ppage)
     else:
         print(htmlAgregator, file=ppage)
