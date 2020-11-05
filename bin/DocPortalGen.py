@@ -89,8 +89,11 @@ def getXGitlabID(url):
     return gid
 
 def parseRepoDate(dateStr):
-    #The last characters after the second differ, but for all known repos the date and time portion are the same and fixed length
-    return datetime.strptime(dateStr[:19],"%Y-%m-%dT%H:%M:%S")
+    if(type(dateStr) is int):
+        return datetime.fromtimestamp(dateStr/1000)
+    else:
+        #The last characters after the second differ, but for all known repos the date and time portion are the same and fixed length
+        return datetime.strptime(dateStr[:19],"%Y-%m-%dT%H:%M:%S")
 
 def getLastCommitDate(url):
     #Avoid api access rate limit errors. (There's probably a more efficient place to put this)
@@ -123,19 +126,38 @@ def getLastCommitDate(url):
         url_split=url.split('/')
         #we need the first two tokens (repo and project) from the URL
         api_url="https://api.bitbucket.org/2.0/repositories/"+url_split[3]+"/"+url_split[4]+"/commits?path="
+        pathChunk=7
+        customServer=False
+        if "bitbucket.org" not in url:
+            api_url="https://"+url_split[2]+"/rest/api/1.0/projects/"+url_split[4]+"/repos/"+url_split[6]+"/commits?path="
+            #These url's will have anohter segment, so start after it
+            pathChunk=8
+            lastDex=len(url_split)-1
+            if('?' in url_split[lastDex]):
+                url_split[lastDex]=url_split[lastDex].split('?')[0]
+            customServer=True
         file_path=""
-        for x in url_split[7:]:
-            file_path=file_path+"/"+x
+        first=True
+        for x in url_split[pathChunk:]:
+            if first is True:
+                first=False
+            else:
+                file_path=file_path+"/"
+            file_path=file_path+x
         api_url=api_url+file_path+"&page=1&per_page=1"
-        print(url)
-        print(api_url)
         try:
             json_url = urlopen(api_url)
             data = json.loads(json_url.read())
-            dateStr=data["values"][0]["date"]
+            if customServer is True:
+                dateStr=data["values"][0]["authorTimestamp"]
+            else:    
+                dateStr=data["values"][0]["date"]
             return parseRepoDate(dateStr)
         except urllib.error.HTTPError as e:
-            print("API Commit Date Failure: "+api_url)
+            print("API Commit Date Failure: Could not download: "+api_url)
+            return "Unknown"
+        except IndexError as e2:
+            print("API Commit Date Failure: No commits at: "+api_url)
             return "Unknown"
         #print("bb date: "+dateStr)
         #return dateStr
