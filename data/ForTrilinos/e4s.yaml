@@ -1,6 +1,6 @@
 - e4s_product: ForTrilinos
   version: 0.1.0
-  docs: [README.md,ReleaseNotes.txt,ROADMAP.md,LICENSE]
+  docs: [README.md,LICENSE,CONTRIBUTING.md]
   spack_name: fortrilinos
   Area: "Math libraries"
   Description: "Fortran interface to Trilinos C++ libraries."

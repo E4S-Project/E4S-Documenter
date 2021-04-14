@@ -54,7 +54,8 @@ def getSpackInfo(name):
     else:
         return None
     infoBlob = subprocess.run(['spack', 'info', name], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    if infoBlob is None:
+    if infoBlob is None or len(infoBlob)==0:
+        print("No spack info for ",name)
         return None
     infoList=infoBlob.split("\n\n")
     for item in infoList:
@@ -78,13 +79,16 @@ def getXGitlabID(url):
     pidStr="Project ID: "
     response = requests.get(base_url)
     html = response.content.decode("utf-8")
-
     if not pidStr in html:
         xGitDict[base_url]=gid
         return gid
     piddex=html.index(pidStr)+len(pidStr)
     enddex=html.index("\n",piddex)
     gid=html[piddex:enddex]
+    quotDex=gid.find("\"")
+    if quotDex > -1:
+        gid=gid[0:quotDex]
+    #print("XGIT-ID: ",gid)
     xGitDict[base_url]=gid
     return gid
 
@@ -168,6 +172,7 @@ def getLastCommitDate(url):
         gitlabid=getXGitlabID(url)
         if gitlabid == "Unknown":
             return "Unknown"
+        #print("GITLABID: ",gitlabid)
         api_url="https://"+url_split[2]+"/api/v4/projects/"+gitlabid+"/repository/commits?path="
         
         file_path=""
@@ -178,6 +183,8 @@ def getLastCommitDate(url):
             else:
                 file_path=file_path+"/"
             file_path=file_path+x
+        #print("BASE API URL: ", api_url)
+        #print("FILE PATH: ", file_path)
         api_url=api_url+file_path+"&page=1&per_page=1"
         #print(api_url)
         json_url = urlopen(api_url)

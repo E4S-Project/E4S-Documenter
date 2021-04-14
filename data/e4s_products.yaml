@@ -75,7 +75,7 @@
 -  repo_url: https://bitbucket.org/icl/papi/src/master
 -  repo_url: https://code.ornl.gov/eck/papyrus/blob/master
 -  repo_url: https://bitbucket.org/icldistcomp/parsec/src/master
--  repo_url: https://gitlab.com/petsc/petsc/blob/master
+-  repo_url: https://gitlab.com/petsc/petsc/blob/main
 -  repo_url: https://github.com/Parallel-NetCDF/PnetCDF/blob/master
 #POWERSTACK
 -  repo_url: https://github.com/LLNL/variorum/blob/dev
