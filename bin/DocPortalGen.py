@@ -31,6 +31,8 @@ e4sDotYaml='/e4s.yaml'
 dotE4s='/.e4s/'
 bitbucketRaw='?&raw'
 currentVersion='0.1.0'
+github_uname="anonymous"
+github_token="blank"
 
 printv=False
 htmlBlocks=""
@@ -42,6 +44,18 @@ def printV(toPrint):
 spackInfoTags=['Description','Homepage']
 global noSpack
 noSpack=False
+
+def getCredentials():
+    with open('credential.yaml', 'r') as cred:
+        try:
+            yamcred = yaml.safe_load(cred)
+        except:
+            printV("Couldn't get github credentials.")
+            return None
+        else:
+            github_uname=yamcred["name"]
+            github_token=yamcred["token"]
+
 def getSpackInfo(name):
     global noSpack
     infoMap={}
@@ -111,9 +125,11 @@ def getLastCommitDate(url):
             file_path=file_path+"/"+x
         api_url=api_url+file_path+"&page=1&per_page=1"
         try:
-            json_url = requests.get(api_url,headers=browserHeaders,auth=('wspear','d26d7796ed0f4d55546715eaf2ad41fbb528d823')) #urlopen(api_url)
+            json_url = requests.get(api_url,headers=browserHeaders,auth=(github_uname, github_token))
             data = json.loads(json_url.content)
             #time.sleep(60)
+            #print (json_url)
+            #print(str(data))
             dateStr=data[0]["commit"]["committer"]["date"]
             #print("github date: "+dateStr)
             return parseRepoDate(dateStr)
@@ -457,6 +473,7 @@ if(len(sys.argv)>3):
 
 htmlBlocks=parse_html_blocks(htmlTemplate)
 #print(htmlBlocks)
+getCredentials()
 
 with open(productList) as MDlist:
     products = yaml.safe_load(MDlist)

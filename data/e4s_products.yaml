@@ -49,7 +49,7 @@
 -  repo_url: https://bitbucket.org/icl/magma/src/master
 #/LAPACK
 -  repo_url: https://github.com/StanfordLegion/legion/blob/stable
--  repo_url: https://github.com/Libensemble/libensemble/blob/master
+-  repo_url: https://github.com/Libensemble/libensemble/blob/main
 #LLVM
 #-kitsune
 #-surf
@@ -112,6 +112,7 @@
 #XSDK
 #/XSDK
 -  repo_url: https://github.com/LLNL/zfp/blob/develop
+-  repo_url: https://github.com/LLNL/conduit/blob/develop
 ###
 #UNKNOWN
 #(Known/Targeted Product list taken from: https://confluence.exascaleproject.org/display/1ST/ECP+ST+Product+Dictionary)
