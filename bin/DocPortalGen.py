@@ -46,6 +46,8 @@ global noSpack
 noSpack=False
 
 def getCredentials():
+    global github_uname
+    global github_token
     with open('credential.yaml', 'r') as cred:
         try:
             yamcred = yaml.safe_load(cred)
@@ -125,11 +127,18 @@ def getLastCommitDate(url):
             file_path=file_path+"/"+x
         api_url=api_url+file_path+"&page=1&per_page=1"
         try:
+            #print(github_uname, github_token)
             json_url = requests.get(api_url,headers=browserHeaders,auth=(github_uname, github_token))
             data = json.loads(json_url.content)
             #time.sleep(60)
             #print (json_url)
             #print(str(data))
+            #print(data.keys())
+            #print(data["message"])
+            if "message" in data:
+                print("Warning: Date information not returned")
+                print(data["message"])
+                return "Unknown"
             dateStr=data[0]["commit"]["committer"]["date"]
             #print("github date: "+dateStr)
             return parseRepoDate(dateStr)
