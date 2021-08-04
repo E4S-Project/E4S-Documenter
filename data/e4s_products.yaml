@@ -59,7 +59,7 @@
 #MPI
 -  repo_url: https://github.com/pmodels/mpich/blob/main
 -  repo_url: https://github.com/open-mpi/ompi/blob/master
--  repo_url: https://github.com/Qthreads/qthreads/blob/master
+-  repo_url: https://github.com/Qthreads/qthreads/blob/main
 #/MPI
 #MPI-IO
 #-ROMIO #Part of MPICH
@@ -88,7 +88,7 @@
 #/POWERSTACK
 -  repo_url: https://github.com/LLNL/RAJA/blob/develop
 -  repo_url: https://github.com/Reference-ScaLAPACK/scalapack/blob/master
--  repo_url: https://github.com/LLNL/scr/blob/master
+-  repo_url: https://github.com/LLNL/scr/blob/develop
 -  repo_url: https://github.com/lanl/SICM/blob/master
 -  repo_url: https://bitbucket.org/icl/slate/src/master
 -  repo_url: https://github.com/spack/spack/blob/develop

@@ -45,10 +45,41 @@ spackInfoTags=['Description','Homepage']
 global noSpack
 noSpack=False
 
+def getSiteDeployment():
+    site_file=script_path+'/../data/e4s_site_deployment.yaml'
+    product_list={}
+    with open(site_file, 'r') as sites:
+        try:
+            yamsites = yaml.safe_load(sites)
+        except:
+            printV("Couldn't get site deployment data.")
+            return None
+        else:
+            for siteName,sysInfo in yamsites.items(): 
+                for systemName,url in sysInfo:
+                    siteBlob=getURLHead(url,-1).splitlines()
+                    for line in siteBlob[1:]:
+                        if ',' in line: # and ",," not in line:
+                            lineBlob=line.split(',')
+                            productName=lineBlob[0]
+                            if productName not in product_list.keys():
+                                product_list[productName]={}
+                            product=product_list[productName]
+                            if siteName not in product.keys():
+                                product[siteName]={}
+                            site=product[siteName]
+                            if systemName not in site.keys():
+                                site[systemName]=[]
+                            system=site[systemName]
+                            system.append([lineBlob[1],lineBlob[2],lineBlob[3],lineBlob[4]])
+                            #print(system)
+        return product_list 
+
+
 def getCredentials():
     global github_uname
     global github_token
-    with open('credential.yaml', 'r') as cred:
+    with open(script_path+'/../credential.yaml', 'r') as cred:
         try:
             yamcred = yaml.safe_load(cred)
         except:
@@ -228,7 +259,10 @@ def getURLHead(url, numChars=400):
     try:
         f = urlopen(req)
         #Read 2x the target number of characters to look for a good breakpoint in the overflow
-        head=html.escape(f.read(numChars*2).decode("utf-8"))
+        if numChars > 0:
+            head=html.escape(f.read(numChars*2).decode("utf-8"))
+        else:
+            head=html.escape(f.read().decode("utf-8"))
         #Markdown comments don't count toward the character limit.
         if url.lower().endswith(".md"):
             comdex=head.rfind('\n[comment]:')
@@ -238,16 +272,17 @@ def getURLHead(url, numChars=400):
                 head=head+html.escape(f.read(numChars*2-len(head)).decode("utf-8"))
                 #print(head)
                 #print(len(head))
-        breakpoint=head.find('\n',numChars)
-        if breakpoint < numChars:
-            breakpoint=head.find(". ",numChars)
-        if breakpoint < numChars:
-            breakpoint=head.find(' ',numChars);
-        if breakpoint < numChars:
-            breakpoint=numChars
-        #print("Breakpoint: ",breakpoint)            
-        head = head[:breakpoint]
-        #print("Resulting Head: "+head)
+        if numChars > 0:
+            breakpoint=head.find('\n',numChars)
+            if breakpoint < numChars:
+                breakpoint=head.find(". ",numChars)
+            if breakpoint < numChars:
+                breakpoint=head.find(' ',numChars);
+            if breakpoint < numChars:
+                breakpoint=numChars
+            #print("Breakpoint: ",breakpoint)            
+            head = head[:breakpoint]
+            #print("Resulting Head: "+head)
         return head
     except urllib.error.URLError as e:
         print("ERROR: Document "+url+": "+e.reason)
@@ -330,8 +365,6 @@ def getRepoDocs(url,name,sub=False):
     print("No metadata found for "+name)
     return None;
             
-       
-
 def processURL(url,sub=False):
     repoName=getRepoName(url,sub)
     if repoName is None:
@@ -351,7 +384,39 @@ yamlEntryOpen='''{
     "description": "***DESCRIPTION***",'''
 
 
-def printProduct(product, ppage, sub=False, printYaml=False):
+def getDeploymentBlock(deployment):
+    depAgg="<hr><details><summary><h3>Product Deployment</h3></summary><br><ul>"
+    for sitePair in deployment.items():
+        depAgg+="<li>"+sitePair[0]+"</li><ul>"
+        for systemPair in sitePair[1].items():
+            depAgg+="<li>"+systemPair[0]+"</li><ul>"
+            for deps in systemPair[1]:
+                depAgg+="<li><b>Version: </b>"+deps[0]+" <b>Compiler: </b>"+deps[1]+" <b>Variants: </b>"+deps[2]+" <b>Architecture: </b>"+deps[3]+"</li>"
+            depAgg+="</ul>"
+        depAgg+="</ul>"
+    depAgg+="</ul></details>"
+    #print(depAgg)
+    return depAgg
+
+def getPolicyStatusString(val):
+    if val == 0:
+        return "Unreported"
+    if val == 1:
+        return "Incomplete"
+    if val == 2:
+        return "Complete"
+def getCompatibilityBlock(compat):
+    totComp=0
+    numPolicies=9
+    explain="No explanation of policy compatability provided."
+    policies=["Spack-based Build and Installation","Minimal Validation","Sustainability","Documentation","Product Metadata","Public Repository","Imported Software","Error Handling","Test Suite"]
+    compAgg="<hr><details><summary><h3>E4S Policy Compatability</h3></summary><br><b>Overall Status:</b> "+getPolicyStatusString(totComp)+"<br><ol>"
+    for policy in policies:
+        compAgg+="<li><b>"+policy+": </b>"+getPolicyStatusString(totComp)+"<br><b>Note: </b>"+explain+"</li>"
+    compAgg+="</ol></details>"
+    return compAgg
+
+def printProduct(product, ppage, deployments,sub=False, printYaml=False):
     #with open(output_prefix+product['e4s_product'].lower()+".html", "a") as ppage:
     capName=product['e4s_product'].upper()
     lowName=capName.lower()
@@ -430,6 +495,16 @@ def printProduct(product, ppage, sub=False, printYaml=False):
         #print(docFix, file=ppage)
     #.replace('***DESCRIPTION***',"N/A").replace("***SITEADDRESS***","N/A").replace("***SPACKVERSION***","N/A")
 
+    #Make sure we got a valid dictionary from the deployment operation and that the current product is included.
+#    if type(deployments) is dict and spackName in deployments.keys():
+#        deployment=deployments[spackName]
+#        htmlAgregator+=getDeploymentBlock(deployment)
+        #print(getDeploymentBlock(deployment))
+
+#    cBlock=getCompatibilityBlock(True)
+    #print(cBlock)
+#    htmlAgregator+=cBlock
+
     if printYaml is True:
         encodedBytes = base64.b64encode(htmlAgregator.encode("utf-8"))
         encodedStr = str(encodedBytes, "utf-8")
@@ -483,6 +558,7 @@ if(len(sys.argv)>3):
 htmlBlocks=parse_html_blocks(htmlTemplate)
 #print(htmlBlocks)
 getCredentials()
+deployments=getSiteDeployment()
 
 with open(productList) as MDlist:
     products = yaml.safe_load(MDlist)
@@ -495,7 +571,7 @@ yamlEnd='''  ]
 }'''
 if printYaml is True:
     listFileSuffix='.yml'
-with open(output_prefix+listFileName+listFileSuffix, "a") as listPage:
+with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
     if printYaml is True:
         print(yamlStart, file=listPage)
     else:
@@ -519,7 +595,7 @@ with open(output_prefix+listFileName+listFileSuffix, "a") as listPage:
                 firstIt=False
             else:
                 print(''',''', file=listPage)
-        printProduct(product, listPage, printYaml=printYaml)
+        printProduct(product, listPage,deployments, printYaml=printYaml)
         if 'subrepo_urls' in product:
             for suburl in product['subrepo_urls']:
                 print("Generating HTML for SUBURL: "+suburl)
