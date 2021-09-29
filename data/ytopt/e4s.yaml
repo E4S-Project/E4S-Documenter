@@ -1,4 +1,5 @@
 - e4s_product: surf
   spack_name: py-ytopt
   type: TOOL
+  Area: "Development tools"
   docs:  [README.md]

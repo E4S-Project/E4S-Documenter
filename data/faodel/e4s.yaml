@@ -1,3 +1,5 @@
 - e4s_product: faodel
   type: TOOL
+  Area: "Development tools"
+  description: "FAODEL (Flexible, Asynchronous, Object Data-Exchange Libraries) is a collection of software libraries that are used to implement different data management services on high-performance computing (HPC) platforms"
   docs:  [README.md, NEWS.md, LICENSE.md]

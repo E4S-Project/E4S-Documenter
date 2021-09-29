@@ -1,3 +1,5 @@
 - e4s_product: mpifileutils
   type: TOOL
+  Area: "Development tools"
+  description: "mpiFileUtils provides both a library called libmfu and a suite of MPI-based tools to manage large datasets"
   docs:  [README.md, LICENSE]

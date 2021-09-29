@@ -431,6 +431,8 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
         area=product['area']
     if 'Description' in product:
         description=product['Description']
+    elif 'description' in product:
+        description=product['description']
     firstBlock=htmlBlocks['introLinkBlock']
     if printYaml is True:
         firstBlock=yamlEntryOpen
@@ -496,9 +498,10 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
     #.replace('***DESCRIPTION***',"N/A").replace("***SITEADDRESS***","N/A").replace("***SPACKVERSION***","N/A")
 
     #Make sure we got a valid dictionary from the deployment operation and that the current product is included.
-#    if type(deployments) is dict and spackName in deployments.keys():
-#        deployment=deployments[spackName]
-#        htmlAgregator+=getDeploymentBlock(deployment)
+    if type(deployments) is dict and spackName in deployments.keys():
+        printV("Checking deployment for "+spackName)
+        deployment=deployments[spackName]
+        htmlAgregator+=getDeploymentBlock(deployment)
         #print(getDeploymentBlock(deployment))
 
 #    cBlock=getCompatibilityBlock(True)

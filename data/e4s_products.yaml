@@ -107,7 +107,7 @@
 -  repo_url: https://github.com/LLNL/UnifyFS/blob/dev
 -  repo_url: https://bitbucket.org/berkeleylab/upcxx/src/master
 #-vendorstack: No Repo
--  repo_url: https://github.com/ECP-VeloC/VELOC/blob/master
+-  repo_url: https://github.com/ECP-VeloC/VELOC/blob/main
 -  repo_url: https://gitlab.kitware.com/vtk/vtk-m/blob/master
 #XSDK
 #/XSDK
@@ -128,3 +128,25 @@
 #-  repo_url: https://github.com/ornladios/ADIOS/blob/master
 #DEMO.
 #-  repo_url: https://github.com/E4S-Project/E4S-documentation-demo/blob/master
+#Additional products from new product dictionary:
+-  repo_url: https://github.com/lanl/libquo/blob/master
+-  repo_url: https://github.com/LLNL/GOTCHA/blob/develop
+-  repo_url: https://github.com/faodel/faodel/blob/master
+-  repo_url: https://github.com/mercury-hpc/mercury/blob/master
+  #-  repo_url: https://xgitlab.cels.anl.gov/pbalapra/ytopt/blob/master
+-  repo_url: https://github.com/jupyterhub/jupyterhub/blob/main
+-  repo_url: https://github.com/hpc/mpifileutils/blob/master
+-  repo_url: https://github.com/GlobalArrays/ga/blob/master
+-  repo_url: https://github.com/mpark/variant/blob/master
+-  repo_url: https://github.com/PRUNERS/NINJA/blob/master
+-  repo_url: https://xgitlab.cels.anl.gov/argo/libnrm/blob/master
+-  repo_url: https://github.com/sandialabs/omega_h/blob/main
+-  repo_url: https://github.com/openPMD/openPMD-api/blob/dev
+-  repo_url: https://bitbucket.org/essex/phist/src/master
+-  repo_url: https://bitbucket.org/icl/plasma/src/main
+-  repo_url: https://github.com/precice/precice/blob/develop
+-  repo_url: https://github.com/SCOREC/core/blob/master
+-  repo_url: https://gitlab.com/slepc/slepc/blob/main
+-  repo_url: https://github.com/swift-lang/swift-t/blob/master
+-  repo_url: https://github.com/ECP-WarpX/WarpX/blob/development
+

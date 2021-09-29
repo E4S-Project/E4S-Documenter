@@ -1,3 +1,5 @@
 - e4s_product: gotcha
   type: TOOL
+  Area: "Development tools"
+  description: "Gotcha is a library that wraps functions."
   docs:  [README.md, LGPL]

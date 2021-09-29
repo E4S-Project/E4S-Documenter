@@ -1,4 +1,6 @@
 - e4s_product: jupyterhub
   spack_name: py-jupyterhub
   type: TOOL
+  Area: "Development tools"
+  description: "With JupyterHub you can create a multi-user Hub which spawns, manages, and proxies multiple instances of the single-user Jupyter notebook server."
   docs:  [README.md, COPYING.md]
