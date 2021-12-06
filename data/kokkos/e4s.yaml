@@ -3,3 +3,4 @@
   Area: "PMR"
   Description: "Portable parallel programming library and supporting tools."
   MemberProduct: False
+  Accelerable: True

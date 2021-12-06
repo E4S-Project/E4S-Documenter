@@ -3,3 +3,4 @@
   Area: "Math libraries"
   Description: "Scalable sparse iterative preconditioners and solvers."
   MemberProduct: True 
+  Accelerable: True

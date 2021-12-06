@@ -3,3 +3,4 @@
   Area: "Math libraries"
   Description: "Next generation parallel sparse direct solver package."
   MemberProduct: True
+  Accelerable: True

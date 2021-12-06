@@ -5,3 +5,4 @@
   area: Math libraries
   Description: "Performance-portable geometric search library"
   MemberProduct: False
+  Accelerable: True

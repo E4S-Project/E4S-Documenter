@@ -35,13 +35,24 @@ github_uname="anonymous"
 github_token="blank"
 
 printv=False
+printstandard=False
+printstatus=True
 htmlBlocks=""
 
 def printV(toPrint):
     if printv is True:
         print(toPrint)
+        
 
-spackInfoTags=['Description','Homepage']
+def printStandard(toPrint):
+    if printstandard is True:
+        print(toPrint)
+        
+def printStatus(toPrint):
+    if printstatus is True:
+        print(toPrint)
+
+spackInfoTags=['Description','Homepage','Variants']
 global noSpack
 noSpack=False
 
@@ -89,7 +100,7 @@ def getCredentials():
             github_uname=yamcred["name"]
             github_token=yamcred["token"]
 
-def getSpackInfo(name):
+def getSpackInfo(name,accel):
     global noSpack
     infoMap={}
     if not noSpack:
@@ -102,18 +113,57 @@ def getSpackInfo(name):
         return None
     infoBlob = subprocess.run(['spack', 'info', name], stdout=subprocess.PIPE).stdout.decode('utf-8')
     if infoBlob is None or len(infoBlob)==0:
-        print("No spack info for ",name)
+        printStandard("No spack info for "+name)
+        printStatus(name+", False, "+accel+", False, False, False, False, False")
         return None
+    rocmStatus=""
+    cudaStatus=""
+    syclStatus=""
+    hipStatus=""
+    hasTest="Absent"
+    rocmSum="False"
+    cudaSum="False"
+    syclSum="False"
+    testSum="False"
+    hipSum="False"
     infoList=infoBlob.split("\n\n")
-    for item in infoList:
+    for index,item in enumerate(infoList):
         for tag in spackInfoTags:
             if item.strip().startswith(tag):
                 infoEntry=item.strip().split(':',1)
                 value=infoEntry[1].strip(' \n')
                 if tag == 'Homepage':
+                    value=value.strip('/')
                     value="<a href="+value+">"+value+"</a>"
+                if tag == 'Variants':
+                    value=infoList[index+1]
+                    variants=value.splitlines()
+                    for line in variants:
+                        if "rocm" in line:
+                            rocmStatus="ROCM"
+                            rocmSum="True"
+                        if "cuda" in line: 
+                            cudaStatus="CUDA"
+                            cudaSum="True"
+                        if "sycl" in line:
+                            syclStatus="SYCL"
+                            syclSum="True"
+                        if "hip" in line:
+                            hipStatus="HIP"
+                            hipSum="True"
+                    value=cudaStatus+" "+rocmStatus+" "+hipStatus+" "+syclStatus
                 infoMap[infoEntry[0].strip(' \n')]=value
+    packageLoc=subprocess.run(['spack', 'location', '-p', name], stdout=subprocess.PIPE).stdout.decode('utf-8').strip(' \n')
+    packageLoc=packageLoc+"/package.py"
+    with open(packageLoc,'r') as f:
+        for line in f:
+            if "def test(" in line:
+                hasTest="Present"
+                testSum="True"
+    infoMap["SmokeTest"]=hasTest
+    printStatus(name+", True, "+accel+", "+cudaSum+", "+rocmSum+", "+hipSum+", "+syclSum+", "+testSum)
     return infoMap
+
 xGitDict={}
 def getXGitlabID(url):
     global xGitDict
@@ -424,6 +474,8 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
     if 'MemberProduct' in product and product['MemberProduct'] is True:
         capName=capName+"*"
     area="N/A"
+    accel="Undetermined"
+    accelArg="Undetermined"
     description=""
     if 'Area' in product:
         area=product['Area']
@@ -433,6 +485,14 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
         description=product['Description']
     elif 'description' in product:
         description=product['description']
+    if 'Accelerable' in product:
+        if product['Accelerable'] is True:
+            accel="Product potentially supports accelerator hardware"
+            accelArg="True"
+        elif product['Accelerable'] is False:
+            accel="Product will not interact with accelerator hardware"
+            accelArg="False"
+
     firstBlock=htmlBlocks['introLinkBlock']
     if printYaml is True:
         firstBlock=yamlEntryOpen
@@ -442,10 +502,14 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
     spackName=lowName
     if 'spack_name' in product:
         spackName=product['spack_name']
-    spackInfo = getSpackInfo(spackName)
+    spackInfo = getSpackInfo(spackName,accelArg)
     if spackInfo is not None:
         for key,value in spackInfo.items():
-            htmlAgregator+="<B>"+key+":</B> \n"+value+"<br>\n"
+            printKey=key
+            if key == "Variants":
+                printKey="Accelerator Variants"
+                htmlAgregator+="<B>Accelerator Support:</B> \n"+accel+"<br>\n"
+            htmlAgregator+="<B>"+printKey+":</B> \n"+value+"<br>\n"
             #print("<B>"+key+":</B> \n"+value+"<br>\n",file=listPage)
 
     appendRaw=""
@@ -558,6 +622,8 @@ if(len(sys.argv)>3):
     if '--html' in sys.argv:
         printYaml=False
 
+printStatus("Product, Spack Package, Accelerable, CUDA Variant, ROCM Variant, HIP Variant, SYCL Variant, Smoke Test")
+
 htmlBlocks=parse_html_blocks(htmlTemplate)
 #print(htmlBlocks)
 getCredentials()
@@ -592,7 +658,7 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
         if processedURL is None:
             continue
         product = processedURL[0]
-        print ('Generating HTML for: '+product['e4s_product'])
+        printStandard ('Generating HTML for: '+product['e4s_product'])
         if printYaml:
             if firstIt is True:
                 firstIt=False
@@ -601,7 +667,7 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
         printProduct(product, listPage,deployments, printYaml=printYaml)
         if 'subrepo_urls' in product:
             for suburl in product['subrepo_urls']:
-                print("Generating HTML for SUBURL: "+suburl)
+                printStandard("Generating HTML for SUBURL: "+suburl)
                 processedURL=processURL(suburl,True)
                 if processedURL is None:
                     continue

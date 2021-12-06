@@ -3,3 +3,4 @@
   Area: "Math libraries"
   Description: "LAPACK for heterogeneous/hybrid architectures."
   MemberProduct: True 
+  Accelerable: True

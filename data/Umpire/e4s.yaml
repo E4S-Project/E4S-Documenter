@@ -3,3 +3,4 @@
   Area: "PMR"
   Description: "A resource management library that allows the discovery, provision, and management of memory on machines with multiple memory devices."
   MemberProduct: False
+  Accelerable: True

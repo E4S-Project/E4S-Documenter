@@ -3,3 +3,4 @@
   Area: "Math libraries"
   Description: "SLATE is the next generation of ScaLAPACK."
   MemberProduct: False
+  Accelerable: True

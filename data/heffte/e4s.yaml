@@ -4,3 +4,4 @@
   area: Math libraries
   Description: "Parallel FFTs built on vendor and community sequential FFTs."
   MemberProduct: False
+  Accelerable: True

@@ -3,3 +3,4 @@
   Area: "PMR"
   Description: "A C++ template library supporting asynchronous RMA/RPC communication in a PGAS model."
   MemberProduct: False
+  Accelerable: True

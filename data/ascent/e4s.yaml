@@ -4,3 +4,4 @@
   area: Data & Viz
   Description: "Flyweight in situ visualization and analysis runtime for multi-physics HPC simulations"
   MemberProduct: False
+  Accelerable: True

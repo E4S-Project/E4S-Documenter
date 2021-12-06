@@ -4,3 +4,4 @@
   Area: "Data & Viz"
   Description: "Visualization and data analysis system with in situ library within the Paraview product suite."
   MemberProduct: False
+  Accelerable: True

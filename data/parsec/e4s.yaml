@@ -4,3 +4,4 @@
   area: PMR
   Description: "Distributed task-based runtime system and programming environment"
   MemberProduct: False
+  Accelerable: True

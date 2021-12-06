@@ -3,3 +3,4 @@
   Area: "Math libraries"
   Description: "Parallel linear algebra and graph algorithms build on Kokkos."
   MemberProduct: False
+  Accelerable: True

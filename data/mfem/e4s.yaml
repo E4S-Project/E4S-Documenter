@@ -3,3 +3,4 @@
   Area: "Math libraries"
   Description: "A parallel finite element math library."
   MemberProduct: True 
+  Accelerable: True
