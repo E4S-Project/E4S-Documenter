@@ -3,3 +3,4 @@
   Area: "Development tools"
   Description: "Performance analysis tools."
   MemberProduct: False
+  Accelerable: True

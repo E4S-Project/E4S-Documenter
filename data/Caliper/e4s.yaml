@@ -3,3 +3,4 @@
   Description: "Performance analysis library."
   docs:  [README.md, LICENSE]
   MemberProduct: False
+  Accelerable: True

@@ -3,3 +3,4 @@
   Area: "Math libraries"
   Description: "Library of parallel and sparse linear, nonlinear, optimization and transient solvers."
   MemberProduct: True
+  Accelerable: True

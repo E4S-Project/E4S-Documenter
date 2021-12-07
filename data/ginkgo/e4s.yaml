@@ -4,3 +4,4 @@
   area: Math libraries
   Description: "A parallel sparse linear algebra library for manycore and accelerator processors."
   MemberProduct: True 
+  Accelerable: True

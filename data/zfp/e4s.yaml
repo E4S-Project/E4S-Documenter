@@ -3,3 +3,4 @@
   Area: "Data & Viz"
   Description: "In-memory data compression library."
   MemberProduct: False
+  Accelerable: True

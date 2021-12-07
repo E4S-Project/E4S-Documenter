@@ -5,3 +5,4 @@
   area: PMR
   Description: "A library that handles automatic data migration to different memory spaces behind an array-style interface."
   MemberProduct: False
+  Accelerable: True

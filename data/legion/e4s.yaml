@@ -4,3 +4,4 @@
   area: PMR
   Description: "A task-based parallel programming and runtime environment."
   MemberProduct: False
+  Accelerable: True

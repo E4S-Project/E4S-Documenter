@@ -3,3 +3,4 @@
   Area: "Development tools"
   Description: "Performance API to provide portable access to vendor performance information for CPUs, GPUs, networks, I/O systems, including power."
   MemberProduct: False
+  Accelerable: True

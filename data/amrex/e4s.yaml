@@ -4,3 +4,4 @@
   area: PMR
   Description: "A framework designed for building massively parallel block- structured adaptive mesh refinement applications."
   MemberProduct: False
+  Accelerable: True

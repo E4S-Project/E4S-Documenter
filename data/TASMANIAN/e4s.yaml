@@ -3,3 +3,4 @@
   Area: "Math libraries"
   Description: "A collection of libraries for high dimensional integration and interpolation and parameter calibration."
   MemberProduct: True 
+  Accelerable: True

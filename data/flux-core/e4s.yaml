@@ -4,3 +4,4 @@
   area: Development tools
   Description: "Configurable resource management tools and libraries for HPC platforms"
   MemberProduct: False
+  Accelerable: True

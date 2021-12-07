@@ -5,3 +5,4 @@
   Area: "Data & Viz"
   Description: "Parallel on-node visualization toolkit."
   MemberProduct: False
+  Accelerable: True

@@ -4,3 +4,4 @@
   Area: "Math libraries"
   Description: "A configurable framework designed to support multi-physics application development."
   MemberProduct: False
+  Accelerable: True
