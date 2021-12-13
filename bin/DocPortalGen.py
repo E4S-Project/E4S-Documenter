@@ -535,7 +535,10 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
             rawFileURL = rawFileURL.replace(fromRaw,toRaw)
     #print(rawFileURL)
     latestDocDate="Unknown"
-    for doc in product['docs']:
+    docKey='docs'
+    if 'Docs' in product:
+        docKey='Docs'
+    for doc in product[docKey]:
         docLoc=""
         chars=400;
         if isinstance(doc,str):
