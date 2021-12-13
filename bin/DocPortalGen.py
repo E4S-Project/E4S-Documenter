@@ -310,9 +310,9 @@ def getURLHead(url, numChars=400):
         f = urlopen(req)
         #Read 2x the target number of characters to look for a good breakpoint in the overflow
         if numChars > 0:
-            head=html.escape(f.read(numChars*2).decode("utf-8"))
+            head=html.escape(f.read(numChars*2).decode("utf-8", errors='replace'))
         else:
-            head=html.escape(f.read().decode("utf-8"))
+            head=html.escape(f.read().decode("utf-8", errors='replace'))
         #Markdown comments don't count toward the character limit.
         if url.lower().endswith(".md"):
             comdex=head.rfind('\n[comment]:')
