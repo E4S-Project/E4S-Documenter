@@ -1,0 +1,6 @@
+- e4s_product: hpx
+  Docs: [README.rst, LICENSE_1_0.txt]
+  Area: "PMR"
+  Description: "The C++ Standard Library for Parallelism and Concurrency."
+  Website: https://hpx.stellar-group.org/
+  MemberProduct: False

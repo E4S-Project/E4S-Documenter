@@ -42,6 +42,7 @@
 -  repo_url: https://github.com/ginkgo-project/ginkgo/blob/develop
 -  repo_url: https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse
 -  repo_url: https://github.com/HPCToolkit/hpctoolkit/blob/master
+-  repo_url: https://github.com/STEllAR-GROUP/hpx/blob/master
 -  repo_url: https://github.com/hypre-space/hypre/blob/master
 -  repo_url: https://github.com/kokkos/kokkos/blob/master
 -  repo_url: https://github.com/kokkos/kokkos-kernels/blob/master
