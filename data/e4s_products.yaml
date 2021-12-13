@@ -93,6 +93,7 @@
 -  repo_url: https://bitbucket.org/icl/slate/src/master
 -  repo_url: https://github.com/spack/spack/blob/develop
 #-spot: Repo unknown
+-  repo_url: https://github.com/liuyangzhuan/ButterflyPACK/blob/master
 -  repo_url: https://github.com/pghysels/STRUMPACK/blob/master
 -  repo_url: https://github.com/LLNL/sundials/blob/master
 -  repo_url: https://github.com/xiaoyeli/superlu_dist/blob/master
