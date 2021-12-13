@@ -559,7 +559,8 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
                 latestDocDate=docDate
         if docURL.lower().endswith(".md"):
             docHead=markdown.markdown(docHead)
-        docFix = htmlBlocks['docBlock'].replace("***DOCNAME***",docLoc).replace("***DOCTEXT***",docHead).replace("***DOCURL***",product['repo_url']+"/"+docLoc).replace("***TIMESTAMP***",str(docDate))
+        docLink="<a href="+product['repo_url']+"/"+docLoc+">"+docLoc+"</a>"
+        docFix = htmlBlocks['docBlock'].replace("***DOCNAME***",docLink).replace("***DOCTEXT***",docHead).replace("***DOCURL***",product['repo_url']+"/"+docLoc).replace("***TIMESTAMP***",str(docDate))
         htmlAgregator+=docFix
         #print(docFix, file=ppage)
     #.replace('***DESCRIPTION***',"N/A").replace("***SITEADDRESS***","N/A").replace("***SPACKVERSION***","N/A")
