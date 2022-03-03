@@ -1,7 +1,9 @@
 - e4s_product: parsec
   version: 0.1.0
-  docs: [README,License.txt,NEWS]
+  Description: "PaRSEC: the Parallel Runtime Scheduler and Execution Controller for micro-tasks on distributed heterogeneous systems."
   area: PMR
-  Description: "Distributed task-based runtime system and programming environment"
   MemberProduct: False
-  Accelerable: True
+  website: https://icl.utk.edu/dte
+  docs: [{"doc":"README","type":"readme"},{"doc":"NEWS","type":"changelog"},{"doc":"License.txt","type":"license"}]
+  subrepo_urls: ["https://bitbucket.org/icldistcomp/parsec.git"]
+

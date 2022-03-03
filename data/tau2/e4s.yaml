@@ -1,5 +1,6 @@
 - e4s_product: tau
-  docs:  [README, Changes, LICENSE]
+  docs:  [{"doc":"README","skip":1080,"chars":400}, {"doc":"Changes","skip":660,"chars":400}, "LICENSE"]
   Area: "Development tools"
   Description: "A performance analysis and tuning library."
   MemberProduct: False
+  Links: []

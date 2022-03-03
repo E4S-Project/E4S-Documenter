@@ -28,13 +28,15 @@ browserHeaders={'User-Agent' : "Magic Browser"}
 rawSegment='/raw/'
 blobSegment='/blob/'
 e4sDotYaml='/e4s.yaml'
-dotE4s='/.e4s/'
+dotE4s='/.e4s'
 bitbucketRaw='?&raw'
 currentVersion='0.1.0'
 github_uname="anonymous"
 github_token="blank"
+nameSet=set(())
 
-printv=False
+printv=True
+useRemoteYAML=True
 printstandard=False
 printstatus=True
 htmlBlocks=""
@@ -300,7 +302,7 @@ def getLastCommitDate(url):
         #print("gitlab date: "+dateStr)
         return parseRepoDate(dateStr)
 
-def getURLHead(url, numChars=400):
+def getURLHead(url, skipChars=0, numChars=400):
     #masteryaml_url="https://raw.githubusercontent.com/UO-OACISS/e4s/master/docker-recipes/ubi7/x86_64/e4s/spack.yaml"
     #print("Reading URL: "+url)
     #browserHeaders={'User-Agent' : "Magic Browser"}
@@ -310,7 +312,7 @@ def getURLHead(url, numChars=400):
         f = urlopen(req)
         #Read 2x the target number of characters to look for a good breakpoint in the overflow
         if numChars > 0:
-            head=html.escape(f.read(numChars*2).decode("utf-8", errors='replace'))
+            head=html.escape(f.read(skipChars+(numChars*2)).decode("utf-8", errors='replace'))
         else:
             head=html.escape(f.read().decode("utf-8", errors='replace'))
         #Markdown comments don't count toward the character limit.
@@ -319,10 +321,11 @@ def getURLHead(url, numChars=400):
             if comdex > -1:
                 noncomdex=head.find('\n',comdex+3)
                 head=head[noncomdex:]
-                head=head+html.escape(f.read(numChars*2-len(head)).decode("utf-8"))
+                head=head+html.escape(f.read(skipChars+(numChars*2)-len(head)).decode("utf-8"))
                 #print(head)
                 #print(len(head))
         if numChars > 0:
+            head=head[skipChars:]
             breakpoint=head.find('\n',numChars)
             if breakpoint < numChars:
                 breakpoint=head.find(". ",numChars)
@@ -366,6 +369,15 @@ def getRepoName(url, sub=False):
     return name
 
 def readRemoteYaml(yaml_url,name):
+    fromRaw="/blob/"
+    toRaw="/raw/"
+#                if 'raw_replace' in product:
+#                    fromRaw=product['raw_replace'][0]
+#                    toRaw=product['raw_replace'][1]
+    if "bitbucket.org" in yaml_url:
+        fromRaw="/src/"
+    yaml_url = yaml_url.replace(fromRaw,toRaw)
+
     req=urllib.request.Request(yaml_url,None,browserHeaders)
     try:
         response=urlopen(req)
@@ -384,41 +396,44 @@ def readRemoteYaml(yaml_url,name):
 
 def getRepoDocs(url,name,sub=False):
     yamlMD=None
-    if sub is False:
-        #TODO: This should work for github blob urls but may not work for others
-        li = url.rsplit(blobSegment, 1)
-        raw_url=rawSegment.join(li)
-    else:
-        raw_url=url
-    #Check the hidden .e4s directory for e4s.yaml first
-    raw_yaml_url=raw_url+dotE4s+e4sDotYaml
-    yamlMD=readRemoteYaml(raw_yaml_url,name)
-    if yamlMD is not None:
-        printV("Found .e4s directory for "+name+" at "+raw_yaml_url)
-        return yamlMD
+    if useRemoteYAML is True:
+        if sub is False:
+            #TODO: This should work for github blob urls but may not work for others
+            li = url.rsplit(blobSegment, 1)
+            raw_url=rawSegment.join(li)
+        else:
+            raw_url=url
+        #Check the hidden .e4s directory for e4s.yaml first
+        raw_yaml_url=raw_url+dotE4s+e4sDotYaml
+        yamlMD=readRemoteYaml(raw_yaml_url,name)
+        if yamlMD is not None:
+            printV("Found .e4s directory for "+name+" at "+raw_yaml_url)
+            return yamlMD
     
-    #print("Raw URL: "+raw_url)
-    raw_yaml_url=raw_url+e4sDotYaml
-    #print("Raw E4S "+raw_e4s)
-    yamlMD=readRemoteYaml(raw_yaml_url,name)
+        #print("Raw URL: "+raw_url)
+        raw_yaml_url=raw_url+e4sDotYaml
+        #print("Raw E4S "+raw_e4s)
+        yamlMD=readRemoteYaml(raw_yaml_url,name)
     
-    if yamlMD is not None:
-        printV("Found top-level e4s.yaml for "+name)
-        return yamlMD
-    else:
-        localFile=script_path+'/../data/'+name+e4sDotYaml
-        if os.path.isfile(localFile) is True:
-            with open(script_path+'/../data/'+name+e4sDotYaml) as MDFile:
-                yamlMD = yaml.safe_load(MDFile)
-                printV("Found local e4s.yaml for "+name)
-                return yamlMD
+        if yamlMD is not None:
+            printV("Found top-level e4s.yaml for "+name)
+            return yamlMD
+    localFile=script_path+'/../data/'+name+e4sDotYaml
+    if os.path.isfile(localFile) is True:
+        with open(script_path+'/../data/'+name+e4sDotYaml) as MDFile:
+            yamlMD = yaml.safe_load(MDFile)
+            printV("Found local e4s.yaml for "+name)
+            return yamlMD
     print("No metadata found for "+name)
     return None;
             
 def processURL(url,sub=False):
     repoName=getRepoName(url,sub)
-    if repoName is None:
+    if repoName in nameSet:
+        print("ERROR. Duplicate repo name: "+repoName+" Skipping!")
+    if repoName is None or repoName in nameSet:
         return None
+    nameSet.add(repoName)
     yamlMD=getRepoDocs(url,repoName,sub)
     if yamlMD is not None and 'repo_url' not in yamlMD:
         yamlMD[0]['repo_url']=url
@@ -487,10 +502,10 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
         description=product['description']
     if 'Accelerable' in product:
         if product['Accelerable'] is True:
-            accel="Product potentially supports accelerator hardware"
+            accel="Product provides spack variants to enable accelerator support"
             accelArg="True"
         elif product['Accelerable'] is False:
-            accel="Product will not interact with accelerator hardware"
+            accel="Product does not provide spack variants to enable accelerator support"
             accelArg="False"
 
     firstBlock=htmlBlocks['introLinkBlock']
@@ -533,7 +548,7 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
             if "bitbucket.org" in rawFileURL:
                 fromRaw="/src/"
             rawFileURL = rawFileURL.replace(fromRaw,toRaw)
-    #print(rawFileURL)
+   # print(rawFileURL)
     latestDocDate="Unknown"
     docKey='docs'
     if 'Docs' in product:
@@ -541,15 +556,21 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
     for doc in product[docKey]:
         docLoc=""
         chars=400;
+        skip=0
         if isinstance(doc,str):
             docLoc=doc
         else:
+            if "doc" not in doc:
+                print("ERROR! INVALID DOCUMENT MAP: "+str(doc))
+                continue
             docLoc=doc["doc"]
             if "chars" in doc:
                 chars=doc["chars"]
+            if "skip" in doc:
+                skip=doc["skip"]
         docURL=rawFileURL+"/"+docLoc+appendRaw
         #print(docURL)
-        docHead=getURLHead(docURL,chars)
+        docHead=getURLHead(docURL,skip,chars)
         
         if docHead is None:
             continue
@@ -564,6 +585,13 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
         htmlAgregator+=docFix
         #print(docFix, file=ppage)
     #.replace('***DESCRIPTION***',"N/A").replace("***SITEADDRESS***","N/A").replace("***SPACKVERSION***","N/A")
+
+    linkKey='links'
+    if 'Links' in product:
+        linkKey='Links'
+    if linkKey in product:
+        for link in product[linkKey]:
+            linkLink="<a href="+link+">"+link+"</a><br>"
 
     #Make sure we got a valid dictionary from the deployment operation and that the current product is included.
     if type(deployments) is dict and spackName in deployments.keys():
@@ -625,6 +653,8 @@ if(len(sys.argv)>3):
         printYaml=True
     if '--html' in sys.argv:
         printYaml=False
+    if '--noRemote' in sys.argv:
+        useRemoteYAML=False
 
 printStatus("Product, Spack Package, Accelerable, CUDA Variant, ROCM Variant, HIP Variant, SYCL Variant, Smoke Test")
 
@@ -660,7 +690,9 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
             continue
         processedURL=processURL(urls['repo_url'])
         if processedURL is None:
+            print("Error: Could not process "+urls['repo_url'])
             continue
+        printV(processedURL[0])
         product = processedURL[0]
         printStandard ('Generating HTML for: '+product['e4s_product'])
         if printYaml:
