@@ -1,0 +1,7 @@
+- e4s_product: h5bench 
+  version: 0.1.0
+  docs: [README.md, RELEASE.txt, license.txt]
+  spack_name: h5bench
+  Description: "H5bench is a suite of parallel I/O benchmarks or kernels representing I/O patterns that are commonly used in HDF5 applications on high performance computing systems."
+  MemberProduct: True
+  Area: "Development Tools"

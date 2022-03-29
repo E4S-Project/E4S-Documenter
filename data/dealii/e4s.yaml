@@ -1,0 +1,7 @@
+- e4s_product: dealii 
+  version: 0.1.0
+  docs: [README.md, CHANGELOG.md, LICENSE.md]
+  spack_name: dealii
+  Description: "deal.II is a C++ program library targeted at the computational solution of partial differential equations using adaptive finite elements."
+  MemberProduct: True
+  Area: "Math libraries"

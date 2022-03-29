@@ -1,0 +1,7 @@
+- e4s_product: axom 
+  version: 0.1.0
+  docs: [README.md, RELEASE-NOTES.md, LICENSE]
+  spack_name: axom
+  Description: "Axom provides robust, flexible software infrastructure for the development of multi-physics applications and computational tools."
+  MemberProduct: True
+  Area: "PMR"
