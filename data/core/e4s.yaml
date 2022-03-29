@@ -1,0 +1,7 @@
+- e4s_product: core
+  version: 0.1.0
+  docs: [README.md, LICENSE]
+  spack_name: pumi
+  Description: "The SCOREC Core is a set of C/C++ libraries for unstructured mesh simulations on supercomputers."
+  MemberProduct: False
+  Area: "Math libraries"

@@ -1,0 +1,5 @@
+- e4s_product: gptune
+  Area: Tools
+  MemberProduct: False
+  Description: "GPTune is an autotuning framework that relies on multitask and transfer learnings to help solve the underlying black-box optimization problem using Bayesian optimization methodologies."
+  docs:  [README.md, License.txt]

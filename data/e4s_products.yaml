@@ -153,6 +153,6 @@
 -  repo_url: https://github.com/swift-lang/swift-t/blob/master
 -  repo_url: https://github.com/ECP-WarpX/WarpX/blob/development
 -  repo_url: https://github.com/gptune/GPTune/blob/master
-  #-  repo_url: https://github.com/dealii/dealii/blob/master
-  #-  repo_url: https://github.com/hpc-io/h5bench/blob/master
-  #-  repo_url: https://github.com/LLNL/axom/blob/develop
+-  repo_url: https://github.com/dealii/dealii/blob/master
+-  repo_url: https://github.com/hpc-io/h5bench/blob/master
+-  repo_url: https://github.com/LLNL/axom/blob/develop

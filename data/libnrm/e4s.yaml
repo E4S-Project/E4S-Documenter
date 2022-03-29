@@ -1,0 +1,7 @@
+- e4s_product: libnrm
+  version: 0.1.0
+  docs: [README.md, LICENSE, AUTHORS]
+  Description: "This Message Passing Interface (MPI) library allows application of runtime policies for energy efficiency through the MPI standard profiling interface
+(PMPI)."
+  MemberProduct: False
+  Area: "Math libraries"

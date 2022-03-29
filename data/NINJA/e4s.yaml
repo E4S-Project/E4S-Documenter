@@ -1,0 +1,7 @@
+- e4s_product: NINJA
+  version: 0.1.0
+  docs: [AUTHORS, LICENSE.TXT, ChangeLog, NEWS, README, README.md]
+  spack_name: pruners-ninja
+  Description: "Ninja (Noise INJection Agent) is a tool for reproducing subtle and unintended message races"
+  MemberProduct: False
+  Area: "Development tools"
