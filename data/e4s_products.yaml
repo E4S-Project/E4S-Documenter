@@ -59,7 +59,7 @@
 -  repo_url: https://github.com/mfem/mfem/blob/master
 #MPI
 -  repo_url: https://github.com/pmodels/mpich/blob/main
--  repo_url: https://github.com/open-mpi/ompi/blob/master
+-  repo_url: https://github.com/open-mpi/ompi/blob/main
 -  repo_url: https://github.com/Qthreads/qthreads/blob/main
 #/MPI
 #MPI-IO
@@ -76,7 +76,7 @@
 -  repo_url: https://bitbucket.org/icl/papi/src/master
 -  repo_url: https://code.ornl.gov/eck/papyrus/blob/master
   #-  repo_url: https://bitbucket.org/icldistcomp/parsec/src/master
--  repo_url: https://github.com/ICLDisco/parsec/blob/maste
+-  repo_url: https://github.com/ICLDisco/parsec/blob/master
 -  repo_url: https://gitlab.com/petsc/petsc/blob/main
 -  repo_url: https://github.com/Parallel-NetCDF/PnetCDF/blob/master
 #POWERSTACK

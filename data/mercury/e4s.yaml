@@ -2,4 +2,4 @@
   type: TOOL
   Area: "Development tools"
   description: "Mercury is a C library for implementing Remote Procedure Call, optimized for High-Performance Computing Systems."
-  docs:  [README.md, COPYING]
+  docs:  [README.md, version.txt, LICENSE.txt]

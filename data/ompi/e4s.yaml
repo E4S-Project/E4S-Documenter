@@ -1,5 +1,5 @@
 - e4s_product: openmpi
-  docs:  [README.md, NEWS, LICENSE]
+  docs:  [README.md, LICENSE]
   Area: "PMR"
   Description: "Open source MPI implementation used by some vendors and for exploration of new ideas."
   MemberProduct: False
