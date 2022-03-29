@@ -1,0 +1,7 @@
+- e4s_product: slepc
+  version: 0.1.0
+  docs: [README.md, CHANGELOG.md, CONTRIBUTING.md, LICENSE.md]
+  Description: "SLEPc, the Scalable Library for Eigenvalue Problem Computations, is a software package for the solution of large sparse eigenvalue problems on parallel computers."
+  MemberProduct: False
+  Accelerable: True
+  Area: "Math libraries"

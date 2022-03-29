@@ -1,0 +1,6 @@
+- e4s_product: precice
+  version: 0.1.0
+  docs: [docs/README.md, CHANGELOG.md, LICENSE]
+  Description: "preCICE stands for Precise Code Interaction Coupling Environment. Its main component is a library that can be used by simulation programs to be coupled together in a partitioned way, enabling multi-physics simulations, such as fluid-structure interaction."
+  MemberProduct: False
+  Area: "PMR"

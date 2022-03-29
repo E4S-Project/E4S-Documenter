@@ -1,0 +1,7 @@
+- e4s_product: omega_h
+  version: 0.1.0
+  docs: [README.md, LICENSE]
+  spack_name: omega-h
+  Description: "Omega_h is a C++14 library that implements tetrahedron and triangle mesh adaptativity, with a focus on scalable HPC performance"
+  MemberProduct: False
+  Area: "Math libraries"

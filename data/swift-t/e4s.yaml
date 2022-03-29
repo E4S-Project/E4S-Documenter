@@ -1,0 +1,7 @@
+- e4s_product: swift-t
+  version: 0.1.0
+  docs: [Readme.adoc, LICENSE.txt, NOTICE]
+  spack_name: stc
+  Description: "Swift/T is an implicitly parallel programming language for composing external functions and command-line executables into massively parallel applications"
+  MemberProduct: False
+  Area: "PMR"

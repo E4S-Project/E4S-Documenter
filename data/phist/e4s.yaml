@@ -1,0 +1,6 @@
+- e4s_product: phist
+  version: 0.1.0
+  docs: [README.md, CHANGELOG, LICENSE.txt]
+  Description: "PHIST provides implementations of and interfaces to block iterative solvers for sparse linear and eigenvalue problems."
+  MemberProduct: False
+  Area: "Math libraries"

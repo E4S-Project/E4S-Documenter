@@ -1,0 +1,6 @@
+- e4s_product: plasma
+  version: 0.1.0
+  docs: [README.md, LICENSE]
+  Description: "PLASMA is a software package for solving problems in dense linear algebra using OpenMP."
+  MemberProduct: False
+  Area: "Math libraries"

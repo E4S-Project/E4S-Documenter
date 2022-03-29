@@ -1,0 +1,7 @@
+- e4s_product: openPMD-api
+  version: 0.1.0
+  docs: [README.md, COPYING, COPYING.LESSER, CHANGELOG.rst, NEWS.rst]
+  spack_name: openpmd-api
+  Description: "openPMD is an open meta-data schema that provides meaning and self-description for data sets in science and engineering"
+  MemberProduct: False
+  Area: "Data & Viz"

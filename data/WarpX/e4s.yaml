@@ -1,0 +1,8 @@
+- e4s_product: WarpX
+  version: 0.1.0
+  docs: [README.md, LEGAL.txt, LICENSE.txt, CONTRIBUTING.rst, CODE_OF_CONDUCT.rst]
+  spack_name: warpx
+  Description: "WarpX is an advanced electromagnetic Particle-In-Cell code"
+  MemberProduct: False
+  Accelerable: True
+  Area: "PMR"
