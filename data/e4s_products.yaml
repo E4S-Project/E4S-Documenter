@@ -40,7 +40,8 @@
 -  repo_url: https://github.com/trilinos/ForTrilinos/blob/master
 -  repo_url: https://bitbucket.org/berkeleylab/gasnet/src/stable
 -  repo_url: https://github.com/ginkgo-project/ginkgo/blob/develop
--  repo_url: https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse
+  #-  repo_url: https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse
+-  repo_url: https://github.com/HDFGroup/hdf5/blob/develop
 -  repo_url: https://github.com/HPCToolkit/hpctoolkit/blob/master
 -  repo_url: https://github.com/STEllAR-GROUP/hpx/blob/master
 -  repo_url: https://github.com/hypre-space/hypre/blob/master
@@ -97,7 +98,7 @@
 #-spot: Repo unknown
 -  repo_url: https://github.com/liuyangzhuan/ButterflyPACK/blob/master
 -  repo_url: https://github.com/pghysels/STRUMPACK/blob/master
--  repo_url: https://github.com/LLNL/sundials/blob/master
+-  repo_url: https://github.com/LLNL/sundials/blob/develop
 -  repo_url: https://github.com/xiaoyeli/superlu_dist/blob/master
 -  repo_url: https://github.com/swig/swig/blob/master
 -  repo_url: https://github.com/KhronosGroup/SyclParallelSTL/blob/master
@@ -156,3 +157,4 @@
 -  repo_url: https://github.com/dealii/dealii/blob/master
 -  repo_url: https://github.com/hpc-io/h5bench/blob/master
 -  repo_url: https://github.com/LLNL/axom/blob/develop
+-  repo_url: https://github.com/CtopCsUtahEdu/bricklib/blob/r0.1

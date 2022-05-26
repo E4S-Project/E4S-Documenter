@@ -1,5 +1,5 @@
 - e4s_product: hdf5
-  docs:  [README.txt, COPYING]
+  docs:  [README.md, COPYING, release_docs/RELEASE.txt]
   Area: "Data & Viz"
   Description: "A parallel I/O library."
   MemberProduct: False
