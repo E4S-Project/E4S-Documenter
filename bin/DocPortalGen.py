@@ -68,10 +68,19 @@ def getSiteDeployment():
             printV("Couldn't get site deployment data.")
             return None
         else:
+            #print(yamsites)
             for siteName,sysInfo in yamsites.items(): 
+                #print(siteName)
+                #print(sysInfo)
                 for systemName,url in sysInfo:
-                    siteBlob=getURLHead(url,-1).splitlines()
+                    #print(systemName)
+                    #print(url)
+                    siteBlob=getURLHead(url,0,-1)
+                    #print(siteBlob)
+                    siteBlob=siteBlob.splitlines()
+                    #print(siteBlob)
                     for line in siteBlob[1:]:
+                        #print(line)
                         if ',' in line: # and ",," not in line:
                             lineBlob=line.split(',')
                             productName=lineBlob[0]
@@ -599,6 +608,9 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
         deployment=deployments[spackName]
         htmlAgregator+=getDeploymentBlock(deployment)
         #print(getDeploymentBlock(deployment))
+    else:
+        printV("No deployment info for "+spackName) 
+       # printV(deployments.keys())
 
 #    cBlock=getCompatibilityBlock(True)
     #print(cBlock)
