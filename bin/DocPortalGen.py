@@ -93,7 +93,10 @@ def getSiteDeployment():
                             if systemName not in site.keys():
                                 site[systemName]=[]
                             system=site[systemName]
-                            system.append([lineBlob[1],lineBlob[2],lineBlob[3],lineBlob[4]])
+                            if lineBlob[4] == "linux" or lineBlob[4] == "cray":
+                                system.append([lineBlob[1],lineBlob[2],lineBlob[5],lineBlob[3]])
+                            else:
+                                system.append([lineBlob[1],lineBlob[2],lineBlob[3],lineBlob[4]])
                             #print(system)
         return product_list 
 
@@ -472,6 +475,22 @@ def getDeploymentBlock(deployment):
     #print(depAgg)
     return depAgg
 
+def getDeploymentTable(deployment,name):
+    depAgg="|Institution | E4S Deployment | Product | Version | Compiler | Variants | Architecture |\n" # Hash|\n"
+    depAgg+="---| --- | --- | ---| --- | ---| --- |\n" # ---|\n"
+    for sitePair in deployment.items():
+        instname=sitePair[0]+" | "
+        for systemPair in sitePair[1].items():
+            sysname=systemPair[0]+" | "
+            for deps in systemPair[1]:
+                #if deps[3] == "linux" or deps[3] == "cray":
+                    #print(deps)
+                 #   depAgg+=instname+sysname+name+" | "+deps[0]+" | "+deps[1]+" | "+deps[4]+" | "+deps[2]+"\n"
+                #depAgg+="<li><b>Version: </b>"+deps[0]+" <b>Compiler: </b>"+deps[1]+" <b>Variants: </b>"+deps[2]+" <b>Architecture: </b>"+deps[3]+"</li>"
+                #else:
+                depAgg+="|"+instname+sysname+name+" | "+deps[0]+" | "+deps[1]+" | "+deps[2]+" | "+deps[3]+"|\n" #" | HASH"+"\n"
+    return depAgg
+
 def getPolicyStatusString(val):
     if val == 0:
         return "Unreported"
@@ -490,6 +509,24 @@ def getCompatibilityBlock(compat):
     compAgg+="</ol></details>"
     return compAgg
 
+def printDeployment(product,deployments):
+    capName=product['e4s_product'].upper()
+    lowName=capName.lower()
+    spackName=lowName
+    if 'spack_name' in product:
+        spackName=product['spack_name']
+
+    print("Printing deployment for: "+spackName)
+
+    if type(deployments) is dict and spackName in deployments.keys():
+        printV("Checking deployment for "+spackName)
+        deployment=deployments[spackName]
+        #htmlAgregator+=getDeploymentBlock(deployment)
+        print(getDeploymentTable(deployment,spackName))
+    else:
+        printV("No deployment info for "+spackName)
+
+    
 def printProduct(product, ppage, deployments,sub=False, printYaml=False):
     #with open(output_prefix+product['e4s_product'].lower()+".html", "a") as ppage:
     capName=product['e4s_product'].upper()
@@ -651,6 +688,7 @@ if(len(sys.argv)>2):
 htmlTemplate=script_path+'/../templates/e4s_DocPortal_template.html'
 templateFlag='--template'
 printYaml=False
+printDeployments=False
 if(len(sys.argv)>3):
     if templateFlag in sys.argv:
         templateDex=sys.argv.index(templateFlag)
@@ -667,6 +705,9 @@ if(len(sys.argv)>3):
         printYaml=False
     if '--noRemote' in sys.argv:
         useRemoteYAML=False
+    if '--deployments' in sys.argv:
+        printDeployments=True
+        print("Printing deployments!")
 
 printStatus("Product, Spack Package, Accelerable, CUDA Variant, ROCM Variant, HIP Variant, SYCL Variant, Smoke Test")
 
@@ -712,7 +753,10 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
                 firstIt=False
             else:
                 print(''',''', file=listPage)
-        printProduct(product, listPage,deployments, printYaml=printYaml)
+        if printDeployments is True:
+            printDeployment(product,deployments)
+        else:
+            printProduct(product, listPage,deployments, printYaml=printYaml)
         if 'subrepo_urls' in product:
             for suburl in product['subrepo_urls']:
                 printStandard("Generating HTML for SUBURL: "+suburl)
@@ -723,7 +767,10 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
                     print(''',''', file=listPage)
                 product = processedURL[0]
                 #print(product)
-                printProduct(product, listPage,True, printYaml=printYaml)
+                if printDeployments:
+                    printDeployment(product,deployments)
+                else:
+                    printProduct(product, listPage,True, printYaml=printYaml)
     if printYaml is True:
         print('''  ]
 }''', file=listPage)
