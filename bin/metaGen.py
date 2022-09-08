@@ -6,7 +6,14 @@ def getRepoName(url, sub=False):
         name = os.path.basename(os.path.normpath(url))
         #print (name)
         return name
-    #print(url)
+    #This means we have a github base repo url, not the raw blob path.
+    if  url.count('/') == 4:
+        lastslashdex=url.rfind('/')
+        name=url[lastslashdex+1:]
+        print("Base github url name "+name)
+        return name
+
+	#print(url)
     lastblobdex=url.rfind('/blob/')
     if lastblobdex == -1:
         lastblobdex=url.rfind('/src/')
@@ -27,7 +34,7 @@ def getRepoName(url, sub=False):
     print ("Repo Name: "+name)
     return name
 
-repoURL=input("Input URL of example file from repo (e.g. https://github.com/E4S-Project/E4S-documentation-demo/blob/master/README.md): ")
+repoURL=input("Input URL of example file from repo (e.g. https://github.com/E4S-Project/E4S-documentation-demo/blob/master/README.md) or base repo (e.g. https://github.com/E4S-Project/E4S-documentation-demo): ")
 #repoName=input("Input repo name (as found in repo URL): ")
 repoName=getRepoName(repoURL)
 spackName=""
@@ -47,7 +54,7 @@ else:
 docList=input("Input comma separated document list: ").strip()
 #website=input("Input website URL (or enter for none): ")
 subRepos=input("Input coma separated sub-repo url list (or enter for none): ").strip()
-area=input("Input Technical Area (or enter for none/unknown): ").strip()
+area=input("Input Technical Area (PMR, Data & Viz, Math Libraries, Development Tools, Software Ecosystem, or enter for none/unknown): ").strip()
 memberB=False
 member=input("Full Member Product? Input any string for true, enter for false: ").strip()
 if member:
@@ -73,4 +80,8 @@ with open(outputFile, "a") as mdYaml:
     print("  MemberProduct: "+str(memberB), file=mdYaml)
 print("Wrote: "+outputFile)
 print("Add this to your repo list:")
-print("-  repo_url: "+repoURL.strip().rsplit('/',1)[0])
+if  repoURL.count('/') > 4:
+	repoURL=repoURL.strip().rsplit('/',1)[0]
+print("Run:")
+print("echo -  repo_url: "+repoURL+" >> data/e4s_products.yaml")
+print("mv "+ repoName+" data; git add data/"+repoName)

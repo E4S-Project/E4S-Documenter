@@ -1,0 +1,7 @@
+- e4s_product: plumed2
+  version: 0.1.0
+  docs: [README.md, VERSION.txt, COPYING.LESSER]
+  spack_name: plumed
+  area: PMR
+  Description: "PLUMED is an open source library for free energy calculations in molecular systems"
+  MemberProduct: False

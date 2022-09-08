@@ -1,0 +1,6 @@
+- e4s_product: nco
+  version: 0.1.0
+  docs: [README.md , NEWS, LICENSE, COPYING, COPYRIGHT]
+  area: Data & Viz
+  Description: "The NCO toolkit manipulates and analyzes data stored in netCDF-accessible formats"
+  MemberProduct: False

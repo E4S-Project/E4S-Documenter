@@ -1,0 +1,6 @@
+- e4s_product: argobots
+  version: 0.1.0
+  docs: [CHANGES, COPYRIGHT, README.md]
+  area: PMR
+  Description: "Argobots is a lightweight, low-level threading and tasking framework."
+  MemberProduct: False

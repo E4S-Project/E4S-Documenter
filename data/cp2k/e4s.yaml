@@ -1,0 +1,6 @@
+- e4s_product: cp2k
+  version: 0.1.0
+  docs: [README.md, LICENSE]
+  area: PMR
+  Description: "CP2K is a quantum chemistry and solid state physics software package that can perform atomistic simulations of solid state, liquid, molecular, periodic, material, crystal, and biological systems."
+  MemberProduct: False

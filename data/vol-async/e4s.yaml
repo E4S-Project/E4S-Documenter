@@ -1,0 +1,7 @@
+- e4s_product: vol-async
+  version: 0.1.0
+  docs: [README.md, LICENSE.txt, LEGAL.txt]
+  spack_name: hdf5-vol-async
+  area: Data & Viz
+  Description: "HDF5 Asynchronous I/O VOL Connector"
+  MemberProduct: False

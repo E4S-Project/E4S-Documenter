@@ -1,0 +1,6 @@
+- e4s_product: metall
+  version: 0.1.0
+  docs: [README.md, LICENSE-MIT, LICENSE-APACHE, COPYRIGHT]
+  area: Development Tools
+  Description: "A Persistent Memory Allocator for Data-Centric Analytics"
+  MemberProduct: False

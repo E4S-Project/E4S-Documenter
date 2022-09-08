@@ -1,0 +1,6 @@
+- e4s_product: wannier90
+  version: 0.1.0
+  docs: [README.rst, LICENSE, CHANGELOG.md, CONTRIBUTING.md]
+  area: Math Libraries
+  Description: "The Maximally-Localised Generalised Wannier Functions Code"
+  MemberProduct: False

@@ -27,6 +27,8 @@ script_path = os.path.dirname(os.path.abspath( __file__))
 browserHeaders={'User-Agent' : "Magic Browser"}
 rawSegment='/raw/'
 blobSegment='/blob/'
+srcSegment='/src/'
+HEAD='HEAD'
 e4sDotYaml='/e4s.yaml'
 dotE4s='/.e4s'
 bitbucketRaw='?&raw'
@@ -360,6 +362,12 @@ def getRepoName(url, sub=False):
         name = os.path.basename(os.path.normpath(url))
         #print (name)
         return name
+    #This means we have a github base repo url, not the raw blob path.
+    if  url.count('/') == 4:
+        lastslashdex=url.rfind('/')
+        name=url[lastslashdex+1]
+        print("Base github url name "+name)
+        return name
     #print(url)
     lastblobdex=url.rfind('/blob/')
     if lastblobdex == -1:
@@ -436,8 +444,8 @@ def getRepoDocs(url,name,sub=False):
             yamlMD = yaml.safe_load(MDFile)
             printV("Found local e4s.yaml for "+name)
             return yamlMD
-    print("No metadata found for "+name)
-    return None;
+    print("WARNING: No metadata found for "+name)
+    return yamlMD #[{"e4s_product":name,"docs":[]}];
             
 def processURL(url,sub=False):
     repoName=getRepoName(url,sub)
@@ -669,6 +677,23 @@ def parse_html_blocks(templateLoc):
     items = [item.strip() for item in re.split(r'<!--===|===-->',blockText)]
     return dict(zip(items[1::2], items[2::2]))
 
+#To support repo urls without their default branch we need to add HEAD as appropriate to the repo site
+def headify_url(baseURL):
+    #If src or blob is present the url already includes the full path to the default branch
+    if baseURL.find("/src/")>0 or baseURL.find("/blob/")>0:
+        return baseURL
+    
+    if baseURL.find("github.com") >0 or baseURL.find("gitlab") >0:
+        baseURL=baseURL+blobSegment+HEAD
+        return baseURL
+    
+    if baseURL.find("bitbucket.org") >0:
+        baseURL=baseURL+srcSegment+HEAD
+        return baseURL
+        
+    print("WARNING: Could not headify "+baseURL)
+    return baseURL
+
 output_prefix=""
 if(len(sys.argv)>1):
 	if(os.path.isdir(sys.argv[1])):
@@ -741,6 +766,9 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
                 if LooseVersion(repoVersion) > LooseVersion(currentVersion):
                     print("Warning: using repo list version ("+repoVersion+") newer than supported version ("+currentVersion+").")
             continue
+        baseURL=urls['repo_url']
+        urls['repo_url']=headify_url(baseURL)
+        print("headified "+urls['repo_url'])
         processedURL=processURL(urls['repo_url'])
         if processedURL is None:
             print("Error: Could not process "+urls['repo_url'])

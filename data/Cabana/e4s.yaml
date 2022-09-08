@@ -1,0 +1,7 @@
+- e4s_product: Cabana
+  version: 0.1.0
+  docs: [AUTHORS, CHANGELOG.md, CONTRIBUTING.md, LICENSE, README.md]
+  spack_name: cabana
+  area: PMR
+  Description: "Cabana is a performance portable library for particle-based simulations."
+  MemberProduct: False

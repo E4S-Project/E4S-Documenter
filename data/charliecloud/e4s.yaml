@@ -1,0 +1,6 @@
+- e4s_product: charliecloud
+  version: 0.1.0
+  docs: [README.rst, VERSION, LICENSE]
+  area: Software Ecosystem
+  Description: "Charliecloud provides user-defined software stacks (UDSS) for high-performance computing (HPC) centers."
+  MemberProduct: False

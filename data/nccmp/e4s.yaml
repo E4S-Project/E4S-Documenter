@@ -1,0 +1,6 @@
+- e4s_product: nccmp
+  version: 0.1.0
+  docs: [README.md, NEWS, ChangeLog, AUTHORS, COPYING]
+  area: Data & Viz
+  Description: "nccmp compares two NetCDF files bitwise, semantically or with a user defined tolerance"
+  MemberProduct: False

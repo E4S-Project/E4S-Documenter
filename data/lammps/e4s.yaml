@@ -1,0 +1,6 @@
+- e4s_product: lammps
+  version: 0.1.0
+  docs: [README, LICENSE, SECURITY.md]
+  area: PMR
+  Description: "LAMMPS stands for Large-scale Atomic/Molecular Massively Parallel"
+  MemberProduct: False
