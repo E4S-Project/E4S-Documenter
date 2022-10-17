@@ -13,7 +13,7 @@ import sys
 import os
 import shutil
 import re
-from distutils.version import LooseVersion
+from packaging.version import parse
 import markdown
 import base64
 import json
@@ -37,10 +37,10 @@ github_uname="anonymous"
 github_token="blank"
 nameSet=set(())
 
-printv=True
+printv=False #True
 useRemoteYAML=True
-printstandard=False
-printstatus=True
+printstandard=False #False
+printstatus=False #True
 htmlBlocks=""
 
 def printV(toPrint):
@@ -137,6 +137,8 @@ def getSpackInfo(name,accel):
     syclStatus=""
     hipStatus=""
     hasTest="Absent"
+    e4sTest="Absent"
+    e4sTestSum="False"
     rocmSum="False"
     cudaSum="False"
     syclSum="False"
@@ -176,8 +178,13 @@ def getSpackInfo(name,accel):
             if "def test(" in line:
                 hasTest="Present"
                 testSum="True"
-    infoMap["SmokeTest"]=hasTest
-    printStatus(name+", True, "+accel+", "+cudaSum+", "+rocmSum+", "+hipSum+", "+syclSum+", "+testSum)
+    infoMap["Spack Smoke Test"]=hasTest
+    testRes=os.system("bash -c \"grep -Ir spackLoadUnique ./testsuite/validation_tests/ | grep "+name+" &> /dev/null\"")
+    if testRes == 0:
+        e4sTest="Present"
+        e4sTestSum="True"
+    infoMap["E4S Testsuite Test"]=e4sTest
+    printStatus(name+", True, "+accel+", "+cudaSum+", "+rocmSum+", "+hipSum+", "+syclSum+", "+testSum+", "+e4sTestSum)
     return infoMap
 
 xGitDict={}
@@ -459,7 +466,7 @@ def processURL(url,sub=False):
         yamlMD[0]['repo_url']=url
     if yamlMD is not None and 'version' in yamlMD[0]:
                 repoVersion=yamlMD[0]['version']
-                if LooseVersion(repoVersion) > LooseVersion(currentVersion):
+                if parse(repoVersion) > parse(currentVersion):
                     print("Warning: using metadata version ("+repoVersion+") newer than supported version ("+currentVersion+").")
     return yamlMD #{'e4s_product':repoName,'docs':docs}
 
@@ -499,6 +506,28 @@ def getDeploymentTable(deployment,name):
                 depAgg+="|"+instname+sysname+name+" | "+deps[0]+" | "+deps[1]+" | "+deps[2]+" | "+deps[3]+"|\n" #" | HASH"+"\n"
     return depAgg
 
+def getDeploymentYaml(deployment,name):
+    
+    depAgg="" # ---|\n"
+    firstIt=True
+    newBlock="{\n"
+    for sitePair in deployment.items():
+        instname="\"Institution\": \""+sitePair[0]+"\",\n"
+        for systemPair in sitePair[1].items():
+            sysname="\"E4S Deployment\": \""+systemPair[0]+"\",\n"
+            for deps in systemPair[1]:
+                #if deps[3] == "linux" or deps[3] == "cray":
+                    #print(deps)
+                 #   depAgg+=instname+sysname+name+" | "+deps[0]+" | "+deps[1]+" | "+deps[4]+" | "+deps[2]+"\n"
+                #depAgg+="<li><b>Version: </b>"+deps[0]+" <b>Compiler: </b>"+deps[1]+" <b>Variants: </b>"+deps[2]+" <b>Architecture: </b>"+deps[3]+"</li>"
+                #else:
+                depAgg+=newBlock
+                if firstIt:
+                    newBlock=",\n{\n"
+                    firstIt=False
+                depAgg+=instname+sysname+"\"Product\": \""+name+"\",\n\"Version\": \""+deps[0]+"\",\n\"Compiler\": \""+deps[1]+"\",\n\"Variants\": \""+deps[2]+"\",\n\"Architecture\": \""+deps[3]+"\"\n}" #" | HASH"+"\n"
+    return depAgg
+
 def getPolicyStatusString(val):
     if val == 0:
         return "Unreported"
@@ -517,22 +546,27 @@ def getCompatibilityBlock(compat):
     compAgg+="</ol></details>"
     return compAgg
 
-def printDeployment(product,deployments):
+def printDeployment(product,deployments,printYaml=True,firstBlock=False):
     capName=product['e4s_product'].upper()
     lowName=capName.lower()
     spackName=lowName
     if 'spack_name' in product:
         spackName=product['spack_name']
 
-    print("Printing deployment for: "+spackName)
-
+    printStandard("Printing deployment for: "+spackName)
+    #print("FIRST BLOCK?! "+str(firstBlock))
     if type(deployments) is dict and spackName in deployments.keys():
         printV("Checking deployment for "+spackName)
         deployment=deployments[spackName]
         #htmlAgregator+=getDeploymentBlock(deployment)
-        print(getDeploymentTable(deployment,spackName))
+        if printYaml:
+            if not firstBlock:
+                print(",", file=listPage)
+            print(getDeploymentYaml(deployment,spackName), file=listPage)
+        else:
+            print(getDeploymentTable(deployment,spackName))
     else:
-        printV("No deployment info for "+spackName)
+        printStandard("No deployment info for "+spackName)
 
     
 def printProduct(product, ppage, deployments,sub=False, printYaml=False):
@@ -712,7 +746,7 @@ if(len(sys.argv)>2):
 		
 htmlTemplate=script_path+'/../templates/e4s_DocPortal_template.html'
 templateFlag='--template'
-printYaml=False
+printYaml=True
 printDeployments=False
 if(len(sys.argv)>3):
     if templateFlag in sys.argv:
@@ -732,24 +766,28 @@ if(len(sys.argv)>3):
         useRemoteYAML=False
     if '--deployments' in sys.argv:
         printDeployments=True
-        print("Printing deployments!")
+        printStandard("Printing deployments!")
 
-printStatus("Product, Spack Package, Accelerable, CUDA Variant, ROCM Variant, HIP Variant, SYCL Variant, Smoke Test")
+if not printDeployments:
+    printStatus("Product, Spack Package, Accelerable, CUDA Variant, ROCM Variant, HIP Variant, SYCL Variant, Smoke Test, Testsuite Test")
 
-htmlBlocks=parse_html_blocks(htmlTemplate)
-#print(htmlBlocks)
-getCredentials()
+    htmlBlocks=parse_html_blocks(htmlTemplate)
+    #print(htmlBlocks)
+    getCredentials()
 deployments=getSiteDeployment()
 
 with open(productList) as MDlist:
     products = yaml.safe_load(MDlist)
 
 listFileName="DocPortal"
+if printDeployments:
+    listFileName="E4S-Deployments"
 listFileSuffix='.html'
 yamlStart='''{
   "data": ['''
 yamlEnd='''  ]
 }'''
+firstDepBlock=True
 if printYaml is True:
     listFileSuffix='.yml'
 with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
@@ -763,12 +801,12 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
         if 'repo_url' not in urls:
             if 'version' in urls:
                 repoVersion=urls['version']
-                if LooseVersion(repoVersion) > LooseVersion(currentVersion):
+                if parse(repoVersion) > parse(currentVersion):
                     print("Warning: using repo list version ("+repoVersion+") newer than supported version ("+currentVersion+").")
             continue
         baseURL=urls['repo_url']
         urls['repo_url']=headify_url(baseURL)
-        print("headified "+urls['repo_url'])
+        printStandard("headified "+urls['repo_url'])
         processedURL=processURL(urls['repo_url'])
         if processedURL is None:
             print("Error: Could not process "+urls['repo_url'])
@@ -779,10 +817,11 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
         if printYaml:
             if firstIt is True:
                 firstIt=False
-            else:
+            elif not printDeployments:
                 print(''',''', file=listPage)
         if printDeployments is True:
-            printDeployment(product,deployments)
+            printDeployment(product,deployments,printYaml=printYaml,firstBlock=firstDepBlock)
+            firstDepBlock=False
         else:
             printProduct(product, listPage,deployments, printYaml=printYaml)
         if 'subrepo_urls' in product:
@@ -791,12 +830,12 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
                 processedURL=processURL(suburl,True)
                 if processedURL is None:
                     continue
-                if printYaml:
+                if printYaml and not printDeployments:
                     print(''',''', file=listPage)
                 product = processedURL[0]
                 #print(product)
                 if printDeployments:
-                    printDeployment(product,deployments)
+                    printDeployment(product,deployments,printYaml=printYaml)
                 else:
                     printProduct(product, listPage,True, printYaml=printYaml)
     if printYaml is True:
