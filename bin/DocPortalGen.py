@@ -85,7 +85,11 @@ def getSiteDeployment():
                         #print(line)
                         if ',' in line: # and ",," not in line:
                             lineBlob=line.split(',')
+                            #The patch entry in variants may have an arbitrary number of tokens so get the last entry from the end instead of counting up
+                            lastDex=len(lineBlob)-1;
                             productName=lineBlob[0]
+                            #if productName == "adios":
+                            #    print(line)
                             if productName not in product_list.keys():
                                 product_list[productName]={}
                             product=product_list[productName]
@@ -95,11 +99,25 @@ def getSiteDeployment():
                             if systemName not in site.keys():
                                 site[systemName]=[]
                             system=site[systemName]
-                            if lineBlob[4] == "linux" or lineBlob[4] == "cray":
-                                system.append([lineBlob[1],lineBlob[2],lineBlob[5],lineBlob[3]])
-                            else:
-                                system.append([lineBlob[1],lineBlob[2],lineBlob[3],lineBlob[4]])
-                            #print(system)
+                            
+                            verDex=1
+                            comDex=2
+                            varDex=5
+                            archDex=3
+                            lastVar=lastDex
+
+                            if lineBlob[4] != "linux" and lineBlob[4] != "cray":
+                                varDex=3
+                                #The last token might be hash, in which case the second to last is the architecture, which always has a '-'
+                                if "-" not in lineBlob[lastDex]:
+                                    lastDex=lastDex-1
+                                archDex=lastDex
+                                lastVar=archDex-1
+                            varStep=varDex+1
+                            while varStep <= lastVar:
+                                lineBlob[varDex]=lineBlob[varDex]+","+lineBlob[varStep]
+                                varStep=varStep+1
+                            system.append([lineBlob[verDex],lineBlob[comDex],lineBlob[varDex],lineBlob[archDex]])
         return product_list 
 
 
@@ -525,6 +543,9 @@ def getDeploymentYaml(deployment,name):
                 if firstIt:
                     newBlock=",\n{\n"
                     firstIt=False
+                deps[2]=deps[2].replace("~"," ~")
+                deps[2]=deps[2].replace("+"," +")
+                deps[2]=deps[2].replace(","," ,")
                 depAgg+=instname+sysname+"\"Product\": \""+name+"\",\n\"Version\": \""+deps[0]+"\",\n\"Compiler\": \""+deps[1]+"\",\n\"Variants\": \""+deps[2]+"\",\n\"Architecture\": \""+deps[3]+"\"\n}" #" | HASH"+"\n"
     return depAgg
 
