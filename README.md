@@ -35,9 +35,9 @@ Other valid entries include website, for a link to a primary web resource other 
 ***metaGen.py*** prompts the user for fields required for a valid metadata yaml file and prints the resulting file to the current directory.
 
 ## Adding Your Product to the Docportal
-In order for your product summary to appear in the DocPortal two steps are necessary. First a metadata file must be created and added either to the DocPortal repo on your own project in a location where it can be found. The format of the e4s.yaml file is described above. To administer your own metadata file create `.e4s/e4s.yaml` in the root of your repository. Alternatively you can request creation of a metadata file in the DocPortal repository. Metadata files in the repository must be created in a `data/<name>` subdirectory where `name` is the name of product repository.
+In order for your product summary to appear in the DocPortal two steps are necessary. First a metadata file must be created and added either to the DocPortal repo on your own project in a location where it can be found or to the E4S-Documenter repository. The format of the e4s.yaml file is described above. To administer your own metadata file create `.e4s/e4s.yaml` in the root of your repository. Alternatively you can request creation of a metadata file in the E4S-Documenter repository. Metadata files in the E4S-Documenter repository must be created in a `data/<name>` subdirectory where `name` is the name of product repository.
 
-Second, an entry must be added to the [url_list](https://github.com/E4S-Project/E4S-Documenter/blob/master/data/e4s_products.yaml). This can be done either by submitting a PR or registering an issue with the E4S-Documenter repo. Entries to the list require the URL to the product's repository, each on their own line, formatted as in this example: 
+Second, an entry must be added to the [url_list](https://github.com/E4S-Project/E4S-Documenter/blob/master/data/e4s_products.yaml). This can be done either by submitting a PR or registering an issue with the E4S-Documenter repo. Entries to the list require the URL to the product's repository, on its own line, formatted as in this example: 
 
 `- repo_url: https://github.com/UO-OACISS/tau2`
 
