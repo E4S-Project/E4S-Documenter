@@ -18,7 +18,27 @@ Other valid entries include website, for a link to a primary web resource other 
 
 [Example](https://github.com/E4S-Project/E4S-documentation-demo/blob/master/.e4s/e4s.yaml)
 
+```yaml
+- e4s_product: tau  #The e4s_product entry is the name of the product to display in the table.
+  #spack_name: tau #Optional. Define the spack package name if the e4s_product name is different.
+  docs:  [README, Changes, LICENSE] #List of documents to be summarized (relative to the root of the repository)
+  Area: "Development tools" #The category of product. 
+      #Areas include Development Tools, PMR (Programming Models and Runtimes), Math Libraries, Data & Viz, and Software Ecosystem
+  Description: "A performance analysis and tuning library." #A very brief description of the application.
+  MemberProduct: False #Indicate if the product has adopted E4S community policies.
+  Accelerable: True #Indicate if the product is capable of running on accelerator hardware
+  ```
+
 ## Script Usage
 ***DocPortalGen.py*** requires a single argument, the path to an existing directory where the summary pages and the top level list page are generated. It reads from a repository list and metadata file cache in its local data directory. Optionally a second argument, a path to an alternate repository list, may be provided.
 
 ***metaGen.py*** prompts the user for fields required for a valid metadata yaml file and prints the resulting file to the current directory.
+
+## Adding Your Product to the Docportal
+In order for your product summary to appear in the DocPortal two steps are necessary. First a metadata file must be created and added either to the DocPortal repo on your own project in a location where it can be found or to the E4S-Documenter repository. The format of the e4s.yaml file is described above. To administer your own metadata file create `.e4s/e4s.yaml` in the root of your repository. Alternatively you can request creation of a metadata file in the E4S-Documenter repository. Metadata files in the E4S-Documenter repository must be created in a `data/<name>` subdirectory where `name` is the name of product repository.
+
+Second, an entry must be added to the [url_list](https://github.com/E4S-Project/E4S-Documenter/blob/master/data/e4s_products.yaml). This can be done either by submitting a PR or registering an issue with the E4S-Documenter repo. Entries to the list require the URL to the product's repository, on its own line, formatted as in this example: 
+
+`- repo_url: https://github.com/UO-OACISS/tau2`
+
+When these two steps are complete the DocPortal will have the new entry available after its next nightly rebuild. A rebuild can also be launched by request for more immedeate confirmation of a successful update.
