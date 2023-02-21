@@ -241,13 +241,16 @@ def getLastCommitDate(url):
     #Avoid api access rate limit errors. (There's probably a more efficient place to put this)
     
     if "github.com" in url:
+       # print(url)
         url_split=url.split('/')
         #we need the first two tokens (repo and project) from the URL
         api_url="https://api.github.com/repos/"+url_split[3]+"/"+url_split[4]+"/commits?path="
         file_path=""
         for x in url_split[7:]:
             file_path=file_path+"/"+x
+            #print(file_path)
         api_url=api_url+file_path+"&page=1&per_page=1"
+        #print(api_url)
         try:
             #print(github_uname, github_token)
             json_url = requests.get(api_url,headers=browserHeaders,auth=(github_uname, github_token))
@@ -257,8 +260,11 @@ def getLastCommitDate(url):
             #print(str(data))
             #print(data.keys())
             #print(data["message"])
+            if not data:
+                print("Warning: Date information missing for: "+api_url) 
+                return "Unknown"
             if "message" in data:
-                print("Warning: Date information not returned")
+                print("Warning: Date information error")
                 print(data["message"])
                 return "Unknown"
             dateStr=data[0]["commit"]["committer"]["date"]
@@ -281,7 +287,7 @@ def getLastCommitDate(url):
         customServer=False
         if "bitbucket.org" not in url:
             api_url="https://"+url_split[2]+"/rest/api/1.0/projects/"+url_split[4]+"/repos/"+url_split[6]+"/commits?path="
-            #These url's will have anohter segment, so start after it
+            #These url's will have another segment, so start after it
             pathChunk=8
             lastDex=len(url_split)-1
             if('?' in url_split[lastDex]):
@@ -678,7 +684,7 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
             if "skip" in doc:
                 skip=doc["skip"]
         docURL=rawFileURL+"/"+docLoc+appendRaw
-        #print(docURL)
+       # print(docURL)
         docHead=getURLHead(docURL,skip,chars)
         
         if docHead is None:
@@ -826,7 +832,8 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
                     print("Warning: using repo list version ("+repoVersion+") newer than supported version ("+currentVersion+").")
             continue
         baseURL=urls['repo_url']
-        urls['repo_url']=headify_url(baseURL)
+        #print(baseURL)
+        urls['repo_url']=headify_url(baseURL.rstrip('/'))
         printStandard("headified "+urls['repo_url'])
         processedURL=processURL(urls['repo_url'])
         if processedURL is None:

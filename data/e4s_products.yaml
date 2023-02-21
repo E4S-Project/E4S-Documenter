@@ -7,7 +7,7 @@
 - repo_url: https://github.com/PRUNERS/ReMPI
 - repo_url: https://github.com/LLNL/FPChecker
 #/AID
-- repo_url: https://xgitlab.cels.anl.gov/argo/aml
+- repo_url: https://github.com/anlsys/aml
 #ALPINE
 - repo_url: https://github.com/Alpine-DAV/ascent
 - repo_url: https://gitlab.kitware.com/paraview/paraview
@@ -25,7 +25,7 @@
 - repo_url: https://github.com/LLNL/CHAI
 - repo_url: https://github.com/cinemascience/cinema
 #-cuda
-- repo_url: https://xgitlab.cels.anl.gov/darshan/darshan
+- repo_url: https://github.com/darshan-hpc/darshan 
 - repo_url: https://github.com/ORNL-CEES/DataTransferKit
 - repo_url: https://github.com/dyninst/dyninst
 #e4s
@@ -42,7 +42,8 @@
 - repo_url: https://github.com/ginkgo-project/ginkgo
 #- repo_url: https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse
 - repo_url: https://github.com/HDFGroup/hdf5
-- repo_url: https://github.com/HPCToolkit/hpctoolkit
+  #- repo_url: https://github.com/HPCToolkit/hpctoolkit
+- repo_url: https://gitlab.com/hpctoolkit/hpctoolkit
 - repo_url: https://github.com/STEllAR-GROUP/hpx
 - repo_url: https://github.com/hypre-space/hypre
 - repo_url: https://github.com/kokkos/kokkos
@@ -66,7 +67,7 @@
 #MPI-IO
 #-ROMIO #Part of MPICH
 #/MPI-IO
-- repo_url: https://xgitlab.cels.anl.gov/argo/hnrm
+#- repo_url: https://xgitlab.cels.anl.gov/argo/hnrm  #Dead repo. Replacement unknown
 #OPENACC
 #-clacc #Repo unknown
 #/OPENACC
@@ -93,7 +94,7 @@
 - repo_url: https://github.com/Reference-ScaLAPACK/scalapack
 - repo_url: https://github.com/LLNL/scr
 - repo_url: https://github.com/lanl/SICM
-- repo_url: https://bitbucket.org/icl/slate
+- repo_url: https://github.com/icl-utk-edu/slate 
 - repo_url: https://github.com/spack/spack
 #-spot: Repo unknown
 - repo_url: https://github.com/liuyangzhuan/ButterflyPACK
@@ -143,11 +144,11 @@
 - repo_url: https://github.com/GlobalArrays/ga
 - repo_url: https://github.com/mpark/variant
 - repo_url: https://github.com/PRUNERS/NINJA
-- repo_url: https://xgitlab.cels.anl.gov/argo/libnrm
+- repo_url: https://github.com/anlsys/libnrm
 - repo_url: https://github.com/sandialabs/omega_h
 - repo_url: https://github.com/openPMD/openPMD-api
 - repo_url: https://bitbucket.org/essex/phist
-- repo_url: https://bitbucket.org/icl/plasma
+- repo_url: https://github.com/icl-utk-edu/plasma 
 - repo_url: https://github.com/precice/precice
 - repo_url: https://github.com/SCOREC/core
 - repo_url: https://gitlab.com/slepc/slepc
@@ -171,3 +172,4 @@
 - repo_url: https://github.com/plumed/plumed2
 - repo_url: https://github.com/LLNL/metall
 - repo_url: https://github.com/wannier-developers/wannier90
+- repo_url: https://github.com/robertu94/libpressio
