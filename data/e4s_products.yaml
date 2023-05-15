@@ -30,7 +30,8 @@
 - repo_url: https://github.com/dyninst/dyninst
 #e4s
 #FFT
-- repo_url: https://bitbucket.org/icl/heffte
+- repo_url: https://github.com/icl-utk-edu/heffte
+#- repo_url: https://bitbucket.org/icl/heffte
 #- repo_url: https://github.com/spiralgen/fftx/blob/master #Repo gone/changed?
 #/FFT
 - repo_url: https://github.com/laristra/flecsi
@@ -173,3 +174,8 @@
 - repo_url: https://github.com/LLNL/metall
 - repo_url: https://github.com/wannier-developers/wannier90
 - repo_url: https://github.com/robertu94/libpressio
+- repo_url: https://github.com/Xyce/Xyce
+- repo_url: https://github.com/robertu94/MGARD
+- repo_url: https://github.com/szcompressor/cusz
+- repo_url: https://github.com/DataLib-ECP/vol-log-based
+- repo_url: https://github.com/hpc-io/vol-cache
