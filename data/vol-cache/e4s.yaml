@@ -1,0 +1,6 @@
+- e4s_product: hdf5-vol-cache
+  spack_name: hdf5-vol-cache
+  docs:  [README.md, LICENSE]
+  Area: "Data & Viz"
+  Description: "HDF5 Cache VOL connector is for caching data on fast storage layers and moving data asynchronously to the parallel file system to hide I/O overhead."
+  MemberProduct: False

@@ -1,0 +1,6 @@
+- e4s_product: libpressio
+  version: 0.1.0
+  docs: [README.md, COPYRIGHT.txt, CONTRIBUTORS.md]
+  area: Math Libraries
+  Description: "A generic abstraction for the compression of dense tensors"
+  MemberProduct: False

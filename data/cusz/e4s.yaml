@@ -1,0 +1,6 @@
+- e4s_product: cuSZ 
+  version: 0.1.0
+  docs: [README.md, changelog, LICENSE]
+  area: "Data & Viz" 
+  Description: "A GPU accelerated error-bounded lossy compression for scientific data"
+  MemberProduct: False

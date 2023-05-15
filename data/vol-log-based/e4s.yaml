@@ -1,0 +1,6 @@
+- e4s_product: hdf5-vol-log
+  spack_name: hdf5-vol-log
+  docs:  [README.md, COPYRIGHT, RELEASE_NOTE.md]
+  Area: "Data & Viz"
+  Description: "HDF5 Log-based VOL Connector is an HDF5 VOL Plugin that stores HDF5 datasets in a log-based storage layout."
+  MemberProduct: False

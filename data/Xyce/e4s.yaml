@@ -1,0 +1,7 @@
+- e4s_product: STAT
+  version: 0.1.0
+  docs: [README.md,CONTRIBUTING.md,COPYING]
+  spack_name: xyce 
+  area: Simulation
+  Description: "An open source, SPICE-compatible, high-performance analog circuit simulator"
+  MemberProduct: False

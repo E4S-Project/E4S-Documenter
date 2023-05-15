@@ -1,0 +1,6 @@
+- e4s_product: MGARD
+  version: 0.1.0
+  docs: [README.md, Copyright.txt, LICENSE]
+  area: "Data & Viz" 
+  Description: "MGARD error bounded lossy compressor"
+  MemberProduct: False
