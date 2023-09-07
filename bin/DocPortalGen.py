@@ -193,9 +193,10 @@ def getSpackInfo(name,accel):
     packageLoc=packageLoc+"/package.py"
     with open(packageLoc,'r') as f:
         for line in f:
-            if "def test(" in line:
+            if "def test(" in line or "def test_" in line:
                 hasTest="Present"
                 testSum="True"
+                break
     infoMap["Spack Smoke Test"]=hasTest
     testRes=os.system("bash -c \"grep -Ir spackLoadUnique ./testsuite/validation_tests/ | grep "+name+" &> /dev/null\"")
     if testRes == 0:
