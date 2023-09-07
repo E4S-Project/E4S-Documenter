@@ -1,4 +1,4 @@
-- e4s_product: STAT
+- e4s_product: Xyce 
   version: 0.1.0
   docs: [README.md,CONTRIBUTING.md,COPYING]
   spack_name: xyce 
