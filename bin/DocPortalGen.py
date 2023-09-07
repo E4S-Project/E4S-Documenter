@@ -643,6 +643,9 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
         for key,value in spackInfo.items():
             printKey=key
             if key == "Variants":
+                if value.strip(' \n') != "" and accel == "Undetermined":
+                    # spack accel variants detected, product field missing
+                    accel = "Product provides spack variants to enable accelerator support"
                 printKey="Accelerator Variants"
                 htmlAgregator+="<B>Accelerator Support:</B> \n"+accel+"<br>\n"
             htmlAgregator+="<B>"+printKey+":</B> \n"+value+"<br>\n"
