@@ -1,6 +1,6 @@
 - e4s_product: gasnet
-  version: 0.1.0
   docs: [README,license.txt]
   area: PMR
   Description: "A networking middleware layer that provides portable communication primitives."
-  MemberProduct: False
+  MemberProduct: True
+  Accelerable: True

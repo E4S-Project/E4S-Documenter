@@ -153,6 +153,7 @@ def getSpackInfo(name,accel):
     rocmStatus=""
     cudaStatus=""
     syclStatus=""
+    lzStatus=""
     hipStatus=""
     hasTest="Absent"
     e4sTest="Absent"
@@ -160,6 +161,7 @@ def getSpackInfo(name,accel):
     rocmSum="False"
     cudaSum="False"
     syclSum="False"
+    lzSum="False"
     testSum="False"
     hipSum="False"
     infoList=infoBlob.split("\n\n")
@@ -184,25 +186,29 @@ def getSpackInfo(name,accel):
                         if "sycl" in line:
                             syclStatus="SYCL"
                             syclSum="True"
+                        if "level_zero" in line:
+                            lzStatus="Level Zero"
+                            lzSum="True"
                         if "hip" in line:
                             hipStatus="HIP"
                             hipSum="True"
-                    value=cudaStatus+" "+rocmStatus+" "+hipStatus+" "+syclStatus
+                    value=cudaStatus+" "+rocmStatus+" "+hipStatus+" "+syclStatus+" "+lzStatus
                 infoMap[infoEntry[0].strip(' \n')]=value
     packageLoc=subprocess.run(['spack', 'location', '-p', name], stdout=subprocess.PIPE).stdout.decode('utf-8').strip(' \n')
     packageLoc=packageLoc+"/package.py"
     with open(packageLoc,'r') as f:
         for line in f:
-            if "def test(" in line:
+            if "def test(" in line or "def test_" in line:
                 hasTest="Present"
                 testSum="True"
+                break
     infoMap["Spack Smoke Test"]=hasTest
     testRes=os.system("bash -c \"grep -Ir spackLoadUnique ./testsuite/validation_tests/ | grep "+name+" &> /dev/null\"")
     if testRes == 0:
         e4sTest="Present"
         e4sTestSum="True"
     infoMap["E4S Testsuite Test"]=e4sTest
-    printStatus(name+", True, "+accel+", "+cudaSum+", "+rocmSum+", "+hipSum+", "+syclSum+", "+testSum+", "+e4sTestSum)
+    printStatus(name+", True, "+accel+", "+cudaSum+", "+rocmSum+", "+hipSum+", "+syclSum+", "+lzSum+", "+testSum+", "+e4sTestSum)
     return infoMap
 
 xGitDict={}
@@ -637,6 +643,9 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
         for key,value in spackInfo.items():
             printKey=key
             if key == "Variants":
+                if value.strip(' \n') != "" and accel == "Undetermined":
+                    # spack accel variants detected, product field missing
+                    accel = "Product provides spack variants to enable accelerator support"
                 printKey="Accelerator Variants"
                 htmlAgregator+="<B>Accelerator Support:</B> \n"+accel+"<br>\n"
             htmlAgregator+="<B>"+printKey+":</B> \n"+value+"<br>\n"
