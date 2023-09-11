@@ -1,6 +1,6 @@
 - e4s_product: paraview
   version: 0.1.0
-  docs: [CONTRIBUTING.md,Copyright.txt,License_v1.2.txt,README.md,version.txt]
+  docs: [CONTRIBUTING.md,Copyright.txt,README.md,version.txt]
   Area: "Data & Viz"
   Description: "Visualization and data analysis system with in situ library within the Paraview product suite."
   MemberProduct: False

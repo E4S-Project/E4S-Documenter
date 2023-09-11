@@ -5,5 +5,5 @@
   MemberProduct: False
   website: https://icl.utk.edu/dte
   docs: [{"doc":"README.rst","type":"readme"},{"doc":"CHANGELOG.md","type":"changelog"},{"doc":"LICENSE.txt","type":"license"}]
-  subrepo_urls: ["https://github.com/icldisco/parsec.git"]
+  subrepo_urls: ["https://github.com/icldisco/parsec"]
 

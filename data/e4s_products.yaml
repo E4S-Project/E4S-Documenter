@@ -76,7 +76,8 @@
 - repo_url: https://github.com/pmodels/bolt
 - repo_url: https://github.com/SOLLVE/sollve_vv
 #/OPENMP
-- repo_url: https://bitbucket.org/icl/papi
+#- repo_url: https://bitbucket.org/icl/papi
+- repo_url: https://github.com/icl-utk-edu/papi
 - repo_url: https://github.com/ORNL/papyrus
 #- repo_url: https://bitbucket.org/icldistcomp/parsec/src/master
 - repo_url: https://github.com/ICLDisco/parsec
