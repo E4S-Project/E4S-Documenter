@@ -1,5 +1,5 @@
 - e4s_product: raja
-  docs:  [README.md, RELEASE_NOTES.md, LICENSE]
+  docs:  [{"doc":"README.md","skip":816,"chars":960}, RELEASE_NOTES.md, LICENSE]
   Area: "PMR"
   Description: "Portable parallel programming library."
   MemberProduct: False

@@ -174,25 +174,31 @@ def getSpackInfo(name,accel):
                     value=value.strip('/')
                     value="<a href="+value+">"+value+"</a>"
                 if tag == 'Variants':
-                    value=infoList[index+1]
-                    variants=value.splitlines()
-                    for line in variants:
-                        if "rocm" in line:
-                            rocmStatus="ROCM"
-                            rocmSum="True"
-                        if "cuda" in line: 
-                            cudaStatus="CUDA"
-                            cudaSum="True"
-                        if "sycl" in line:
-                            syclStatus="SYCL"
-                            syclSum="True"
-                        if "level_zero" in line:
-                            lzStatus="Level Zero"
-                            lzSum="True"
-                        if "hip" in line:
-                            hipStatus="HIP"
-                            hipSum="True"
+                    #value=infoList[index+1]
+                    for value in infoList[index:]:
+                        #print(value)
+                        if not value.startswith(' ') and not value.startswith('Variants'):
+                            #print("breaking on "+value)
+                            break
+                        variants=value.splitlines()
+                        for line in variants:
+                            if "rocm" in line:
+                                rocmStatus="ROCM"
+                                rocmSum="True"
+                            if "cuda" in line: 
+                                cudaStatus="CUDA"
+                                cudaSum="True"
+                            if "sycl" in line:
+                                syclStatus="SYCL"
+                                syclSum="True"
+                            if "level_zero" in line:
+                                lzStatus="Level Zero"
+                                lzSum="True"
+                            if "hip" in line:
+                                hipStatus="HIP"
+                                hipSum="True"
                     value=cudaStatus+" "+rocmStatus+" "+hipStatus+" "+syclStatus+" "+lzStatus
+                    #print(value)
                 infoMap[infoEntry[0].strip(' \n')]=value
     packageLoc=subprocess.run(['spack', 'location', '-p', name], stdout=subprocess.PIPE).stdout.decode('utf-8').strip(' \n')
     packageLoc=packageLoc+"/package.py"
