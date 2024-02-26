@@ -1,0 +1,6 @@
+- e4s_product: torchbraid
+  version: 0.1.0
+  docs: [README.md,LICENSE.md,Copyright.txt]
+  area: AI
+  Description: "XBraid interface to PyTorch"
+  MemberProduct: False

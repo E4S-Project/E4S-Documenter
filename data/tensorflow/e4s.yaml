@@ -1,0 +1,7 @@
+- e4s_product: tensorflow
+  version: 0.1.0
+  docs: [README.md,RELEASE.md,LICENSE]
+  spack_name: py-tensorflow
+  area: AI
+  Description: "An end-to-end open source platform for machine learning"
+  MemberProduct: False

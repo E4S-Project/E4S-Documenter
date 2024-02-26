@@ -1,0 +1,6 @@
+- e4s_product: openai-python
+  version: 0.1.0
+  docs: [README.md, CHANGELOG.md, LICENSE]
+  area: AI
+  Description: "The OpenAI Python library provides convenient access to the OpenAI REST API"
+  MemberProduct: False

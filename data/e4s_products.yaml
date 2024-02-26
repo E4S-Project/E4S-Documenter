@@ -181,3 +181,16 @@
 - repo_url: https://github.com/DataLib-ECP/vol-log-based
 - repo_url: https://github.com/hpc-io/vol-cache
 - repo_url: https://github.com/HDFGroup/vol-daos
+#AI
+- repo_url: https://github.com/Multilevel-NN/torchbraid
+- repo_url: https://github.com/LLNL/lbann
+- repo_url: https://github.com/tensorflow/tensorflow
+- repo_url: https://github.com/pytorch/pytorch
+- repo_url: https://github.com/google/jax 
+- repo_url: https://github.com/pandas-dev/pandas
+- repo_url: https://github.com/scikit-learn/scikit-learn
+- repo_url: https://github.com/opencv/opencv
+- repo_url: https://github.com/horovod/horovod
+- repo_url: https://github.com/keras-team/keras
+- repo_url: https://github.com/openai/openai-python
+

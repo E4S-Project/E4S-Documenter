@@ -1,0 +1,7 @@
+- e4s_product: keras
+  version: 0.1.0
+  docs: [README.md,LICENSE]
+  spack_name: py-keras
+  area: AI
+  Description: "a multi-backend deep learning framework"
+  MemberProduct: False

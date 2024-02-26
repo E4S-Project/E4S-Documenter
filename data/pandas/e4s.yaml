@@ -1,0 +1,7 @@
+- e4s_product: pandas
+  version: 0.1.0
+  docs: [README.md,LICENSE]
+  spack_name: py-pandas
+  area: AI
+  Description: "powerful Python data analysis toolkit"
+  MemberProduct: False

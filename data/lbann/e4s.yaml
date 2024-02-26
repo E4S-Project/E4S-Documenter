@@ -1,0 +1,6 @@
+- e4s_product: lbann
+  version: 0.1.0
+  docs: [README.md,LICENSE,ReleaseNotes.txt]
+  area: AI
+  Description: "an open-source, HPC-centric, deep learning training framework"
+  MemberProduct: False

@@ -1,0 +1,7 @@
+- e4s_product: jax
+  version: 0.1.0
+  docs: [README.md, LICENSE, CHANGELOG.md]
+  spack_name: py-jax
+  area: AI
+  Description: "Autograd and XLA, brought together for high-performance numerical computing"
+  MemberProduct: False

@@ -1,0 +1,6 @@
+- e4s_product: opencv
+  version: 0.1.0
+  docs: [README.md,COPYRIGHT,LICENSE]
+  area: AI
+  Description: "Open Source Computer Vision Library"
+  MemberProduct: False

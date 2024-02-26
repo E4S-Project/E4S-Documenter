@@ -1,0 +1,7 @@
+- e4s_product: horovod
+  version: 0.1.0
+  docs: [README.rst,LICENSE,CHANGELOG.md]
+  spack_name: py-horovod
+  area: AI
+  Description: "a distributed deep learning training framework"
+  MemberProduct: False

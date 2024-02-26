@@ -1,0 +1,7 @@
+- e4s_product: scikit-learn
+  version: 0.1.0
+  docs: [README.rst,COPYING]
+  spack_name: py-scikit-learn
+  area: AI
+  Description: "a Python module for machine learning"
+  MemberProduct: False

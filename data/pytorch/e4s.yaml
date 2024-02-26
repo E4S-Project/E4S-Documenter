@@ -1,0 +1,7 @@
+- e4s_product: pytorch
+  version: 0.1.0
+  docs: [README.md,RELEASE.md,LICENSE]
+  spack_name: py-torch
+  area: AI
+  Description: "Provides accelerated tensor computation and deep neural networks"
+  MemberProduct: False
