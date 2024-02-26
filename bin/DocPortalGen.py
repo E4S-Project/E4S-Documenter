@@ -218,29 +218,60 @@ def getSpackInfo(name,accel):
     return infoMap
 
 xGitDict={}
+#def getOldXGitlabID(url):
+#    global xGitDict
+#    url_split=url.split('/')
+#    base_url=url_split[0]+"//"+url_split[2]+"/"+url_split[3]+"/"+url_split[4]
+#    #Cache the id so we don't have to download the page for every file
+#    if base_url in xGitDict:
+#        return xGitDict[base_url]
+#    gid="Unknown"
+#    pidStr="Project ID: "
+#    response = requests.get(base_url)
+#    html = response.content.decode("utf-8")
+#    if not pidStr in html:
+#        print("ERROR: no Project ID string at url: "+base_url+" in "+html)
+#        xGitDict[base_url]=gid
+#        return gid
+#    piddex=html.index(pidStr)+len(pidStr)
+#    enddex=html.index("\n",piddex)
+#    gid=html[piddex:enddex]
+#    quotDex=gid.find("\"")
+#    if quotDex > -1:
+#        gid=gid[0:quotDex]
+#    #print("XGIT-ID: ",gid)
+#    xGitDict[base_url]=gid
+#    return gid
+
 def getXGitlabID(url):
     global xGitDict
     url_split=url.split('/')
-    base_url=url_split[0]+"//"+url_split[2]+"/"+url_split[3]+"/"+url_split[4]
+    #base_url=url_split[0]+"//"+url_split[2]+"/"+url_split[3]+"/"+url_split[4]
+    base_url=url_split[0]+"//"+url_split[2]+"/api/v4/projects/"+url_split[3]+"%2F"+url_split[4]
     #Cache the id so we don't have to download the page for every file
     if base_url in xGitDict:
         return xGitDict[base_url]
     gid="Unknown"
-    pidStr="Project ID: "
-    response = requests.get(base_url)
-    html = response.content.decode("utf-8")
-    if not pidStr in html:
-        xGitDict[base_url]=gid
+    req=urllib.request.Request(base_url,None,browserHeaders)
+    print(base_url)
+    try:
+        response=urlopen(req)
+    except urllib.error.URLError as e:
+        printV("Gitlab metadata for "+name+": "+e.reason+". "+yaml_url)
         return gid
-    piddex=html.index(pidStr)+len(pidStr)
-    enddex=html.index("\n",piddex)
-    gid=html[piddex:enddex]
-    quotDex=gid.find("\"")
-    if quotDex > -1:
-        gid=gid[0:quotDex]
-    #print("XGIT-ID: ",gid)
-    xGitDict[base_url]=gid
-    return gid
+    else:
+        try:
+            gitlabYAML = yaml.safe_load(response)
+        except:
+            printV("Remote metadata for "+base_url+": Invalid yaml url.")
+            return gid
+        else:
+            #print(gitlabYAML)
+            #print(gitlabYAML["id"])
+            gid=str(gitlabYAML["id"])
+            xGitDict[base_url]=gid
+            return gid
+
 
 def parseRepoDate(dateStr):
     if(type(dateStr) is int):
@@ -336,6 +367,7 @@ def getLastCommitDate(url):
         #we need the first two tokens (repo and project) from the URL
         gitlabid=getXGitlabID(url)
         if gitlabid == "Unknown":
+            print("ERROR: Unknown gitlabid, can't find last update date")
             return "Unknown"
         #print("GITLABID: ",gitlabid)
         api_url="https://"+url_split[2]+"/api/v4/projects/"+gitlabid+"/repository/commits?path="
