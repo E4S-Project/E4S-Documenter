@@ -30,7 +30,11 @@ Other valid entries include website, for a link to a primary web resource other 
   ```
 
 ## Script Usage
-***DocPortalGen.py*** requires a single argument, the path to an existing directory where the summary pages and the top level list page are generated. It reads from a repository list and metadata file cache in its local data directory. Optionally a second argument, a path to an alternate repository list, may be provided.
+***DocPortalGen.py*** requires a single argument, the path to an existing directory where the summary pages and the top level list page are generated. It reads from a repository list and metadata file cache in its local data directory. Optionally a second argument, a path to an alternate repository list, may be provided. The --yaml argument causes the geneation of a yaml file including binary blobx of html data which can be rendered by the e4s.io docportal page. A standard invocation of DocPortalGen.py might look like: ```./bin/DocPortalGen.py  ./output_dir/ ./data/e4s_products.yaml --yaml```
+
+DocPortalGen.py can also generate a listing deployed products which can be rendered by the deployments page at e4s.io. The deployments generation function reads the ./data/e4s_site_deployment.yaml file which contains a list of URLS for text files containing spack find output for the deployments at their respective sites. A standard invocation to generate the site deployment listing looks like: ```./bin/DocPortalGen.py ./output_dir/ ./data/e4s_products.yaml --yaml --deployments```
+
+Note: DocPortalGen.py works by accessing the GitHub API to make multiple queries for each product. Due to the number of queries GitHub requires these API accesses be associated with an account. The github account credentils are provided by a credential.yaml file included in the top level E4S-Documenter directory. Because the credentials are account specific they are not provided in this repository.
 
 ***metaGen.py*** prompts the user for fields required for a valid metadata yaml file and prints the resulting file to the current directory.
 
