@@ -1,0 +1,6 @@
+- e4s_product: glvis
+  version: 0.1.0
+  docs: [README.md,CHANGELOG,LICENSE,NOTICE]
+  area: Data & Viz
+  Description: "GLVis is an OpenGL tool for visualization of finite element meshes and functions."
+  MemberProduct: False

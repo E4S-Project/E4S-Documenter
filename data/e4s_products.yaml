@@ -193,4 +193,10 @@
 - repo_url: https://github.com/horovod/horovod
 - repo_url: https://github.com/keras-team/keras
 - repo_url: https://github.com/openai/openai-python
+- repo_url: https://github.com/deephyper/deephyper
+- repo_url: https://github.com/Nek5000/Nek5000
+- repo_url: https://github.com/Nek5000/Nekbone
+- repo_url: https://github.com/CEED/Laghos
+- repo_url: https://github.com/glvis/glvis
+- repo_url: https://github.com/Unidata/netcdf-fortran
 

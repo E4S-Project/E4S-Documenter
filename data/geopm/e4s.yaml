@@ -1,5 +1,5 @@
 - e4s_product: geopm
-  docs:  [README, ChangeLog, COPYING]
+  docs:  [README.md, ChangeLog.md, LICENSE-BSD-3-Clause]
   Area: "PMR"
   Description: "Power management software."
   MemberProduct: False

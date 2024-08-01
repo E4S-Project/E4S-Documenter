@@ -1,0 +1,7 @@
+- e4s_product: deephyper
+  version: 0.1.0
+  docs: [README.md,LICENSE.md]
+  spack_name: py-deephyper
+  area: AI
+  Description: "DeepHyper is a powerful Python package for automating machine learning tasks"
+  MemberProduct: False

@@ -1,0 +1,6 @@
+- e4s_product: netcdf-fortran
+  version: 0.1.0
+  docs: [README.md,RELEASE_NOTES.md,COPYRIGHT]
+  area: Data & Viz
+  Description: "The Unidata network Common Data Form (netCDF) is an interface for scientific data access"
+  MemberProduct: False

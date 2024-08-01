@@ -1,0 +1,7 @@
+- e4s_product: Nek5000
+  version: 0.1.0
+  docs: [README.md,LICENSE,RELEASE.md]
+  spack_name: nek5000
+  area: Math Libraries
+  Description: "Nek5000 is a fast and scalable open source CFD solver."
+  MemberProduct: False
