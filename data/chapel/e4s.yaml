@@ -1,0 +1,6 @@
+- e4s_product: chapel
+  docs:  [README.rst, CHANGES.md, LICENSE]
+  Area: "PMR"
+  Description: "A programming language designed for productive parallel computing at scale."
+  MemberProduct: True
+  Accelerable: True
