@@ -24,6 +24,8 @@
 - repo_url: https://github.com/LLNL/Caliper
 - repo_url: https://github.com/LLNL/CHAI
 - repo_url: https://github.com/cinemascience/cinema
+#Chapel
+- repo_url: https://github.com/chapel-lang/chapel
 #-cuda
 - repo_url: https://github.com/darshan-hpc/darshan 
 - repo_url: https://github.com/ORNL-CEES/DataTransferKit
