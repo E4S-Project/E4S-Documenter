@@ -52,7 +52,7 @@
 - repo_url: https://github.com/kokkos/kokkos
 - repo_url: https://github.com/kokkos/kokkos-kernels
 #LAPACK
-- repo_url: https://bitbucket.org/icl/magma
+- repo_url: https://github.com/icl-utk-edu/magma
 #/LAPACK
 - repo_url: https://github.com/StanfordLegion/legion
 - repo_url: https://github.com/Libensemble/libensemble
