@@ -2,7 +2,7 @@
 WEBHOST=`hostname -f`  #yu.nic.uoregon.edu
 EMAIL=/tmp/docportal_today
 rm $EMAIL
-
+SENDTO=wspear@cs.uoregon.edu
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 startDir=`pwd`
@@ -66,5 +66,5 @@ fi
 #scp /tmp/docportal_today $WEBHOST:~/public_html/E4S
 cp /tmp/docportal_today ~/public_html/E4S
 #ssh $WEBHOST 
-cat ~/public_html/E4S/docportal_today | mailx -s "${SUBJECT}" wspear@cs.uoregon.edu
+cat ~/public_html/E4S/docportal_today | mailx -s "${SUBJECT}" $SENDTO
 
