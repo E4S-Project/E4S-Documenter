@@ -9,7 +9,7 @@ startDir=`pwd`
 spackDir="$DIR/../spack"
 testsuiteDir="$DIR/../testsuite"
 baseDir="$DIR/.."
-repoDir="~/public_html/E4S/E4S-Project.github.io"
+repoDir="$HOME/public_html/E4S/E4S-Project.github.io"
 
 
 
@@ -47,7 +47,7 @@ if [ $genRet -ne 0 ]; then
 fi
 
 
-diffLines=`diff -y --suppress-common-lines  ${baseDir}/autogen/DocPortal.yml ${baseDir}/backup/DocPortal.yml | wc -l`
+diffLines=`diff -y --suppress-common-lines  ${baseDir}/autogen/DocPortal.yml   ${baseDir}/backup/DocPortal.yml | wc -l`     #$repoDir/DocPortal.yml | wc -l`   #${baseDir}/backup/DocPortal.yml | wc -l`
 
 echo "$diffLines" &>> $EMAIL
 
