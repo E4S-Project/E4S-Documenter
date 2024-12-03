@@ -12,7 +12,7 @@ The list of repos is provided by a standard .yaml file. It includes one entry fo
 ## Repo Metadata Files
 Individual metadata files are constructed as a yaml dictionary. The default file name is e4s.yaml. The file will be searched for in the URL provided by the repo list first in a hidden .e4s directory and then at the top level of the repo. If it is not found in the remote repo it will be searched for in the local cache.
 
-The required elements are e4s_product, for the product name and docs for a list of the documents in the repo to be summarized. The document list can include either strings indicating just the document name/location or dictionaries with entries like: `{doc: README.md, chars: 500, type: readme}` where doc is the document file, chars is the number of characters from the document to be read and type is the type of document (e.g. readme, license, changelog). 
+The required elements are e4s_product, for the product name and docs for a list of the documents in the repo to be summarized. The document list can include either strings indicating just the document name/location or dictionaries with entries like: `{"doc": "README.md", "skip":100, "chars":500, "type":"readme"}` where doc is the document file, skip is the number of characters to skip before the portion of the document to present in the summary (defaults to 0), chars is the number of characters from the document to be read (defaults to 400), and type is the type of document (e.g. readme, license, changelog) (type is currently not used). 
 
 Other valid entries include website, for a link to a primary web resource other than the repository and subrepo_urls which gives a list of urls for other repositories to have their metadata summarized and listed as children of the current repository.
 
@@ -22,6 +22,7 @@ Other valid entries include website, for a link to a primary web resource other 
 - e4s_product: tau  #The e4s_product entry is the name of the product to display in the table.
   #spack_name: tau #Optional. Define the spack package name if the e4s_product name is different.
   docs:  [README, Changes, LICENSE] #List of documents to be summarized (relative to the root of the repository)
+  #docs:  [{"doc":"README","skip":1080,"chars":400}, {"doc":"Changes","skip":660,"chars":400}, "LICENSE"]  #Alternate docs entry with summarization parameters
   Area: "Development tools" #The category of product. 
       #Areas include Development Tools, PMR (Programming Models and Runtimes), Math Libraries, Data & Viz, and Software Ecosystem
   Description: "A performance analysis and tuning library." #A very brief description of the application.
