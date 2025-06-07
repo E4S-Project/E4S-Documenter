@@ -40,11 +40,12 @@ repoName=getRepoName(repoURL)
 spackName=""
 whichSpack = shutil.which('spack')
 if whichSpack is not None:
-    ret=os.system("spack info "+repoName+" >/dev/null")
+    ret=os.system("spack info "+repoName+" &> /dev/null")
     if ret != 0:
-        ret=os.system("spack info "+repoName.lower()+" >/dev/null")
+        ret=os.system("spack info "+repoName.lower()+" &> /dev/null")
         if ret == 0:
             spackName=repoName.lower()
+            print("Found spack package: "+spackName)
         else:
             spackName=input("Input the spack package name (or enter for none): ")
 else:

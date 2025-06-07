@@ -1,0 +1,6 @@
+- e4s_product: libCEED
+  version: 0.1.0
+  docs: [README.md, LICENSE, NOTICE]
+  area: Math Libraries
+  Description: "libCEED provides fast algebra for element-based discretizations"
+  MemberProduct: True

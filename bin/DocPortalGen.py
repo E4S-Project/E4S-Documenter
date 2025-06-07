@@ -645,8 +645,9 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
     capName=product['e4s_product'].upper()
     lowName=capName.lower()
     member=""
-    if 'MemberProduct' in product and product['MemberProduct'] is True:
-        capName=capName+"*"
+    #TODO: Implement alternative membership status indicator
+    #if 'MemberProduct' in product and product['MemberProduct'] is True:
+    #    capName=capName+"*"
     area="N/A"
     accel="Undetermined"
     accelArg="Undetermined"

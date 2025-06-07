@@ -203,3 +203,6 @@
 - repo_url: https://github.com/Unidata/netcdf-fortran
 
 - repo_url: https://github.com/nwchemgit/nwchem
+- repo_url: https://github.com/CEED/libCEED
+- repo_url: https://github.com/NVIDIA/bionemo-framework
+- repo_url: https://github.com/NVIDIA/NeMo
