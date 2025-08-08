@@ -206,3 +206,5 @@
 - repo_url: https://github.com/CEED/libCEED
 - repo_url: https://github.com/NVIDIA/bionemo-framework
 - repo_url: https://github.com/NVIDIA/NeMo
+- repo_url: https://github.com/llvm/llvm-project
+- repo_url: https://github.com/gromacs/gromacs

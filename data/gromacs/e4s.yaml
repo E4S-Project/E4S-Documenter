@@ -1,0 +1,6 @@
+- e4s_product: gromacs
+  version: 0.1.0
+  area: PMR
+  docs: [README, COPYING]
+  Description: "a high-throughput and highly parallel open source molecular simulation toolkit"
+  MemberProduct: False
