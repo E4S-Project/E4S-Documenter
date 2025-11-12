@@ -10,7 +10,8 @@
 - repo_url: https://github.com/anlsys/aml
 #ALPINE
 - repo_url: https://github.com/Alpine-DAV/ascent
-- repo_url: https://gitlab.kitware.com/paraview/paraview
+  #- repo_url: https://gitlab.kitware.com/paraview/paraview
+- https://github.com/Kitware/ParaView
 #-catalyst Part of ParaView?
 - repo_url: https://github.com/visit-dav/visit
 #-in-situ Part of ParaView?
@@ -117,7 +118,8 @@
 - repo_url: https://bitbucket.org/berkeleylab/upcxx
 #-vendorstack: No Repo
 - repo_url: https://github.com/ECP-VeloC/VELOC
-- repo_url: https://gitlab.kitware.com/vtk/vtk-m
+  #- repo_url: https://gitlab.kitware.com/vtk/vtk-m
+- https://github.com/Kitware/VTK-m
 #XSDK
 #/XSDK
 - repo_url: https://github.com/LLNL/zfp

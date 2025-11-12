@@ -20,6 +20,8 @@ import json
 import requests
 import time
 from datetime import datetime
+from urllib.parse import urlparse
+
 
 timestamp='{:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
 
@@ -257,7 +259,10 @@ def getXGitlabID(url):
     try:
         response=urlopen(req)
     except urllib.error.URLError as e:
-        printV("Gitlab metadata for "+name+": "+e.reason+". "+yaml_url)
+        name = getRepoName(url)
+        if name is None:
+            name = url
+        printV("Gitlab metadata for "+name+": "+e.reason+". "+base_url)
         return gid
     else:
         try:
@@ -432,7 +437,7 @@ def getURLHead(url, skipChars=0, numChars=400):
     #    yamlMap=yaml.safe_load(url)
     #speclist = yamlMap.get('spack').get('specs')
 
-def getRepoName(url, sub=False):
+def getRepoNameOld(url, sub=False):
     if sub is True:
         name = os.path.basename(os.path.normpath(url))
         #print (name)
@@ -462,6 +467,38 @@ def getRepoName(url, sub=False):
         firstnamedex=url.rfind('/',0,lastblobdex)
         name = url[firstnamedex+1:lastblobdex]
     return name
+
+def getRepoName(url, sub=False):
+    if sub is True:
+        name = os.path.basename(os.path.normpath(url))
+        return name
+    try:
+        # Safely parse the URL to get its path component
+        path = urlparse(url).path
+
+        # List of segments that usually appear *after* the repository name
+        stop_segments = ['/blob/', '/src/', '/-/raw/', '/raw/', '/-/blob/', '/browse/']
+        
+        # Find the earliest occurrence of any stop segment and trim the path
+        end_index = len(path)
+        for seg in stop_segments:
+            if seg in path:
+                end_index = min(end_index, path.find(seg))
+        
+        path = path[:end_index]
+
+        # The repo name is the last component of the remaining path
+        repo_name = os.path.basename(path.rstrip('/'))
+
+        # Strip a trailing '.git' if it exists
+        if repo_name.endswith('.git'):
+            repo_name = repo_name[:-4]
+            
+        return repo_name
+    except Exception as e:
+        print(f"ERROR PARSING REPO NAME FROM URL: {url}, Error: {e}")
+        return None
+
 
 def readRemoteYaml(yaml_url,name):
     fromRaw="/blob/"

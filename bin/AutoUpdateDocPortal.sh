@@ -33,6 +33,7 @@ else
 fi
 
 source "$spackDir/share/spack/setup-env.sh"
+spack repo update
 mkdir -p "$baseDir/autogen" 
 mkdir -p "$baseDir/backup" 
 mv "$baseDir"/autogen/* "$baseDir"/backup || true

@@ -1,5 +1,6 @@
 - e4s_product: BEE
   version: 0.1.0
+  spack_name: hpc-beeflow
   docs: [README.rst, LICENSE]
   area: Software Ecosystem
   Description: "Container-based solution for portable build and execution across HPC systems and cloud resources"
