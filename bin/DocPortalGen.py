@@ -45,6 +45,7 @@ useRemoteYAML=True
 printstandard=False #False
 printstatus=False #True
 htmlBlocks=""
+filter_log_path=None  # Set via --filterlog <path> to log removed content
 
 def printV(toPrint):
     if printv is True:
@@ -310,23 +311,29 @@ def getLastCommitDate(url):
             #print(data.keys())
             #print(data["message"])
             if not data:
-                print("Warning: Date information missing for: "+api_url, file=sys.stderr) 
+                print("Warning: Date information missing for: "+api_url+" (source: "+url+")", file=sys.stderr) 
                 return "Unknown"
             if "message" in data:
-                print("Warning: Date information error", file=sys.stderr)
+                print("Warning: Date information error for: "+url, file=sys.stderr)
                 print(data["message"], file=sys.stderr)
                 return "Unknown"
             dateStr=data[0]["commit"]["committer"]["date"]
             #print("github date: "+dateStr)
             return parseRepoDate(dateStr)
             #return dateStr
+        except json.JSONDecodeError as e:
+            print("Warning: Empty or invalid JSON response for: "+api_url+" (source: "+url+")", file=sys.stderr)
+            return "Unknown"
         except urllib.error.HTTPError as e:
-            print("Github API Fault: "+api_url, file=sys.stderr)
+            print("Github API Fault: "+api_url+" (source: "+url+")", file=sys.stderr)
             print(e.msg, file=sys.stderr)
             print(e.hdrs, file=sys.stderr)
             print(e.fp, file=sys.stderr)
             #sys.exit(-1)
-        print ("TIME DATA COLLECTION FAULT", file=sys.stderr)
+        except Exception as e:
+            print("Warning: Unexpected error getting commit date for: "+url+" - "+str(e), file=sys.stderr)
+            return "Unknown"
+        print ("TIME DATA COLLECTION FAULT for: "+url, file=sys.stderr)
         return "Unknown"
     elif "bitbucket." in url:
         url_split=url.split('/')
@@ -359,11 +366,14 @@ def getLastCommitDate(url):
             else:    
                 dateStr=data["values"][0]["date"]
             return parseRepoDate(dateStr)
+        except json.JSONDecodeError as e:
+            print("API Commit Date Failure: Empty or invalid JSON from: "+api_url+" (source: "+url+")", file=sys.stderr)
+            return "Unknown"
         except urllib.error.HTTPError as e:
-            print("API Commit Date Failure: Could not download: "+api_url, file=sys.stderr)
+            print("API Commit Date Failure: Could not download: "+api_url+" (source: "+url+")", file=sys.stderr)
             return "Unknown"
         except IndexError as e2:
-            print("API Commit Date Failure: No commits at: "+api_url, file=sys.stderr)
+            print("API Commit Date Failure: No commits at: "+api_url+" (source: "+url+")", file=sys.stderr)
             return "Unknown"
         #print("bb date: "+dateStr)
         #return dateStr
@@ -390,35 +400,137 @@ def getLastCommitDate(url):
         #print("FILE PATH: ", file_path)
         api_url=api_url+file_path+"&page=1&per_page=1"
         #print(api_url)
-        json_url = urlopen(api_url)
-        data = json.loads(json_url.read())
-        #print(data[0]["committed_date"])
-        dateStr=data[0]["committed_date"]
-        #print("gitlab date: "+dateStr)
-        return parseRepoDate(dateStr)
+        try:
+            json_url = urlopen(api_url)
+            data = json.loads(json_url.read())
+            #print(data[0]["committed_date"])
+            dateStr=data[0]["committed_date"]
+            #print("gitlab date: "+dateStr)
+            return parseRepoDate(dateStr)
+        except json.JSONDecodeError as e:
+            print("API Commit Date Failure: Empty or invalid JSON from: "+api_url+" (source: "+url+")", file=sys.stderr)
+            return "Unknown"
+        except (urllib.error.URLError, IndexError, KeyError) as e:
+            print("API Commit Date Failure for: "+url+" - "+str(e), file=sys.stderr)
+            return "Unknown"
+
+def clean_document_text(text, url):
+    """Remove non-textual elements (badges, images, ASCII art, etc.) from document text.
+    Returns (cleaned_text, removed_text) where removed_text contains what was stripped."""
+    removed_lines = []
+    original = text
+
+    def _remove(pattern, label, flags=0):
+        nonlocal text
+        for m in re.finditer(pattern, text, flags):
+            removed_lines.append((label, m.group(0)))
+        text = re.sub(pattern, '', text, flags=flags)
+
+    is_md = url.lower().endswith('.md') or url.lower().endswith('.markdown')
+    is_rst = url.lower().endswith('.rst')
+
+    # HTML comments (<!-- ... --> including multi-line and variants like <!--- --->)
+    _remove(r'<!--.*?-->', 'html-comment', re.DOTALL)
+
+    if is_md:
+        # Nested badge pattern: [![alt](img_url)](link_url)
+        _remove(r'\[!\[[^\]]*\]\([^)]*\)\]\([^)]*\)', 'md-badge-link')
+        # Nested badge with reference-style outer link: [![alt](img_url)][ref]
+        _remove(r'\[!\[[^\]]*\]\([^)]*\)\]\[[^\]]*\]', 'md-badge-ref-link')
+        # Nested badge entirely reference-style: [![alt][img_ref]][link_ref]
+        _remove(r'\[!\[[^\]]*\]\[[^\]]*\]\]\[[^\]]*\]', 'md-badge-ref-ref')
+        # Inline images: ![alt](url)
+        _remove(r'!\[[^\]]*\]\([^)]*\)', 'md-image')
+        # Reference-style images: ![alt][ref]
+        _remove(r'!\[[^\]]*\]\[[^\]]*\]', 'md-image-ref')
+        # Reference-style link/image definitions: [label]: url ... (at start of line)
+        _remove(r'^\[[^\]]*\]:[ \t]+\S+[^\n]*$', 'md-ref-definition', re.MULTILINE)
+        # HTML img tags
+        _remove(r'<img[^>]*/?>', 'html-img', re.IGNORECASE)
+
+    if is_rst:
+        # RST image/figure directives (directive line + indented option lines)
+        _remove(r'^\.\. (?:image|figure)::[^\n]*(?:\n[ \t]+:[^\n]*)*', 'rst-image', re.MULTILINE)
+        # RST substitution definitions for images: .. |name| image:: url
+        _remove(r'^\.\. \|[^|]*\| image::[^\n]*(?:\n[ \t]+:[^\n]*)*', 'rst-subst-image', re.MULTILINE)
+
+    # For any format: HTML img tags (may appear in rst or plain text too)
+    if not is_md:
+        _remove(r'<img[^>]*/?>', 'html-img', re.IGNORECASE)
+
+    # ASCII art heuristic: lines of 20+ chars where less than 30% are alphanumeric or spaces
+    # Exclude RST/markdown heading underlines (===, ---, ***, ~~~, ^^^, etc.)
+    lines = text.split('\n')
+    cleaned_lines = []
+    for line in lines:
+        stripped = line.strip()
+        if len(stripped) >= 20:
+            # Skip heading underlines: lines made of a single repeated punctuation char
+            unique_chars = set(stripped)
+            if len(unique_chars) == 1 and not stripped[0].isalnum():
+                cleaned_lines.append(line)
+                continue
+            alnum_space = sum(1 for c in stripped if c.isalnum() or c == ' ')
+            ratio = alnum_space / len(stripped)
+            if ratio < 0.30:
+                removed_lines.append(('ascii-art', line))
+                continue
+        cleaned_lines.append(line)
+    text = '\n'.join(cleaned_lines)
+
+    # Collapse runs of 3+ blank lines down to 2
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    # Strip leading blank lines
+    text = text.lstrip('\n')
+
+    removed_text = ''
+    if removed_lines:
+        removed_text = '\n'.join(f'  [{label}] {content}' for label, content in removed_lines)
+
+    return text, removed_text
+
+
+def log_filter_results(url, removed_text, original_len, cleaned_len):
+    """Append filtering details to the filter log file if significant content was removed."""
+    global filter_log_path
+    if filter_log_path is None or not removed_text:
+        return
+    chars_removed = original_len - cleaned_len
+    # Only log if at least 40 characters or 10% of original were removed
+    if chars_removed < 40 and (original_len == 0 or chars_removed / original_len < 0.10):
+        return
+    with open(filter_log_path, 'a') as logf:
+        logf.write(f'=== {url} === ({chars_removed} chars removed, {original_len} -> {cleaned_len})\n')
+        logf.write(removed_text + '\n\n')
+
 
 def getURLHead(url, skipChars=0, numChars=400):
-    #masteryaml_url="https://raw.githubusercontent.com/UO-OACISS/e4s/master/docker-recipes/ubi7/x86_64/e4s/spack.yaml"
-    #print("Reading URL: "+url)
-    #browserHeaders={'User-Agent' : "Magic Browser"}
     req=urllib.request.Request(url,None,browserHeaders)
-    #with urlopen(req) as f:
     try:
         f = urlopen(req)
-        #Read 2x the target number of characters to look for a good breakpoint in the overflow
+        #Read enough to have text left after filtering. Use at least 8000 bytes
+        #to get past badge/image-heavy headers, or 10x target, whichever is larger.
         if numChars > 0:
-            head=html.escape(f.read(skipChars+(numChars*2)).decode("utf-8", errors='replace'))
+            readSize = max(skipChars + numChars * 10, 8000)
+            head=f.read(readSize).decode("utf-8", errors='replace')
         else:
-            head=html.escape(f.read().decode("utf-8", errors='replace'))
+            head=f.read().decode("utf-8", errors='replace')
         #Markdown comments don't count toward the character limit.
         if url.lower().endswith(".md"):
             comdex=head.rfind('\n[comment]:')
             if comdex > -1:
                 noncomdex=head.find('\n',comdex+3)
                 head=head[noncomdex:]
-                head=head+html.escape(f.read(skipChars+(numChars*2)-len(head)).decode("utf-8"))
-                #print(head)
-                #print(len(head))
+                head=head+f.read(readSize-len(head)).decode("utf-8")
+
+        # Apply content filtering on raw text before escaping
+        original_len = len(head)
+        head, removed_text = clean_document_text(head, url)
+        log_filter_results(url, removed_text, original_len, len(head))
+
+        # HTML-escape after filtering so regex patterns match raw markup
+        head = html.escape(head)
+
         if numChars > 0:
             head=head[skipChars:]
             breakpoint=head.find('\n',numChars)
@@ -428,15 +540,11 @@ def getURLHead(url, skipChars=0, numChars=400):
                 breakpoint=head.find(' ',numChars);
             if breakpoint < numChars:
                 breakpoint=numChars
-            #print("Breakpoint: ",breakpoint)            
             head = head[:breakpoint]
-            #print("Resulting Head: "+head)
         return head
     except urllib.error.URLError as e:
         print("ERROR: Document "+url+": "+e.reason, file=sys.stderr)
         return None
-    #    yamlMap=yaml.safe_load(url)
-    #speclist = yamlMap.get('spack').get('specs')
 
 def getRepoNameOld(url, sub=False):
     if sub is True:
@@ -886,6 +994,17 @@ if(len(sys.argv)>3):
     if '--deployments' in sys.argv:
         printDeployments=True
         printStandard("Printing deployments!")
+    if '--filterlog' in sys.argv:
+        filterDex=sys.argv.index('--filterlog')
+        if filterDex+1 < len(sys.argv):
+            filter_log_path=sys.argv[filterDex+1]
+            # Truncate/create the log file at startup
+            with open(filter_log_path, 'w') as logf:
+                logf.write('# Document filtering log - '+timestamp+'\n\n')
+            print("Filter log: "+filter_log_path, file=sys.stderr)
+        else:
+            print("ERROR: --filterlog requires a file path argument", file=sys.stderr)
+            sys.exit(-1)
 
 if not printDeployments:
     printStatus("Product, Spack Package, Accelerable, CUDA Variant, ROCM Variant, HIP Variant, SYCL Variant, Smoke Test, Testsuite Test")
