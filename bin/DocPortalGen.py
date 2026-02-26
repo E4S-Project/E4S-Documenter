@@ -21,6 +21,7 @@ import requests
 import time
 from datetime import datetime
 from urllib.parse import urlparse
+import http.client
 
 
 timestamp='{:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
@@ -47,12 +48,12 @@ htmlBlocks=""
 
 def printV(toPrint):
     if printv is True:
-        print(toPrint)
+        print(toPrint, file=sys.stderr)
         
 
 def printStandard(toPrint):
     if printstandard is True:
-        print(toPrint)
+        print(toPrint, file=sys.stderr)
         
 def printStatus(toPrint):
     if printstatus is True:
@@ -69,7 +70,7 @@ def getSiteDeployment():
         try:
             yamsites = yaml.safe_load(sites)
         except:
-            printV("Couldn't get site deployment data.")
+            print("WARNING: Couldn't get site deployment data.", file=sys.stderr)
             return None
         else:
             #print(yamsites)
@@ -130,7 +131,7 @@ def getCredentials():
         try:
             yamcred = yaml.safe_load(cred)
         except:
-            printV("Couldn't get github credentials.")
+            print("WARNING: Couldn't get github credentials.", file=sys.stderr)
             return None
         else:
             github_uname=yamcred["name"]
@@ -142,14 +143,14 @@ def getSpackInfo(name,accel):
     if not noSpack:
         whichSpack = shutil.which('spack')
         if whichSpack is None:
-            print("Spack not found in path. No Spack info data will be included")
+            print("WARNING: Spack not found in path. No Spack info data will be included", file=sys.stderr)
             noSpack=True
             return None
     else:
         return None
     infoBlob = subprocess.run(['spack', 'info', name], stdout=subprocess.PIPE).stdout.decode('utf-8')
     if infoBlob is None or len(infoBlob)==0:
-        printStandard("No spack info for "+name)
+        print("WARNING: No spack info for "+name, file=sys.stderr)
         printStatus(name+", False, "+accel+", False, False, False, False, False")
         return None
     rocmStatus=""
@@ -255,7 +256,7 @@ def getXGitlabID(url):
         return xGitDict[base_url]
     gid="Unknown"
     req=urllib.request.Request(base_url,None,browserHeaders)
-    print(base_url)
+    #print(base_url)
     try:
         response=urlopen(req)
     except urllib.error.URLError as e:
@@ -309,23 +310,23 @@ def getLastCommitDate(url):
             #print(data.keys())
             #print(data["message"])
             if not data:
-                print("Warning: Date information missing for: "+api_url) 
+                print("Warning: Date information missing for: "+api_url, file=sys.stderr) 
                 return "Unknown"
             if "message" in data:
-                print("Warning: Date information error")
-                print(data["message"])
+                print("Warning: Date information error", file=sys.stderr)
+                print(data["message"], file=sys.stderr)
                 return "Unknown"
             dateStr=data[0]["commit"]["committer"]["date"]
             #print("github date: "+dateStr)
             return parseRepoDate(dateStr)
             #return dateStr
         except urllib.error.HTTPError as e:
-            print("Github API Fault: "+api_url)
-            print(e.msg)
-            print(e.hdrs)
-            print(e.fp)
+            print("Github API Fault: "+api_url, file=sys.stderr)
+            print(e.msg, file=sys.stderr)
+            print(e.hdrs, file=sys.stderr)
+            print(e.fp, file=sys.stderr)
             #sys.exit(-1)
-        print ("TIME DATA COLLECTION FAULT")
+        print ("TIME DATA COLLECTION FAULT", file=sys.stderr)
         return "Unknown"
     elif "bitbucket." in url:
         url_split=url.split('/')
@@ -359,10 +360,10 @@ def getLastCommitDate(url):
                 dateStr=data["values"][0]["date"]
             return parseRepoDate(dateStr)
         except urllib.error.HTTPError as e:
-            print("API Commit Date Failure: Could not download: "+api_url)
+            print("API Commit Date Failure: Could not download: "+api_url, file=sys.stderr)
             return "Unknown"
         except IndexError as e2:
-            print("API Commit Date Failure: No commits at: "+api_url)
+            print("API Commit Date Failure: No commits at: "+api_url, file=sys.stderr)
             return "Unknown"
         #print("bb date: "+dateStr)
         #return dateStr
@@ -372,7 +373,7 @@ def getLastCommitDate(url):
         #we need the first two tokens (repo and project) from the URL
         gitlabid=getXGitlabID(url)
         if gitlabid == "Unknown":
-            print("ERROR: Unknown gitlabid, can't find last update date")
+            print("ERROR: Unknown gitlabid, can't find last update date", file=sys.stderr)
             return "Unknown"
         #print("GITLABID: ",gitlabid)
         api_url="https://"+url_split[2]+"/api/v4/projects/"+gitlabid+"/repository/commits?path="
@@ -432,7 +433,7 @@ def getURLHead(url, skipChars=0, numChars=400):
             #print("Resulting Head: "+head)
         return head
     except urllib.error.URLError as e:
-        print("ERROR: Document "+url+": "+e.reason)
+        print("ERROR: Document "+url+": "+e.reason, file=sys.stderr)
         return None
     #    yamlMap=yaml.safe_load(url)
     #speclist = yamlMap.get('spack').get('specs')
@@ -455,7 +456,7 @@ def getRepoNameOld(url, sub=False):
     if lastblobdex == -1:
         lastblobdex=url.rfind('/browse')  #Used in some bitbucket urls
     if lastblobdex == -1:
-        print("ERROR PARSING REPO NAME FROM URL: "+url)
+        print("ERROR PARSING REPO NAME FROM URL: "+url, file=sys.stderr)
         return None
 #    print("Name ends at: "+str(lastblobdex))
     firstnamedex=url.rfind('/',0,lastblobdex)
@@ -496,7 +497,7 @@ def getRepoName(url, sub=False):
             
         return repo_name
     except Exception as e:
-        print(f"ERROR PARSING REPO NAME FROM URL: {url}, Error: {e}")
+        print(f"ERROR PARSING REPO NAME FROM URL: {url}, Error: {e}", file=sys.stderr)
         return None
 
 
@@ -516,6 +517,12 @@ def readRemoteYaml(yaml_url,name):
     except urllib.error.URLError as e:
         printV("Remote metadata for "+name+": "+e.reason+". "+yaml_url)
         return None
+    except http.client.RemoteDisconnected as e: 
+        printV(f"Remote disconnected while fetching metadata for {name}: {yaml_url}")
+        return None
+    except Exception as e: 
+        printV(f"Unexpected error fetching metadata for {name}: {yaml_url}")
+        return None    
     else:
         try:
             yamlMD = yaml.safe_load(response)
@@ -556,13 +563,13 @@ def getRepoDocs(url,name,sub=False):
             yamlMD = yaml.safe_load(MDFile)
             printV("Found local e4s.yaml for "+name)
             return yamlMD
-    print("WARNING: No metadata found for "+name)
+    printV("WARNING: No metadata found for "+name)
     return yamlMD #[{"e4s_product":name,"docs":[]}];
             
 def processURL(url,sub=False):
     repoName=getRepoName(url,sub)
     if repoName in nameSet:
-        print("ERROR. Duplicate repo name: "+repoName+" Skipping!")
+        print("ERROR: Duplicate repo name: "+repoName+" Skipping!", file=sys.stderr)
     if repoName is None or repoName in nameSet:
         return None
     nameSet.add(repoName)
@@ -572,7 +579,7 @@ def processURL(url,sub=False):
     if yamlMD is not None and 'version' in yamlMD[0]:
                 repoVersion=yamlMD[0]['version']
                 if parse(repoVersion) > parse(currentVersion):
-                    print("Warning: using metadata version ("+repoVersion+") newer than supported version ("+currentVersion+").")
+                    print("Warning: using metadata version ("+repoVersion+") newer than supported version ("+currentVersion+").", file=sys.stderr)
     return yamlMD #{'e4s_product':repoName,'docs':docs}
 
 yamlEntryOpen='''{
@@ -761,7 +768,7 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
             docLoc=doc
         else:
             if "doc" not in doc:
-                print("ERROR! INVALID DOCUMENT MAP: "+str(doc))
+                print("ERROR: INVALID DOCUMENT MAP: "+str(doc), file=sys.stderr)
                 continue
             docLoc=doc["doc"]
             if "chars" in doc:
@@ -837,7 +844,7 @@ def headify_url(baseURL):
         baseURL=baseURL+srcSegment+HEAD
         return baseURL
         
-    print("WARNING: Could not headify "+baseURL)
+    print("WARNING: Could not headify "+baseURL, file=sys.stderr)
     return baseURL
 
 output_prefix=""
@@ -845,7 +852,7 @@ if(len(sys.argv)>1):
 	if(os.path.isdir(sys.argv[1])):
 		output_prefix=sys.argv[1]+"/"
 	else:
-		print("First argument must be a valid output directory")
+		print("ERROR: First argument must be a valid output directory", file=sys.stderr)
 		sys.exit(-1)
 
 productList=script_path+'/../data/e4s_products.yaml'
@@ -853,7 +860,7 @@ if(len(sys.argv)>2):
 	if(os.path.isfile(sys.argv[2])):
 		productList=sys.argv[2]
 	else:
-		print("Second argument, if specified, must be a valid yaml product list")
+		print("ERROR: Second argument, if specified, must be a valid yaml product list", file=sys.stderr)
 		sys.exit(-1)
 		
 htmlTemplate=script_path+'/../templates/e4s_DocPortal_template.html'
@@ -867,7 +874,7 @@ if(len(sys.argv)>3):
         if(os.path.isfile(templateLoc)):
             htmlTemplate=templateLoc
         else:
-            print("Third argument, if specified, must be a valid html output template")
+            print("ERROR: Third argument, if specified, must be a valid html output template", file=sys.stderr)
             sys.exit(-1)
     
     if '--yaml' in sys.argv:
@@ -891,7 +898,7 @@ deployments=getSiteDeployment()
 with open(productList) as MDlist:
     products = yaml.safe_load(MDlist)
 
-listFileName="DocPortal"
+listFileName="product-catalog"
 if printDeployments:
     listFileName="E4S-Deployments"
 listFileSuffix='.html'
@@ -910,11 +917,16 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
 
     firstIt = True
     for urls in products:
+        if type(urls) is not dict:
+            print("ERROR: Invalid entry in product list (not a dictionary): " + str(urls), file=sys.stderr)
+            continue
         if 'repo_url' not in urls:
             if 'version' in urls:
                 repoVersion=urls['version']
                 if parse(repoVersion) > parse(currentVersion):
-                    print("Warning: using repo list version ("+repoVersion+") newer than supported version ("+currentVersion+").")
+                    print("Warning: using repo list version ("+repoVersion+") newer than supported version ("+currentVersion+").", file=sys.stderr)
+            else:
+                print("ERROR: Entry in product list missing 'repo_url': " + str(urls), file=sys.stderr)
             continue
         baseURL=urls['repo_url']
         #print(baseURL)
@@ -922,7 +934,7 @@ with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
         printStandard("headified "+urls['repo_url'])
         processedURL=processURL(urls['repo_url'])
         if processedURL is None:
-            print("Error: Could not process "+urls['repo_url'])
+            print("ERROR: Could not process "+urls['repo_url'], file=sys.stderr)
             continue
         printV(processedURL[0])
         product = processedURL[0]

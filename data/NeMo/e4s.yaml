@@ -1,6 +1,6 @@
 - e4s_product: NeMo
   version: 0.1.0
-  docs: [README.md, CHANGELOG.md, LICENSE]
+  docs: [README.md, LICENSE]
   area: AI
   Description: "NVIDIA NeMo Framework is a scalable and cloud-native generative AI framework"
   MemberProduct: False

@@ -9,7 +9,7 @@ startDir=`pwd`
 spackDir="$DIR/../spack"
 testsuiteDir="$DIR/../testsuite"
 baseDir="$DIR/.."
-repoDir="$HOME/public_html/E4S/E4S-Project.github.io"
+repoDir="$HOME/public_html/E4S"
 
 
 
@@ -48,17 +48,17 @@ if [ $genRet -ne 0 ]; then
 fi
 
 
-diffLines=`diff -y --suppress-common-lines  ${baseDir}/autogen/DocPortal.yml   ${baseDir}/backup/DocPortal.yml | wc -l`     #$repoDir/DocPortal.yml | wc -l`   #${baseDir}/backup/DocPortal.yml | wc -l`
+diffLines=`diff -y --suppress-common-lines  ${baseDir}/autogen/product-catalog.yml   ${baseDir}/backup/product-catalog.yml | wc -l`     #$repoDir/DocPortal.yml | wc -l`   #${baseDir}/backup/DocPortal.yml | wc -l`
 
 echo "$diffLines" &>> $EMAIL
 
 if [ "$diffLines" -gt 0 ]; then
-    cp ${baseDir}/autogen/DocPortal.yml $repoDir
-    cd $repoDir
-    git pull --no-edit
-    git commit ./DocPortal.yml -m "DocPortal update (Automatic)"
-    git push &>> $EMAIL  #  $baseDir/autogen/push_out.txt
-    cd $startDir
+    cp ${baseDir}/autogen/product-catalog.yml $repoDir
+#    cd $repoDir
+#    git pull --no-edit
+#    git commit ./DocPortal.yml -m "DocPortal update (Automatic)"
+#    git push &>> $EMAIL  #  $baseDir/autogen/push_out.txt
+#    cd $startDir
     SUBJECT="DocPortal UPDATED"
 else
     SUBJECT="DocPortal UNCHANGED"
