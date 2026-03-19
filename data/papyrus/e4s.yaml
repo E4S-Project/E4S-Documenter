@@ -1,5 +1,5 @@
 - e4s_product: papyrus
   docs:  [README.md, LICENSE.txt]
-  Area: "Development Tools"
+  Area: "PMR"
   Description: "Programming system for persistent memory."
   MemberProduct: False

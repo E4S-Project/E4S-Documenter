@@ -3,4 +3,4 @@
   docs: [README.md, CHANGELOG, LICENSE.txt]
   Description: "PHIST provides implementations of and interfaces to block iterative solvers for sparse linear and eigenvalue problems."
   MemberProduct: False
-  Area: "Math libraries"
+  Area: "Math Libraries"

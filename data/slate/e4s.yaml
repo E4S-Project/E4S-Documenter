@@ -1,6 +1,6 @@
 - e4s_product: slate
   docs:  [README.md, LICENSE]
-  Area: "Math libraries"
+  Area: "Math Libraries"
   Description: "SLATE is the next generation of ScaLAPACK."
   MemberProduct: False
   Accelerable: True

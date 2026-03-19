@@ -1,7 +1,7 @@
 - e4s_product: flecsi
   type: Framework
   docs:  [README.md, RELEASE.md, LICENSE]
-  Area: "Math libraries"
+  Area: "PMR"
   Description: "A configurable framework designed to support multi-physics application development."
   MemberProduct: False
   Accelerable: True

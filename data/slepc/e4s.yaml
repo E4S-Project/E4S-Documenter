@@ -4,4 +4,4 @@
   Description: "SLEPc, the Scalable Library for Eigenvalue Problem Computations, is a software package for the solution of large sparse eigenvalue problems on parallel computers."
   MemberProduct: False
   Accelerable: True
-  Area: "Math libraries"
+  Area: "Math Libraries"

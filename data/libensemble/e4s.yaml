@@ -1,6 +1,6 @@
 - e4s_product: libensemble
   spack_name: py-libensemble
   docs:  [README.rst, CHANGELOG.rst, LICENSE]
-  Area: "Math libraries"
+  Area: "Math Libraries"
   Description: "A library to support ensemble-based solution algorithms."
   MemberProduct: True 

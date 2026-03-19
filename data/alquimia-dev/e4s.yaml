@@ -2,6 +2,6 @@
   version: 0.1.0
   docs: [README.rst, LICENSE.txt]
   spack_name: alquimia
-  area: PMR
+  area: Simulation
   Description: "Alquimia provides a generic interface between flow and transport simulators (drivers) and biogeochemical reaction capabilities (engines)."
   MemberProduct: False

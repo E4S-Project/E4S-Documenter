@@ -55,7 +55,7 @@ else:
 docList=input("Input comma separated document list: ").strip()
 #website=input("Input website URL (or enter for none): ")
 subRepos=input("Input coma separated sub-repo url list (or enter for none): ").strip()
-area=input("Input Technical Area (PMR, Data & Viz, Math Libraries, Development Tools, Software Ecosystem, or enter for none/unknown): ").strip()
+area=input("Input Technical Area (PMR(Programming Models & Runtimes), Data & Viz, Math Libraries, Development Tools, Software Ecosystem, Simulation, AI, System Software, or enter for none/unknown): ").strip()
 memberB=False
 member=input("Full Member Product? Input any string for true, enter for false: ").strip()
 if member:

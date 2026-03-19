@@ -1,6 +1,6 @@
 - e4s_product: strumpack
   docs:  [README.md, CHANGELOG, LICENSE]
-  Area: "Math libraries"
+  Area: "Math Libraries"
   Description: "Next generation parallel sparse direct solver package."
   MemberProduct: True
   Accelerable: True

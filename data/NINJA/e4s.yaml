@@ -4,4 +4,4 @@
   spack_name: pruners-ninja
   Description: "Ninja (Noise INJection Agent) is a tool for reproducing subtle and unintended message races"
   MemberProduct: False
-  Area: "Development tools"
+  Area: "Development Tools"

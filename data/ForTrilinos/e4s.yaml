@@ -2,6 +2,6 @@
   version: 0.1.0
   docs: [README.md,LICENSE,CONTRIBUTING.md]
   spack_name: fortrilinos
-  Area: "Math libraries"
+  Area: "Math Libraries"
   Description: "Fortran interface to Trilinos C++ libraries."
   MemberProduct: False

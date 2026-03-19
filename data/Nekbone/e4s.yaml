@@ -2,6 +2,6 @@
   version: 0.1.0
   docs: [README.md,CHANGES,COPYRIGHT]
   spack_name: nekbone
-  area: Math Libraries
+  area: Simulation
   Description: "Nekbone solves a standard Poisson equation"
   MemberProduct: False

@@ -1,6 +1,6 @@
 - e4s_product: nwchem
   version: 0.1.0
   docs: [README.md,LICENSE.TXT]
-  area: PMR
+  area: Simulation
   Description: "Scalable computational chemistry tools"
   MemberProduct: True

@@ -1,6 +1,6 @@
 - e4s_product: petsc
   docs:  [README.md, LICENSE]
-  Area: "Math libraries"
+  Area: "Math Libraries"
   Description: "Library of parallel and sparse linear, nonlinear, optimization and transient solvers."
   MemberProduct: True
   Accelerable: True

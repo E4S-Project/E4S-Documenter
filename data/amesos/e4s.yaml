@@ -1,3 +1,4 @@
 - e4s_product: trilinos-amesos
   type: Framework
   docs:  [README.md, LICENSE, ReleaseNotes.txt]
+  Area: Math Libraries

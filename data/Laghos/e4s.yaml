@@ -2,6 +2,6 @@
   version: 0.1.0
   docs: [README.md,CHANGELOG,LICENSE,NOTICE]
   spack_name: laghos
-  area: Math Libraries
+  area: Simulation
   Description: "Laghos (LAGrangian High-Order Solver) is a miniapp that solves the time-dependent Euler equations of compressible gas dynamics"
   MemberProduct: False

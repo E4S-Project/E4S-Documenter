@@ -1,5 +1,5 @@
 - e4s_product: dyninst
-  Area: Development tools
+  Area: Development Tools
   docs:  [README.md, CHANGELOG.md, LICENSE.md]
   Description: "Binary analysis and instrumentation framework."
   MemberProduct: False

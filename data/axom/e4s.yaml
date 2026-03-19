@@ -4,4 +4,4 @@
   spack_name: axom
   Description: "Axom provides robust, flexible software infrastructure for the development of multi-physics applications and computational tools."
   MemberProduct: True
-  Area: "PMR"
+  Area: "Math Libraries"

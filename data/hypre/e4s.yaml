@@ -1,6 +1,6 @@
 - e4s_product: hypre
   docs:  [README.md, CHANGELOG, LICENSE-APACHE, LICENSE-MIT]
-  Area: "Math libraries"
+  Area: "Math Libraries"
   Description: "Scalable sparse iterative preconditioners and solvers."
   MemberProduct: True 
   Accelerable: True

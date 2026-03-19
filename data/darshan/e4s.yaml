@@ -1,5 +1,5 @@
 - e4s_product: darshan
-  Area: "Data & Viz"
+  Area: "Development Tools"
   spack_name: darshan-runtime
   MemberProduct: False
   Description: "I/O characterization tool."

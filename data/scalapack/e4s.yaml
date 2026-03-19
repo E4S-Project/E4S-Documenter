@@ -2,6 +2,6 @@
   version: 0.1.0
   docs: [README,LICENSE]
   spack_name: netlib-scalapack
-  area: Math libraries
+  area: Math Libraries
   Description: "Scalable parallel dense linear algebra library"
   MemberProduct: False

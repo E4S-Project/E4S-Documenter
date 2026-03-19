@@ -1,7 +1,7 @@
 - e4s_product: bricks
   spack_name: bricks 
   docs:  [README.md, LICENSE]
-  Area: "Development Tools"
+  Area: "PMR"
   Accelerable: True
   Description: "Distributed Performance-portable Stencil Compuitation"
   MemberProduct: False

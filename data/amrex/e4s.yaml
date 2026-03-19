@@ -1,7 +1,7 @@
 - e4s_product: amrex
   version: 0.1.0
   docs: [README.md,LICENSE,CHANGES.md,CITATION]
-  area: PMR
+  area: Math Libraries
   Description: "A framework designed for building massively parallel block- structured adaptive mesh refinement applications."
   MemberProduct: False
   Accelerable: True

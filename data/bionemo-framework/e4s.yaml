@@ -1,6 +1,6 @@
 - e4s_product: bionemo-framework
   version: 0.1.0
   docs: [README.md, LICENSE/license.txt]
-  area: PMR
+  area: AI
   Description: "NVIDIA BioNeMo Framework is a is a comprehensive suite of programming tools, libraries, and models designed for computational drug discovery"
   MemberProduct: False

@@ -3,4 +3,4 @@
   docs: [README.md, LICENSE]
   Description: "PLASMA is a software package for solving problems in dense linear algebra using OpenMP."
   MemberProduct: False
-  Area: "Math libraries"
+  Area: "Math Libraries"

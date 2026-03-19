@@ -1,6 +1,6 @@
 - e4s_product: papi
   docs: [README.md, RELEASENOTES.txt, LICENSE.txt]
-  Area: "Development tools"
+  Area: "Development Tools"
   Description: "Performance API to provide portable access to vendor performance information for CPUs, GPUs, networks, I/O systems, including power."
   MemberProduct: False
   Accelerable: True

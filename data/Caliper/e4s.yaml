@@ -1,5 +1,5 @@
 - e4s_product: caliper
-  Area: Development tools
+  Area: Development Tools
   Description: "Performance analysis library."
   docs:  [README.md, LICENSE]
   MemberProduct: False

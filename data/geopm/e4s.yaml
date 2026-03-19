@@ -1,6 +1,6 @@
 - e4s_product: geopm
   spack_name: geopm-service
   docs:  [README.md, ChangeLog.md, LICENSE-BSD-3-Clause]
-  Area: "PMR"
+  Area: "System Software"
   Description: "Power management software."
   MemberProduct: False

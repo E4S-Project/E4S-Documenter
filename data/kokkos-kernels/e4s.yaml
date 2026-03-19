@@ -1,6 +1,6 @@
 - e4s_product: kokkos-kernels
   docs:  [README.md, CHANGELOG.md, LICENSE]
-  Area: "Math libraries"
+  Area: "Math Libraries"
   Description: "Parallel linear algebra and graph algorithms build on Kokkos."
   MemberProduct: False
   Accelerable: True

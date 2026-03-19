@@ -2,6 +2,6 @@
   spack_name: llvm
   version: 0.1.0
   docs: [README.md,LICENSE.TXT]
-  area: PMR
+  area: Development Tools
   Description: "a toolkit for the construction of highly optimized compilers, optimizers, and run-time environments"
   MemberProduct: True

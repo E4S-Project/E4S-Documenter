@@ -1,6 +1,6 @@
 - e4s_product: magma
   docs:  [README, ReleaseNotes, COPYRIGHT]
-  Area: "Math libraries"
+  Area: "Math Libraries"
   Description: "LAPACK for heterogeneous/hybrid architectures."
   MemberProduct: True 
   Accelerable: True
