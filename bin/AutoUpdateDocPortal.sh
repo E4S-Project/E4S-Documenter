@@ -38,7 +38,7 @@ mkdir -p "$baseDir/autogen"
 mkdir -p "$baseDir/backup" 
 mv "$baseDir"/autogen/* "$baseDir"/backup || true
 cd "$baseDir"
-${baseDir}/bin/DocPortalGen.py ${baseDir}/autogen/ ${baseDir}/data/e4s_products.yaml --yaml &>> $EMAIL
+${baseDir}/bin/DocPortalGen.py ${baseDir}/autogen/ ${baseDir}/data/e4s_products.yaml --yaml --noRemote &>> $EMAIL
 genRet=$?
 
 if [ $genRet -ne 0 ]; then

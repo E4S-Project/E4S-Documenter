@@ -1,6 +1,6 @@
 - e4s_product: sundials
   docs:  [README.md, NOTICE, LICENSE]
-  Area: "Math libraries"
+  Area: "Math Libraries"
   Description: "Parallel time integrators and solvers for ODES, DAEs, and nonlinear systems."
   MemberProduct: True
   Accelerable: True
