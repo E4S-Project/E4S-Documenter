@@ -42,7 +42,7 @@
 #-fortran
 #-flang: Top level product is repo sub-directory. This case needs support added. https://github.com/llvm/llvm-project/blob/master/flang
 - repo_url: https://github.com/trilinos/ForTrilinos
-- repo_url: https://bitbucket.org/berkeleylab/gasnet
+- repo_url: https://github.com/BerkeleyLab/gasnet
 - repo_url: https://github.com/ginkgo-project/ginkgo
 #- repo_url: https://bitbucket.hdfgroup.org/projects/HDFFV/repos/hdf5/browse
 - repo_url: https://github.com/HDFGroup/hdf5
@@ -115,7 +115,7 @@
 - repo_url: https://github.com/LLNL/umap
 - repo_url: https://github.com/LLNL/Umpire
 - repo_url: https://github.com/LLNL/UnifyFS
-- repo_url: https://bitbucket.org/berkeleylab/upcxx
+- repo_url: https://github.com/BerkeleyLab/upcxx
 #-vendorstack: No Repo
 - repo_url: https://github.com/ECP-VeloC/VELOC
   #- repo_url: https://gitlab.kitware.com/vtk/vtk-m
