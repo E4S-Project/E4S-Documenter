@@ -1,6 +1,6 @@
 - e4s_product: alquimia-dev
   version: 0.1.0
-  docs: [README.rst, LICENSE.txt]
+  docs: [README.md, LICENSE.txt]
   spack_name: alquimia
   area: Simulation
   Description: "Alquimia provides a generic interface between flow and transport simulators (drivers) and biogeochemical reaction capabilities (engines)."

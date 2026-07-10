@@ -22,7 +22,7 @@ import time
 from datetime import datetime
 from urllib.parse import urlparse
 import http.client
-
+import socket
 
 timestamp='{:%Y-%m-%d %H:%M:%S}'.format(datetime.now())
 
@@ -507,7 +507,7 @@ def log_filter_results(url, removed_text, original_len, cleaned_len):
 def getURLHead(url, skipChars=0, numChars=400):
     req=urllib.request.Request(url,None,browserHeaders)
     try:
-        f = urlopen(req)
+        f = urlopen(req, timeout=15)
         #Read enough to have text left after filtering. Use at least 8000 bytes
         #to get past badge/image-heavy headers, or 10x target, whichever is larger.
         if numChars > 0:
@@ -542,8 +542,31 @@ def getURLHead(url, skipChars=0, numChars=400):
                 breakpoint=numChars
             head = head[:breakpoint]
         return head
+    except urllib.error.HTTPError as e:
+        # This catches actual server responses like 404 Not Found, 403 Forbidden, 429 Too Many Requests.
+        print(f"HTTP ERROR [{e.code}]: Document {url} - {e.reason}", file=sys.stderr)
+        if e.code in (403, 429):
+            print(f" -> ALERT: This looks like rate-limiting or blocking by the server.", file=sys.stderr)
+        return None
+
+    except http.client.RemoteDisconnected as e:
+        # This specifically catches the exact crash you posted originally
+        print(f"DISCONNECT ERROR: Remote end closed connection abruptly for {url}", file=sys.stderr)
+        return None
+
+    except socket.timeout:
+        # Catches servers that take too long to respond
+        print(f"TIMEOUT ERROR: Connection to {url} timed out", file=sys.stderr)
+        return None
+
     except urllib.error.URLError as e:
-        print("ERROR: Document "+url+": "+e.reason, file=sys.stderr)
+        # (handles DNS failures, connection refused, etc)
+        print("NETWORK ERROR: Document "+url+": "+str(e.reason), file=sys.stderr)
+        return None
+
+    except Exception as e:
+        # Failsafe so NO single URL can crash the entire run
+        print(f"UNEXPECTED ERROR: Document {url} - {e}", file=sys.stderr)
         return None
 
 def getRepoNameOld(url, sub=False):
@@ -623,19 +646,19 @@ def readRemoteYaml(yaml_url,name):
     try:
         response=urlopen(req)
     except urllib.error.URLError as e:
-        printV("Remote metadata for "+name+": "+e.reason+". "+yaml_url)
+        print("Remote metadata for "+name+": "+e.reason+". "+yaml_url, file=sys.stderr)
         return None
     except http.client.RemoteDisconnected as e: 
-        printV(f"Remote disconnected while fetching metadata for {name}: {yaml_url}")
+        print(f"Remote disconnected while fetching metadata for {name}: {yaml_url}", file=sys.stderr)
         return None
     except Exception as e: 
-        printV(f"Unexpected error fetching metadata for {name}: {yaml_url}")
+        print(f"Error [{name}]: Unexpected connection error fetching metadata: {e} | Tried URL: {yaml_url}", file=sys.stderr)
         return None    
     else:
         try:
             yamlMD = yaml.safe_load(response)
         except:
-            printV("Remote metadata for "+name+": Invalid yaml url. "+yaml_url)
+            print(f"ERROR [{name}]: YAML parsing failed for {yaml_url}\nDetails: {e}", file=sys.stderr)
             return None
         else:
             return yamlMD

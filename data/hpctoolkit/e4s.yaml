@@ -1,5 +1,5 @@
 - e4s_product: hpctoolkit
-  docs:  [README.md, CHANGELOG.md, LICENSE.md, GOVERNANCE.md]
+  docs:  [README.md, CHANGELOG.md, LICENSE, GOVERNANCE.md]
   Area: "Development Tools"
   Description: "Performance analysis tools."
   MemberProduct: False
