@@ -31,7 +31,9 @@ Other valid entries include website, for a link to a primary web resource other 
   ```
 
 ## Script Usage
-***DocPortalGen.py*** requires a single argument, the path to an existing directory where the summary pages and the top level list page are generated. It reads from a repository list and metadata file cache in its local data directory. Optionally a second argument, a path to an alternate repository list, may be provided. The --yaml argument causes the generation of a yaml file including binary blobs of html data which can be rendered by the e4s.io docportal page. A standard invocation of DocPortalGen.py might look like: ```./bin/DocPortalGen.py  ./output_dir/ ./data/e4s_products.yaml --yaml```
+***DocPortalGen.py*** requires a single argument, the path to an existing directory where the summary pages and the top level list page are generated. It reads from a repository list and metadata file cache in its local data directory. Optionally a second argument, a path to an alternate repository list, may be provided. The --yaml argument (default) causes the generation of a structured yaml/json catalog which can be rendered by the e4s.io docportal page. A standard invocation of DocPortalGen.py might look like: ```./bin/DocPortalGen.py  ./output_dir/ ./data/e4s_products.yaml --yaml```
+
+Run ```./bin/DocPortalGen.py --help``` for the full list of options, including `--no-remote` (skip fetching per-repo e4s.yaml over the network), `--metadata-file` (also write a companion `*-metadata.yml` with scraped document bodies stripped out, off by default) and `--filter-log` (log content stripped by the document text filter).
 
 DocPortalGen.py can also generate a listing of deployed products which can be rendered by the deployments page at e4s.io. The deployments generation function reads the ./data/e4s_site_deployment.yaml file which contains a list of URLS for text files containing spack find output for the deployments at their respective sites. A standard invocation to generate the site deployment listing looks like: ```./bin/DocPortalGen.py ./output_dir/ ./data/e4s_products.yaml --yaml --deployments```
 

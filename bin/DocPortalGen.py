@@ -3,6 +3,7 @@
 """e4sListPage.py: Generates web pages listing e4s products from e4s_products.yaml"""
 __author__ = "Wyatt Spear"
 
+import argparse
 import urllib.request
 from urllib.request import urlopen
 import yaml
@@ -955,6 +956,139 @@ def printProduct(product, ppage, deployments,sub=False, printYaml=False):
         print(htmlAgregator, file=ppage)
         print(htmlBlocks['endBlock'], file=ppage)
 
+def build_product_entry(product, deployments, sub=False):
+    """Build a fully-structured (no base64 blob) product entry dict.
+
+    Unlike printProduct's legacy html_blob path, this keeps every field as
+    plain text/lists/dicts. Only the individually scraped document bodies
+    live under docs[*]['content']; everything else (spack info, deployment,
+    metadata) is emitted as ordinary JSON-safe values. json.dump() handles
+    all escaping, so there is no need for base64 encoding.
+    """
+    capName = product['e4s_product'].upper()
+    lowName = capName.lower()
+    area = "N/A"
+    accel = "Undetermined"
+    accelArg = "Undetermined"
+    description = ""
+    if 'Area' in product:
+        area = product['Area']
+    elif 'area' in product:
+        area = product['area']
+    if 'Description' in product:
+        description = product['Description']
+    elif 'description' in product:
+        description = product['description']
+    if 'Accelerable' in product:
+        if product['Accelerable'] is True:
+            accel = "Product provides spack variants to enable accelerator support"
+            accelArg = "True"
+        elif product['Accelerable'] is False:
+            accel = "Product does not provide spack variants to enable accelerator support"
+            accelArg = "False"
+
+    spackName = lowName
+    if 'spack_name' in product:
+        spackName = product['spack_name']
+    spackInfo = getSpackInfo(spackName, accelArg)
+    spack_info_out = {}
+    if spackInfo is not None:
+        for key, value in spackInfo.items():
+            if key == "Variants":
+                if value.strip(' \n') != "" and accel == "Undetermined":
+                    accel = "Product provides spack variants to enable accelerator support"
+                spack_info_out["Accelerator Variants"] = value
+            elif key == "Homepage":
+                #getSpackInfo wraps Homepage in an <a> tag for the legacy html mode; keep this field plain text here.
+                homepageMatch = re.match(r'<a href=(.*?)>', value)
+                spack_info_out[key] = homepageMatch.group(1) if homepageMatch else value
+            else:
+                spack_info_out[key] = value
+
+    rawFileURL = product['repo_url']
+    appendRaw = ""
+    if sub is False:
+        if 'raw_url' in product:
+            rawFileURL = product['raw_url']
+        if 'bitbucket.' in rawFileURL and '/browse' in rawFileURL:
+            appendRaw = bitbucketRaw
+        else:
+            fromRaw = "/blob/"
+            toRaw = "/raw/"
+            if "bitbucket.org" in rawFileURL:
+                fromRaw = "/src/"
+            rawFileURL = rawFileURL.replace(fromRaw, toRaw)
+
+    latestDocDate = "Unknown"
+    docKey = 'docs'
+    if 'Docs' in product:
+        docKey = 'Docs'
+    docs_out = []
+    for doc in product[docKey]:
+        docLoc = ""
+        chars = 400
+        skip = 0
+        if isinstance(doc, str):
+            docLoc = doc
+        else:
+            if "doc" not in doc:
+                print("ERROR: INVALID DOCUMENT MAP: " + str(doc), file=sys.stderr)
+                continue
+            docLoc = doc["doc"]
+            if "chars" in doc:
+                chars = doc["chars"]
+            if "skip" in doc:
+                skip = doc["skip"]
+        docURL = rawFileURL + "/" + docLoc + appendRaw
+        docHead = getURLHead(docURL, skip, chars)
+        if docHead is None:
+            continue
+        docDate = getLastCommitDate(docURL)
+        if not isinstance(docDate, str):
+            if isinstance(latestDocDate, str) or docDate > latestDocDate:
+                latestDocDate = docDate
+        if docURL.lower().endswith(".md"):
+            docHead = markdown.markdown(docHead)
+        docs_out.append({
+            "name": docLoc,
+            "url": product['repo_url'] + "/" + docLoc,
+            "timestamp": str(docDate),
+            "content": docHead,
+        })
+
+    deployment_out = []
+    if type(deployments) is dict and spackName in deployments.keys():
+        deployment = deployments[spackName]
+        for siteName, sysInfo in deployment.items():
+            systems_out = []
+            for systemName, deps in sysInfo.items():
+                entries_out = [{
+                    "version": dep[0],
+                    "compiler": dep[1],
+                    "variants": dep[2],
+                    "architecture": dep[3],
+                } for dep in deps]
+                systems_out.append({"system": systemName, "entries": entries_out})
+            deployment_out.append({"institution": siteName, "systems": systems_out})
+
+    spack_info_out["Accelerator Support"] = accel
+
+    return {
+        "name": capName,
+        "area": area,
+        "description": description,
+        "spack_info": spack_info_out,
+        "docs": docs_out,
+        "deployment": deployment_out,
+        "last_updated": str(latestDocDate),
+    }
+
+def strip_doc_content(entry):
+    """Return a copy of entry with scraped document bodies removed, for the metadata-only catalog."""
+    metaEntry = dict(entry)
+    metaEntry["docs"] = [{k: v for k, v in doc.items() if k != "content"} for doc in entry["docs"]]
+    return metaEntry
+
 def parse_html_blocks(templateLoc):
     with open(templateLoc,"r") as templateFile:
         blockText=templateFile.read()
@@ -978,56 +1112,81 @@ def headify_url(baseURL):
     print("WARNING: Could not headify "+baseURL, file=sys.stderr)
     return baseURL
 
-output_prefix=""
-if(len(sys.argv)>1):
-	if(os.path.isdir(sys.argv[1])):
-		output_prefix=sys.argv[1]+"/"
-	else:
-		print("ERROR: First argument must be a valid output directory", file=sys.stderr)
-		sys.exit(-1)
+def existing_dir(path):
+    if not os.path.isdir(path):
+        raise argparse.ArgumentTypeError(f"'{path}' is not a directory")
+    return path
 
-productList=script_path+'/../data/e4s_products.yaml'
-if(len(sys.argv)>2):
-	if(os.path.isfile(sys.argv[2])):
-		productList=sys.argv[2]
-	else:
-		print("ERROR: Second argument, if specified, must be a valid yaml product list", file=sys.stderr)
-		sys.exit(-1)
-		
-htmlTemplate=script_path+'/../templates/e4s_DocPortal_template.html'
-templateFlag='--template'
-printYaml=True
-printDeployments=False
-if(len(sys.argv)>3):
-    if templateFlag in sys.argv:
-        templateDex=sys.argv.index(templateFlag)
-        templateLoc=sys.argv[templateDex+1]
-        if(os.path.isfile(templateLoc)):
-            htmlTemplate=templateLoc
-        else:
-            print("ERROR: Third argument, if specified, must be a valid html output template", file=sys.stderr)
-            sys.exit(-1)
-    
-    if '--yaml' in sys.argv:
-        printYaml=True
-    if '--html' in sys.argv:
-        printYaml=False
-    if '--noRemote' in sys.argv:
-        useRemoteYAML=False
-    if '--deployments' in sys.argv:
-        printDeployments=True
-        printStandard("Printing deployments!")
-    if '--filterlog' in sys.argv:
-        filterDex=sys.argv.index('--filterlog')
-        if filterDex+1 < len(sys.argv):
-            filter_log_path=sys.argv[filterDex+1]
-            # Truncate/create the log file at startup
-            with open(filter_log_path, 'w') as logf:
-                logf.write('# Document filtering log - '+timestamp+'\n\n')
-            print("Filter log: "+filter_log_path, file=sys.stderr)
-        else:
-            print("ERROR: --filterlog requires a file path argument", file=sys.stderr)
-            sys.exit(-1)
+def existing_file(path):
+    if not os.path.isfile(path):
+        raise argparse.ArgumentTypeError(f"'{path}' is not a file")
+    return path
+
+parser = argparse.ArgumentParser(
+    description="Generate the E4S DocPortal product catalog by scraping spack package info, "
+                "repo metadata (e4s.yaml) and documentation for each product listed in a "
+                "product list yaml.",
+    epilog="Standard invocation: %(prog)s ./output_dir/ ./data/e4s_products.yaml --yaml",
+)
+parser.add_argument("output_dir", type=existing_dir,
+                     help="Existing directory to write the generated catalog file(s) into.")
+parser.add_argument("product_list", nargs="?", type=existing_file,
+                     default=os.path.join(script_path, "..", "data", "e4s_products.yaml"),
+                     help="Path to the product list yaml (default: data/e4s_products.yaml).")
+
+format_group = parser.add_mutually_exclusive_group()
+format_group.add_argument("--yaml", dest="output_format", action="store_const", const="yaml",
+                           help="Emit the structured yaml/json catalog (default). This is the "
+                                "only output format currently consumed by anything.")
+format_group.add_argument("--html", dest="output_format", action="store_const", const="html",
+                           help="[DEPRECATED] Emit legacy standalone HTML pages. Nothing known "
+                                "consumes this output; kept only for backwards compatibility.")
+parser.set_defaults(output_format="yaml")
+
+parser.add_argument("--template", type=existing_file,
+                     default=os.path.join(script_path, "..", "templates", "e4s_DocPortal_template.html"),
+                     help="HTML template file (only used with --html).")
+parser.add_argument("--no-remote", dest="use_remote_yaml", action="store_false", default=True,
+                     help="Don't fetch each repo's e4s.yaml over the network; use only the "
+                          "locally cached data/<product>/e4s.yaml files.")
+parser.add_argument("--deployments", action="store_true",
+                     help="Generate the E4S-Deployments catalog (site deployment listing) "
+                          "instead of the product-catalog.")
+parser.add_argument("--metadata-file", dest="write_metadata_file", action="store_true",
+                     help="Also write a companion *-metadata.yml file with the scraped document "
+                          "bodies stripped out. Off by default.")
+parser.add_argument("--filter-log", dest="filter_log", metavar="PATH",
+                     help="Write a log of content stripped by the document text filter to PATH.")
+parser.add_argument("-v", "--verbose", action="count", default=0,
+                     help="Increase logging verbosity. Pass once (-v) for standard progress "
+                          "messages (e.g. which repo/document is being processed), twice "
+                          "(-vv) to also include detailed per-item debug messages.")
+parser.add_argument("--status", dest="print_status", action="store_true",
+                     help="Print a CSV-style status line per product (spack package, "
+                          "accelerator variants, test presence, etc.) to stdout.")
+
+args = parser.parse_args()
+
+output_prefix = args.output_dir.rstrip('/') + "/"
+productList = args.product_list
+htmlTemplate = args.template
+printYaml = args.output_format == "yaml"
+useRemoteYAML = args.use_remote_yaml
+printDeployments = args.deployments
+writeMetaFile = printYaml and not printDeployments and args.write_metadata_file
+printstandard = args.verbose >= 1
+printv = args.verbose >= 2
+printstatus = args.print_status
+
+if args.output_format == "html":
+    print("WARNING: --html output is deprecated and not consumed by any known tool.", file=sys.stderr)
+
+if args.filter_log:
+    filter_log_path = args.filter_log
+    # Truncate/create the log file at startup
+    with open(filter_log_path, 'w') as logf:
+        logf.write('# Document filtering log - '+timestamp+'\n\n')
+    print("Filter log: "+filter_log_path, file=sys.stderr)
 
 if not printDeployments:
     printStatus("Product, Spack Package, Accelerable, CUDA Variant, ROCM Variant, HIP Variant, SYCL Variant, Smoke Test, Testsuite Test")
@@ -1051,62 +1210,91 @@ yamlEnd='''  ]
 firstDepBlock=True
 if printYaml is True:
     listFileSuffix='.yml'
-with open(output_prefix+listFileName+listFileSuffix, "w") as listPage:
-    if printYaml is True:
-        print(yamlStart, file=listPage)
-    else:
-        print(htmlBlocks['introListBlock'].replace("***TIMESTAMP***",timestamp), file=listPage)
-
-    firstIt = True
-    for urls in products:
-        if type(urls) is not dict:
-            print("ERROR: Invalid entry in product list (not a dictionary): " + str(urls), file=sys.stderr)
-            continue
-        if 'repo_url' not in urls:
-            if 'version' in urls:
-                repoVersion=urls['version']
-                if parse(repoVersion) > parse(currentVersion):
-                    print("Warning: using repo list version ("+repoVersion+") newer than supported version ("+currentVersion+").", file=sys.stderr)
-            else:
-                print("ERROR: Entry in product list missing 'repo_url': " + str(urls), file=sys.stderr)
-            continue
-        baseURL=urls['repo_url']
-        #print(baseURL)
-        urls['repo_url']=headify_url(baseURL.rstrip('/'))
-        printStandard("headified "+urls['repo_url'])
-        processedURL=processURL(urls['repo_url'])
-        if processedURL is None:
-            print("ERROR: Could not process "+urls['repo_url'], file=sys.stderr)
-            continue
-        printV(processedURL[0])
-        product = processedURL[0]
-        printStandard ('Generating HTML for: '+product['e4s_product'])
-        if printYaml:
-            if firstIt is True:
-                firstIt=False
-            elif not printDeployments:
-                print(''',''', file=listPage)
-        if printDeployments is True:
-            printDeployment(product,deployments,printYaml=printYaml,firstBlock=firstDepBlock)
-            firstDepBlock=False
+#When --metadata-file is passed, also emit a lightweight companion file with the
+#same fields minus the scraped document bodies.
+metaFileName=output_prefix+listFileName+"-metadata"+listFileSuffix
+metaPage = open(metaFileName, "w", encoding="utf-8") if writeMetaFile else None
+try:
+    with open(output_prefix+listFileName+listFileSuffix, "w", encoding="utf-8") as listPage:
+        if printYaml is True:
+            print(yamlStart, file=listPage)
+            if writeMetaFile:
+                print(yamlStart, file=metaPage)
         else:
-            printProduct(product, listPage,deployments, printYaml=printYaml)
-        if 'subrepo_urls' in product:
-            for suburl in product['subrepo_urls']:
-                printStandard("Generating HTML for SUBURL: "+suburl)
-                processedURL=processURL(suburl,True)
-                if processedURL is None:
-                    continue
-                if printYaml and not printDeployments:
-                    print(''',''', file=listPage)
-                product = processedURL[0]
-                #print(product)
-                if printDeployments:
-                    printDeployment(product,deployments,printYaml=printYaml)
+            print(htmlBlocks['introListBlock'].replace("***TIMESTAMP***",timestamp), file=listPage)
+
+        firstIt = True
+        for urls in products:
+            if type(urls) is not dict:
+                print("ERROR: Invalid entry in product list (not a dictionary): " + str(urls), file=sys.stderr)
+                continue
+            if 'repo_url' not in urls:
+                if 'version' in urls:
+                    repoVersion=urls['version']
+                    if parse(repoVersion) > parse(currentVersion):
+                        print("Warning: using repo list version ("+repoVersion+") newer than supported version ("+currentVersion+").", file=sys.stderr)
                 else:
-                    printProduct(product, listPage,True, printYaml=printYaml)
-    if printYaml is True:
-        print('''  ]
+                    print("ERROR: Entry in product list missing 'repo_url': " + str(urls), file=sys.stderr)
+                continue
+            baseURL=urls['repo_url']
+            #print(baseURL)
+            urls['repo_url']=headify_url(baseURL.rstrip('/'))
+            printStandard("headified "+urls['repo_url'])
+            processedURL=processURL(urls['repo_url'])
+            if processedURL is None:
+                print("ERROR: Could not process "+urls['repo_url'], file=sys.stderr)
+                continue
+            printV(processedURL[0])
+            product = processedURL[0]
+            printStandard ('Generating HTML for: '+product['e4s_product'])
+            if printYaml:
+                if firstIt is True:
+                    firstIt=False
+                elif not printDeployments:
+                    print(''',''', file=listPage)
+                    if writeMetaFile:
+                        print(''',''', file=metaPage)
+            if printDeployments is True:
+                printDeployment(product,deployments,printYaml=printYaml,firstBlock=firstDepBlock)
+                firstDepBlock=False
+            elif printYaml is True:
+                entry = build_product_entry(product, deployments)
+                #ensure_ascii=False: astral-plane chars (emoji etc.) would otherwise be split into
+                #surrogate-pair \uXXXX escapes, which Psych/libyaml rejects as invalid Unicode.
+                json.dump(entry, listPage, indent=2, ensure_ascii=False)
+                if writeMetaFile:
+                    json.dump(strip_doc_content(entry), metaPage, indent=2, ensure_ascii=False)
+            else:
+                printProduct(product, listPage,deployments, printYaml=printYaml)
+            if 'subrepo_urls' in product:
+                for suburl in product['subrepo_urls']:
+                    printStandard("Generating HTML for SUBURL: "+suburl)
+                    processedURL=processURL(suburl,True)
+                    if processedURL is None:
+                        continue
+                    if printYaml and not printDeployments:
+                        print(''',''', file=listPage)
+                        if writeMetaFile:
+                            print(''',''', file=metaPage)
+                    product = processedURL[0]
+                    #print(product)
+                    if printDeployments:
+                        printDeployment(product,deployments,printYaml=printYaml)
+                    elif printYaml is True:
+                        entry = build_product_entry(product, deployments, sub=True)
+                        json.dump(entry, listPage, indent=2, ensure_ascii=False)
+                        if writeMetaFile:
+                            json.dump(strip_doc_content(entry), metaPage, indent=2, ensure_ascii=False)
+                    else:
+                        printProduct(product, listPage,True, printYaml=printYaml)
+        if printYaml is True:
+            print('''  ]
 }''', file=listPage)
-    else:
-        print(htmlBlocks['introCloseBlock'].replace("***TIMESTAMP***",timestamp), file=listPage)
+            if writeMetaFile:
+                print('''  ]
+}''', file=metaPage)
+        else:
+            print(htmlBlocks['introCloseBlock'].replace("***TIMESTAMP***",timestamp), file=listPage)
+finally:
+    if metaPage is not None:
+        metaPage.close()
